@@ -1,0 +1,930 @@
+\documentclass[11pt]{amsart}
+\usepackage{geometry}                % See geometry.pdf to learn the layout options. There are lots.
+\geometry{letterpaper}                   % ... or a4paper or a5paper or ... 
+%\geometry{landscape}                % Activate for for rotated page geometry
+\usepackage[parfill]{parskip}    % Activate to begin paragraphs with an empty line rather than an indent
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{epstopdf}
+\usepackage{csquotes}
+\DeclareGraphicsRule{.tif}{png}{.png}{`convert #1 `dirname #1`/`basename #1 .tif`.png}
+
+\usepackage{tikz}
+\usetikzlibrary{chains,fit,shapes}
+\usepackage{hyperref}
+
+
+\usepackage{color}
+\definecolor{mygreen}{rgb}{0,0.6,0}
+\definecolor{mygray}{rgb}{0.5,0.5,0.5}
+\definecolor{mymauve}{rgb}{0.58,0,0.82}
+
+\usepackage{listings} % for special listings (https://en.wikibooks.org/wiki/LaTeX/Source_Code_Listings)
+\lstset{ %
+  backgroundcolor=\color{white},   % choose the background color; you must add \usepackage{color} or \usepackage{xcolor}
+  basicstyle=\footnotesize,        % the size of the fonts that are used for the code
+  breakatwhitespace=false,         % sets if automatic breaks should only happen at whitespace
+  breaklines=true,                 % sets automatic line breaking
+  captionpos=b,                    % sets the caption-position to bottom
+  commentstyle=\color{mygreen},    % comment style
+  deletekeywords={...},            % if you want to delete keywords from the given language
+  escapeinside={\%*}{*)},          % if you want to add LaTeX within your code
+  extendedchars=true,              % lets you use non-ASCII characters; for 8-bits encodings only, does not work with UTF-8
+  frame=single,	                   % adds a frame around the code
+  keepspaces=true,                 % keeps spaces in text, useful for keeping indentation of code (possibly needs columns=flexible)
+  keywordstyle=\color{blue},       % keyword style
+ % language=C++,                 % the language of the code
+  otherkeywords={*,...},            % if you want to add more keywords to the set
+  numbers=left,                    % where to put the line-numbers; possible values are (none, left, right)
+  numbersep=5pt,                   % how far the line-numbers are from the code
+  numberstyle=\tiny\color{mygray}, % the style that is used for the line-numbers
+  rulecolor=\color{black},         % if not set, the frame-color may be changed on line-breaks within not-black text (e.g. comments (green here))
+  showspaces=false,                % show spaces everywhere adding particular underscores; it overrides 'showstringspaces'
+  showstringspaces=false,          % underline spaces within strings only
+  showtabs=false,                  % show tabs within strings adding particular underscores
+  stepnumber=1,                    % the step between two line-numbers. If it's 1, each line will be numbered
+  stringstyle=\color{mymauve},     % string literal style
+  tabsize=2,	                   % sets default tabsize to 2 spaces
+  title=\lstname                   % show the filename of files included with \lstinputlisting; also try caption instead of title
+}
+
+%%
+%% TODO questions:
+%% - doubling start from n = 64000 as long as the main memory is enough? until 8GB? => only MS and QS √
+%% - non optimal and watcher no improvement. why? √
+%%
+%% TODOs
+%% - tests with empty array √ 
+%% - test with doubled values √
+%% - time in ns with 6 floating numbers x
+%% - algo with examples (turing machine...) √
+%% - start with less than 64KB √
+%% - bool template param √
+%% - remove code snippets from docu √
+%% - size_t for index √
+%% - test with empty strings
+
+%%%%%%%%
+% Draw functions
+\newcommand{\minsearchExample}[4] {
+		\begin{tikzpicture}
+            		\tikzstyle{every path}=[very thick]
+            
+            		\edef\sizetape{0.7cm}
+            		\tikzstyle{tmtape}=[draw,minimum size=\sizetape] 
+			\tikzstyle{tmhead}=[arrow box,draw,minimum size=.5cm,arrow box
+arrows={north:.25cm}]
+			\tikzstyle{minbox}=[arrow box,draw,minimum size=.5cm,arrow box
+arrows={north:.3cm}]      
+            
+            		%% draw data array
+            		\begin{scope}[start chain=1 going right,node distance=-0.15mm]
+				\node [on chain=1,tmtape, draw=none] {#1:};
+                			\node [on chain=1,tmtape] (first) {7};
+                			\node [on chain=1,tmtape] (second) {5};
+                			\node [on chain=1,tmtape] (third) {10};
+                			\node [on chain=1,tmtape] (fourth) {1};
+               			\node [on chain=1,tmtape] (fifth) {9};
+                			\node [on chain=1,tmtape] (sixth) {-1};
+			        \node [on chain=1,tmtape] (seventh) {-2};
+			        \node [on chain=1,tmtape] (eighth) {12};
+			        \node [on chain=1,tmtape] (ninth) {1};
+			        \node [on chain=1,tmtape] (tenth){6};
+           		\end{scope}
+			%% draw pointer and min box
+			\node [tmhead,yshift=-.6cm] at (#2.south) (pointer) {$p$};
+			\node[minbox, yshift=-1.3cm] at (#3.south) {$min=#4$};
+            	\end{tikzpicture}
+		\vspace{.5cm}	
+}
+
+\newcommand{\selectSortExample}[9] {
+		\begin{tikzpicture}
+            		\tikzstyle{every path}=[very thick]
+            
+            		\edef\sizetape{0.7cm}
+            		\tikzstyle{tmtape}=[draw,minimum size=\sizetape] 
+			\tikzstyle{tmhead}=[arrow box,draw,minimum size=.5cm,arrow box
+arrows={north:.25cm}]
+			\tikzstyle{minbox}=[arrow box,draw,minimum size=.5cm,arrow box
+arrows={north:.3cm}]      
+            
+            		%% draw data array
+            		\begin{scope}[start chain=1 going right,node distance=-0.15mm]
+				\node [on chain=1,tmtape, draw=none] {#1:};
+                			\node [on chain=1,tmtape] (first) {#2};
+                			\node [on chain=1,tmtape] (second) {#3};
+                			\node [on chain=1,tmtape] (third) {#4};
+                			\node [on chain=1,tmtape] (fourth) {#5};
+               			\node [on chain=1,tmtape] (fifth) {#6};
+                			\node [on chain=1,tmtape] (sixth) {#7};
+           		\end{scope}
+			%% draw pointer and min box
+			\node [tmhead,yshift=-.6cm] at (#8.south) (nMin) {$nMin=#9$};
+            	\end{tikzpicture}
+		\vspace{.5cm}	
+}
+
+\newcommand{\insertSortExample}[9] {
+		\begin{tikzpicture}
+            		\tikzstyle{every path}=[very thick]
+            
+            		\edef\sizetape{0.7cm}
+            		\tikzstyle{tmtape}=[draw,minimum size=\sizetape] 
+			\tikzstyle{tmhead}=[arrow box,draw,minimum size=.5cm,arrow box
+arrows={north:.25cm}]
+			\tikzstyle{minbox}=[arrow box,draw,minimum size=.5cm,arrow box
+arrows={north:.3cm}]      
+            
+            		%% draw data array
+            		\begin{scope}[start chain=1 going right,node distance=-0.15mm]
+				\node [on chain=1,tmtape, draw=none] {#1:};
+                			\node [on chain=1,tmtape] (first) {#2};
+                			\node [on chain=1,tmtape] (second) {#3};
+                			\node [on chain=1,tmtape] (third) {#4};
+                			\node [on chain=1,tmtape] (fourth) {#5};
+               			\node [on chain=1,tmtape] (fifth) {#6};
+                			\node [on chain=1,tmtape] (sixth) {#7};
+           		\end{scope}
+			%% draw pointer and min box
+			\node [tmhead,yshift=-.6cm] at (#8.south) (pointer) {$#9$};
+            	\end{tikzpicture}
+		\vspace{.5cm}	
+}
+
+\newcommand{\mergeExampleTmp}[9] {
+		\begin{tikzpicture}
+            		\tikzstyle{every path}=[very thick]
+            
+            		\edef\sizetape{0.7cm}
+            		\tikzstyle{tmtape}=[draw,minimum size=\sizetape] 
+			\tikzstyle{tmhead}=[arrow box,draw,minimum size=.5cm,arrow box
+arrows={north:.25cm}]
+			\tikzstyle{minbox}=[arrow box,draw,minimum size=.5cm,arrow box
+arrows={north:.3cm}]      
+            
+            		%% draw data array
+            		\begin{scope}[start chain=1 going right,node distance=-0.15mm]
+				\node [on chain=1,tmtape, draw=none] {#1:};
+                			\node [on chain=1,tmtape] (first) {#2};
+                			\node [on chain=1,tmtape] (second) {#3};
+                			\node [on chain=1,tmtape] (third) {#4};
+                			\node [on chain=1,tmtape] (fourth) {#5};
+               			\node [on chain=1,tmtape] (fifth) {#6};
+                			\node [on chain=1,tmtape] (sixth) {#7};
+           		\end{scope}
+			%% draw pointer and min box
+			\node [tmhead,yshift=-.6cm] at (#8.south) {$l$};
+			\node[minbox, yshift=-1.3cm] at (#9.south) {$r$};
+            	\end{tikzpicture}
+		\vspace{.5cm}	
+}
+
+\newcommand{\mergeExampleSorted}[8] {
+		\begin{tikzpicture}
+            		\tikzstyle{every path}=[very thick]
+            
+            		\edef\sizetape{0.7cm}
+            		\tikzstyle{tmtape}=[draw,minimum size=\sizetape] 
+			\tikzstyle{tmhead}=[arrow box,draw,minimum size=.5cm,arrow box
+arrows={north:.25cm}]
+			\tikzstyle{minbox}=[arrow box,draw,minimum size=.5cm,arrow box
+arrows={north:.3cm}]      
+            
+            		%% draw data array
+            		\begin{scope}[start chain=1 going right,node distance=-0.15mm]
+				\node [on chain=1,tmtape, draw=none] {#1:};
+                			\node [on chain=1,tmtape] (first) {#2};
+                			\node [on chain=1,tmtape] (second) {#3};
+                			\node [on chain=1,tmtape] (third) {#4};
+                			\node [on chain=1,tmtape] (fourth) {#5};
+               			\node [on chain=1,tmtape] (fifth) {#6};
+                			\node [on chain=1,tmtape] (sixth) {#7};
+           		\end{scope}
+			%% draw pointer and min box
+			\node [tmhead,yshift=-.6cm] at (#8.south) {$i$};
+            	\end{tikzpicture}
+		\vspace{.5cm}	
+}
+
+\newcommand{\mergeSortsExample}[9] {
+		\begin{tikzpicture}
+            		\tikzstyle{every path}=[very thick]
+            
+            		\edef\sizetape{0.7cm}
+            		\tikzstyle{tmtape}=[draw,minimum size=\sizetape] 
+			\tikzstyle{tmhead}=[arrow box,draw,minimum size=.5cm,arrow box
+arrows={north:.25cm}]
+			\tikzstyle{minbox}=[arrow box,draw,minimum size=.5cm,arrow box
+arrows={north:.3cm}]      
+            
+            		%% draw data array
+            		\begin{scope}[start chain=1 going right,node distance=-0.15mm]
+				\node [on chain=1,tmtape, draw=none] {#1:};
+                			\node [on chain=1,tmtape] (first) {#2};
+                			\node [on chain=1,tmtape] (second) {#3};
+                			\node [on chain=1,tmtape] (third) {#4};
+                			\node [on chain=1,tmtape] (fourth) {#5};
+               			\node [on chain=1,tmtape] (fifth) {#6};
+                			\node [on chain=1,tmtape] (sixth) {#7};
+			        \node [on chain=1,tmtape] (eighth) {#8};
+			        \node [on chain=1,tmtape] (ninth) {#9};
+           		\end{scope}
+            	\end{tikzpicture}
+		\vspace{.5cm}	
+}
+
+\newcommand{\quicksortsExample}[9] {
+		\begin{tikzpicture}
+            		\tikzstyle{every path}=[very thick]
+            
+            		\edef\sizetape{0.7cm}
+            		\tikzstyle{tmtape}=[draw,minimum size=\sizetape] 
+			\tikzstyle{tmhead}=[arrow box,draw,minimum size=.5cm,arrow box
+arrows={north:.25cm}]
+			\tikzstyle{minbox}=[arrow box,draw,minimum size=.5cm,arrow box
+arrows={north:.3cm}]      
+            
+            		%% draw data array
+            		\begin{scope}[start chain=1 going right,node distance=-0.15mm]
+				\node [on chain=1,tmtape, draw=none] {#1:};
+                			\node [on chain=1,tmtape] (first) {#2};
+                			\node [on chain=1,tmtape] (second) {#3};
+                			\node [on chain=1,tmtape] (third) {#4};
+                			\node [on chain=1,tmtape] (fourth) {#5};
+               			\node [on chain=1,tmtape] (fifth) {#6};
+                			\node [on chain=1,tmtape] (sixth) {#7};
+			        \node [on chain=1,tmtape] (eighth) {#8};
+			        \node [on chain=1,tmtape] (ninth) {#9};
+           		\end{scope}
+            	\end{tikzpicture}
+		\vspace{.5cm}	
+}
+
+%%%%%%%%
+
+\title{Report~-~Algorithm Lab}
+\author{Manuel Vogel}
+\date{\today} % Activate to display a given date or no date
+
+\begin{document}
+\maketitle
+\section{Introduction}
+Search algorithms are important in preprocessing of many other algorithms like image processing or displaying results in a determined order - ascending or descending.
+The purpose of this laboratory exercise is to show the performance of the four algorithms 
+\begin{enumerate}
+	\item Sort via direct selection
+		\begin{itemize}
+			\item with optimal search of the minimum
+			\item with non-optimal search of the minimum
+		\end{itemize}
+	\item Sort via direct insert
+		\begin{itemize}
+			\item with a watcher-element
+			\item without a watcher-element
+		\end{itemize}
+	\item Mergesort
+		\begin{itemize}
+			\item natural
+			\item bottom up
+		\end{itemize}
+	\item Quicksort
+		\begin{itemize}
+			\item 3-way-partitioning\footnote{\url{http://www.sorting-algorithms.com/static/QuicksortIsOptimal.pdf}}
+			\item 3-way-partitioning with hybridisation.
+		\end{itemize}
+\end{enumerate}
+The goal is to point of the improvement of the performance of the algorithms in corner cases like an ascending sorted (best case), descending sorted (worst case) and randomly ordered floating point numbers. The implementation should also be able to deal with whole number and character strings. The fixed programming language is C++.
+
+First the algorithms will be described in detail with an added pseudocode, sketches and runtime behaviour in the $O$-Notation. In the third section the setup of test environment - compiler with flags, IDE, language and test framework - will be described, containing the fixed preconditions of the tests and the execution with some code examples. The fourth section deals with the data of the time measuring and how it was realised. The fifth section shows the results of the measured performance of each algorithm. Everything will be summed up in the last and sixth chapter. 
+
+%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+\section{Description of  the used algorithms}
+%
+% for each algorithm a short description, pseudocode and analysis in O-Notation
+%
+\subsection{Minimumsearch}
+\begin{description}
+	\item[Short Descripton] Searching for the minimum in data can be done by starting at two different points:
+	\begin{enumerate}
+		\item at the beginning of data
+		\item at the end of the data.
+	\end{enumerate}
+	The first option is faster because the CPU can load the next chunk of the data in cache by prefetching. On the other hand the second option will cause a lot of cache-misses, because the expected data will not be in the cache. Hence the second option is slowlier. 
+	\item[Pseudocode]: Optimal option 1):
+		\begin{lstlisting}
+		 data[];
+		 min := data.head();
+		 minIndex := 0;
+		 for index := data.head() + 1 to data.tail() do
+		 begin {
+			if (data[index] < min) {
+				min = data[index];
+				mindex = index;
+			} fi
+		 } end;
+		\end{lstlisting}
+	\item[Example] for optimal \\[0.5cm]
+		\begin{center}
+			\minsearchExample{Start}{second}{first}{7}
+			\minsearchExample{1st step}{third}{second}{5}
+			\minsearchExample{2nd step}{fourth}{second}{5}	
+			\minsearchExample{3rd step}{fifth}{fourth}{1}	
+			\minsearchExample{4th step}{sixth}{fourth}{1}	
+			\minsearchExample{5th step}{seventh}{sixth}{-1}
+			\minsearchExample{6th step}{eighth}{seventh}{-2}
+			\minsearchExample{5th step}{ninth}{seventh}{-2}	
+			\minsearchExample{last step}{tenth}{seventh}{-2}			
+		\end{center}
+	\item[Pseudocode]: Non-optimal option 2):
+		\begin{lstlisting}
+		 data[];
+		 min := data.tail();
+		 minIndex := 0;
+		 for index := data.tail() - 1 to data.head() do
+		 begin {
+			if (data[index] < min) {
+				min = data[index];
+				mindex = index;
+			} fi
+		 } end;
+		\end{lstlisting}
+	\item[Example] for non-optimal \\[0.5cm]
+		\begin{center}
+			\minsearchExample{Start}{ninth}{tenth}{6}
+			\minsearchExample{1st step}{eighth}{ninth}{1}
+			\minsearchExample{2nd step}{seventh}{ninth}{1}	
+			\minsearchExample{3rd step}{sixth}{ninth}{1}	
+			\minsearchExample{4th step}{fifth}{seventh}{-2}	
+			\minsearchExample{5th step}{fourth}{seventh}{-2}
+			\minsearchExample{6th step}{third}{seventh}{-2}
+			\minsearchExample{5th step}{second}{seventh}{-2}	
+			\minsearchExample{last step}{first}{seventh}{-2}		
+	        \end{center}	
+         \end{description}
+
+\newpage
+\subsection{Sorting via direct selection}
+\begin{description}
+	\item[Short Description] Sorting via direct selection takes an unsorted sequence of data and sorts it by selecting the minimum value of the unsorted part of the data and adds it to the end of the already sorted part. This is done with the following steps:
+	\begin{enumerate}
+		\item At the beginning the data is unsorted, so find the minimum of the unsorted data.
+		\item Swap the found minimum with the first element of the still unsorted part of the data, which is in the first step the first element of the data.
+		\item Increase the pointer of the last element of the sorted data by one and search for the minimum of the remaining unsorted data.
+		\item Swap the found minimum with the first element of the unsorted data. Continue with step 2).
+	\end{enumerate}
+	\item[Pseudocode]:
+		\begin{lstlisting}
+		 unsorted[];
+		 for index:= unsorted.head() to unsorted.tail() do
+		 begin {
+		 	minIndex = findMinimum(unsorted, index);
+			swap(unsorted[index], unsorted[minIndex])
+		 } end;
+		\end{lstlisting}	
+	\item[Example] The {\color{green}green} numbers are already sorted and the {\color{red}red} numbers will be swapped if necessary. \\[.5cm]
+	\selectSortExample{Start:}{\color{red}4}{6}{3}{2}{\color{red}-1}{8}{fifth}{-1} \\
+	\selectSortExample{1st step:}{\color{green}-1}{\color{red}6}{3}{\color{red}2}{4}{8}{fourth}{2} \\
+	\selectSortExample{2nd step:}{\color{green}-1}{\color{green}2}{3}{6}{4}{8}{third}{3} \\
+	\selectSortExample{3rd step:}{\color{green}-1}{\color{green}2}{\color{green}3}{\color{red}6}{\color{red}4}{8}{fifth}{4} \\
+	\selectSortExample{4th step:}{\color{green}-1}{\color{green}2}{\color{green}3}{\color{green}4}{6}{8}{fifth}{6} \\
+	\selectSortExample{5th step:}{\color{green}-1}{\color{green}2}{\color{green}3}{\color{green}4}{\color{green}6}{8}{sixth}{8} \\
+	\selectSortExample{6th step:}{\color{green}-1}{\color{green}2}{\color{green}3}{\color{green}4}{\color{green}6}{\color{green}8}{sixth}{-} \\
+	\item[$O$-Notation]:
+		\begin{table}[htdp]
+		\caption{Direct Selection Complexity}
+		\begin{tabular}{|c|c|c|} \hline
+			Worst Case & Average Case & Best Case \\ \hline
+			$O(n^2)$ & $O(n^2)$ & $O(n^2)$ \\ \hline
+		\end{tabular}
+		\label{default}
+		\end{table}%
+\end{description}
+
+\newpage
+\subsection{Sorting via direct insert}
+\subsubsection{Without a \enquote{watcher-element}}
+\begin{description}
+	\item[Short Description] Sorting via direct insert takes an unsorted sequence of data and sorts it by selecting the first element of the unsorted part of the data and adds it to the right position of the already sorted part. The first step is always placing the minimum of the data at the first position. Every new element which has to be inserted at the right position is swapped through the already sorted data. \\ The algorithm perform the following steps:
+	\begin{enumerate}
+		\item Increase the pointer to the first element of the unsorted data by one and swap this element through until the right spot in the sorted data. 
+		\item Do this until the pointer reaches the end of the data. Then the data is sorted.
+	\end{enumerate}
+	\item[Pseudocode]: Without a watcher-element:
+		\begin{lstlisting}
+		 unsorted[];
+		 for index:= unsorted.head() to unsorted.tail() do
+		   	currentElement = unsorted.[index];
+		 begin {	
+		         for index2 := index to index2 > 0 with unsorted[index - 1] < currentElement do
+		         begin {
+		                 swap(unsorted[index2], unsorted[index2 - 1]);				
+		         } end;
+		 } end;		 
+		\end{lstlisting}	
+	\item[Example] The {\color{green}green} numbers are already sorted and the {\color{red}red} numbers will be swapped to the right place. \\[.5cm]
+		\insertSortExample{Start}{\color{green}4}{\color{red}6}{3}{2}{-1}{8}{second}{nElem=6} \\
+		\insertSortExample{1st step (1)}{\color{green}4}{\color{green}6}{3}{2}{-1}{8}{third}{nElem=3} \\
+		\insertSortExample{1st step (2)}{\color{green}4}{\color{red}3}{\color{green}6}{2}{-1}{8}{fourth}{nElem=2} \\
+		\insertSortExample{1st step (3)}{\color{green}3}{\color{green}4}{\color{green}6}{2}{-1}{8}{fourth}{nElem=2} \\
+		\insertSortExample{2nd step (1)}{\color{green}3}{\color{green}4}{\color{green}6}{\color{red}2}{-1}{8}{fourth}{nElem=2} \\
+		\insertSortExample{2nd step (2)}{\color{green}3}{\color{green}4}{\color{red}2}{\color{green}6}{-1}{8}{fifth}{nElem=-1} \\
+		\insertSortExample{2nd step (3)}{\color{green}3}{\color{red}2}{\color{green}4}{\color{green}6}{-1}{8}{fifth}{nElem=-1} \\
+		\insertSortExample{2nd step (4)}{\color{green}2}{\color{green}3}{\color{green}4}{\color{green}6}{-1}{8}{fifth}{nElem=-1} \\
+		\insertSortExample{3rd step (1)}{\color{green}2}{\color{green}3}{\color{green}4}{\color{green}6}{\color{red}-1}{8}{sixth}{nElem=8} \\
+		\insertSortExample{3rd step (2)}{\color{green}2}{\color{green}3}{\color{green}4}{\color{red}-1}{\color{green}6}{8}{sixth}{nElem=8} \\
+		\insertSortExample{3rd step (3)}{\color{green}2}{\color{green}3}{\color{red}-1}{\color{green}4}{\color{green}6}{8}{sixth}{nElem=8} \\
+		\insertSortExample{3rd step (4)}{\color{green}2}{\color{red}-1}{\color{green}3}{\color{green}4}{\color{green}6}{8}{sixth}{nElem=8} \\
+		\insertSortExample{3rd step (5)}{\color{green}1-}{\color{green}2}{\color{green}3}{\color{green}4}{\color{green}6}{8}{sixth}{nElem=8} \\
+		\insertSortExample{4th step (1)}{\color{green}1-}{\color{green}2}{\color{green}3}{\color{green}4}{\color{green}6}{\color{red}8}{sixth}{nElem=} \\
+		\insertSortExample{4th step (2)}{\color{green}1-}{\color{green}2}{\color{green}3}{\color{green}4}{\color{green}6}{\color{green}8}{seventh}{nElem=-} \\
+\end{description}
+\subsubsection{With a \enquote{watcher-element}}
+\begin{description}
+	\item[Short Description] Sorting via direct insert with a \enquote{watcher-element} takes an unsorted sequence of data and sorts it by selecting the first element of the unsorted part of the data and adds it to the right position of the already sorted part. However as first step the minimum of the data is swapped with the element at the first position. This avoid the worst case of $O(n)$ swaps. Every new element which has to be inserted at the right position is swapped through the already sorted data. \\ The algorithm perform the following steps:
+	\begin{enumerate}
+		\item Find the minimum of the unsorted data.
+		\item Swap the found minimum with the first element of the data to avoid the worst case of swapping through.
+		\item Increase the pointer to the first element of the unsorted data by one and swap this element through until the right spot in the sorted data. Do this until the pointer reaches the end of the data. Then the data is sorted.
+	\end{enumerate}
+	\item[Pseudocode]: With a watcher-element:
+		\begin{lstlisting}
+		 unsorted[];
+		 minIndex = findMinimum(unsorted, index);
+		 swap(unsorted[0], unsorted[minIndex]);
+		 		 
+		 for index:= unsorted.head() + 2 to unsorted.tail() do currentElement = unsorted.[index];
+		 begin {	
+		 	for index2 := index with unsorted[index - 1] < currentElement to unsorted.head() do
+		         begin {
+				swap(unsorted[index2], unsorted[index2 - 1]);				
+			} end;
+		 } end;		 
+		\end{lstlisting}	
+	\item[Example] The {\color{green}green} numbers are already sorted and the {\color{red}red} numbers will be swapped to the right place. \\[.5cm]
+		\insertSortExample{Start}{\color{red}4}{6}{3}{2}{\color{red}-1}{8}{fifth}{min=-1} \\
+		\insertSortExample{1st step (1)}{\color{green}-1}{\color{red}6}{3}{2}{4}{8}{second}{nElem=6} \\
+		\insertSortExample{1st step (2)}{\color{green}-1}{\color{green}6}{3}{2}{4}{8}{third}{nElem=3} \\
+		\insertSortExample{2nd step (1)}{\color{green}-1}{\color{green}6}{\color{red}3}{2}{4}{8}{fourth}{nElem=2} \\
+		\insertSortExample{2nd step (2)}{\color{green}-1}{\color{red}3}{\color{green}6}{2}{4}{8}{fourth}{nElem=2} \\
+		\insertSortExample{2nd step (3)}{\color{green}-1}{\color{green}3}{\color{green}6}{2}{4}{8}{fourth}{nElem=2} \\
+		\insertSortExample{3rd step (1)}{\color{green}-1}{\color{green}3}{\color{green}6}{\color{red}2}{4}{8}{fifth}{nElem=4} \\
+		\insertSortExample{3rd step (2)}{\color{green}-1}{\color{green}3}{\color{red}2}{\color{green}6}{4}{8}{fifth}{nElem=4} \\
+		\insertSortExample{3rd step (3)}{\color{green}-1}{\color{green}2}{\color{green}3}{\color{green}6}{\color{red}4}{8}{fifth}{nElem=4} \\
+		\insertSortExample{4th step (1)}{\color{green}-1}{\color{green}2}{\color{green}3}{\color{red}4}{\color{green}6}{8}{sixth}{nElem=8} \\
+		\insertSortExample{5th step (1)}{\color{green}-1}{\color{green}2}{\color{green}3}{\color{green}4}{\color{green}6}{\color{red}8}{seventh}{nElem=-} \\
+		\insertSortExample{5th step (2)}{\color{green}-1}{\color{green}2}{\color{green}3}{\color{green}4}{\color{green}6}{\color{green}8}{seventh}{nElem=-} \\
+	\item[$O$-Notation]:
+		\begin{table}[htdp]
+		\caption{Direct Insert Complexity}
+		\begin{tabular}{|c|c|c|} \hline
+			Worst Case & Average Case & Best Case \\ \hline
+			$O(n^2)$ & $O(n^2)$ & $O(n)$ \\ \hline
+		\end{tabular}
+		\label{defaulttt}
+		\end{table}%
+\end{description}
+
+\subsection{Mergesort}
+\subsubsection{The \texttt{Merge}-Function}
+\begin{description}
+	\item[Short Description] The \texttt{Merge}-Function is used in the later described Natural- and Bottom-Up-Mergesort. It's preconditions are that the given part of the array to merge has to be sorted from the index \texttt{lo} to \texttt{m-1} and from \texttt{m} to \texttt{hi}. Both border indexes are inclusive! So \texttt{m} denotes the middle boundary. After the merge the part of the array from \texttt{lo} to \texttt{hi} is sorted.
+		\begin{enumerate}
+			\item Check if the indexes are in range
+			\item Return if the array has a size $\leq 1$
+			\item Check if the array is sorted from \texttt{lo} to \texttt{m-1} and from \texttt{m} to \texttt{hi}, otherwise abort
+			\item Order the array into a tmp-array in bitonic format. This means \textit{ASC} from \texttt{lo} to \texttt{m-1} and \textit{DESC} from \texttt{m} to \texttt{hi} %TODO picture?
+			\item Merge the tmp-array into the array starting with two pointers, one from the head and the other one from the tail. The array is merge when the pointers cross.
+		\end{enumerate}
+	\item[Pseudocode]: Merge-Function
+		\begin{lstlisting}
+		 unmerge[SIZE];
+		 if indexes out of bounds => abort fi
+		 if SIZE <= 1 return fi
+		 tmpStorage[SIZE];
+		 
+		 pointers pos, lo, mid, hi
+		 while(lo < mid) tmpStorage[pos++] = unmerged[lo++];
+		 while(mid <= hi) tmpStorage[pos++] = unmerged[hi--]; 
+		 
+		 i = lo, j = lo, k = hi
+		 while(j <= k)
+		 begin {
+		 	if(tmpStorage[j] < tmpStorage[k]) {
+				unmerged[i++] = tmpStorage[j++];
+			} else {
+				unmerged[i++] = tmp[k--];
+			} fi
+		 } end;
+		\end{lstlisting}
+	\item[Example] The {\color{blue}blue} number is the middle, the {\color{red}red} numbers will be selected. \\[.5cm]
+		\mergeExampleSorted{unmerged}{-1}{3}{6}{\color{blue}1}{2}{8}{first} \\
+		\mergeExampleTmp{tmp}{-1}{3}{6}{8}{2}{1}{first}{sixth} \\
+		\mergeExampleTmp{1st step (tmp)}{\color{red}-1}{3}{6}{8}{2}{1}{first}{sixth} \mergeExampleSorted{merged}{-1}{-}{-}{-}{-}{-}{first} \\
+		\mergeExampleTmp{2nd step (tmp)}{-1}{3}{6}{8}{2}{\color{red}1}{second}{sixth} \mergeExampleSorted{merged}{-1}{1}{-}{-}{-}{-}{second} \\
+		\mergeExampleTmp{3rd step (tmp)}{-1}{3}{6}{8}{\color{red}2}{1}{second}{fifth} \mergeExampleSorted{merged}{-1}{1}{2}{-}{-}{-}{third} \\
+		\mergeExampleTmp{4th step (tmp)}{-1}{\color{red}3}{6}{8}{2}{1}{second}{fourth} \mergeExampleSorted{merged}{-1}{1}{2}{3}{-}{-}{fourth} \\
+		\mergeExampleTmp{5th step (tmp)}{-1}{3}{\color{red}6}{8}{2}{1}{third}{fourth} \mergeExampleSorted{merged}{-1}{1}{2}{3}{6}{-}{fifth} \\
+		\mergeExampleTmp{6th step (tmp)}{-1}{3}{6}{\color{red}8}{2}{1}{fourth}{fourth} \mergeExampleSorted{merged}{-1}{1}{2}{3}{6}{8}{sixth} \\
+\end{description}
+
+\subsubsection{Natural Mergersort}
+\begin{description}
+	\item[Short Description] The natural Mergesort is an iterative alternative of the Mergesort-procedure. The fundamental idea is taking advantage of already existing sorted parts in the data. By using these naturally pre-sorted parts, merge-steps can be spared. Those pre-sorted parts are called \enquote{bitonic runs}. Those bitonic runs is first ordered ascending and the descending. It can also be sorted only ascending or descending but not first descending and the ascending. It is implemented in the following steps:
+		\begin{enumerate}
+			\item Find pre-sorted ascending sequences in data and store boundaries of the sequences.
+			\item Merge pair of sequences by flipping  the second sequences to descending sorted.
+			\item Repeat from step 1) until only two boudaries are found. Then the data is sorted.
+		\end{enumerate}
+	\item[Pseudocode]: Natural Mergesort
+		\begin{lstlisting}
+		 unsorted[SIZE];
+		 tmpStorage[SIZE];
+		 boundaries[] := findBoundariesOfPresortedData(unsorted[SIZE]);
+		 while(boundaries.size() >= 3) 		
+		 begin {
+		 	for index:= boundaries.head() to (boundaries.tail() - 2) with step := 2 do
+		 	begin {	
+				lo    := boudaries.at(index);
+				mid := boudaries.at(index+1);
+				hi    := boudaries.at(index+2);
+				merge(unsorted, tmpStorage, lo, mid, hi);
+	 		} end;
+			boundaries[] := findBoundariesOfPresortedData(unsorted[SIZE]);	
+		} end;		 
+		\end{lstlisting}
+	\item[Example] The {\color{blue}blue} and {\color{red}red} coloured numbers represent the pre-sorted parts of the data and in the following step the blue part will be merged with its following red part. \\[.5cm]
+		\mergeSortsExample{unsorted}{-1}{1}{2}{1}{3}{2}{10}{5} \\
+		\mergeSortsExample{1st step: boundaries}{\color{blue}-1}{\color{blue}1}{\color{blue}2}{\color{red}1}{\color{red}3}{\color{blue}2}{\color{blue}10}{\color{red}5} \\
+		\mergeSortsExample{2nd step: merge}{\color{blue}-1}{\color{blue}1}{\color{blue}1}{\color{blue}2}{\color{blue}3}{\color{red}2}{\color{red}5}{\color{red}10} \\
+		\mergeSortsExample{3rd step: merge}{\color{green}-1}{\color{green}1}{\color{green}1}{\color{green}2}{\color{green}2}{\color{green}3}{\color{green}5}{\color{green}10} \\
+	\item[$O$-Notation]:
+		\begin{table}[htdp]
+		\caption{Natural-Mergesort Complexity}
+		\begin{tabular}{|c|c|c|} \hline
+			Worst Case & Average Case & Best Case \\ \hline
+			$O(n*log_2~n)$ & $O(n*log_2~n)$ & $O(n)$ \\ \hline
+		\end{tabular}
+		\label{defaulttt}
+		\end{table}%
+\end{description}
+
+\subsubsection{Bottom-Up Mergesort}
+\begin{description}
+	\item[Short Description] The Bottom-Up Mergesort is an iterative alternative of the Mergesort-procedure. The fundamental idea is to start from the bottom by merging all pairs, then in the next rounds the double size, so 4 and so on. So in each rounds the doubled amount of items is merged. Example:
+		\begin{itemize}
+			\item indexes of Round 1: 0,1, 2,3, 4,5 \ldots
+			\item indexes of Round 2: 0,3, 4,7, 8,11 \ldots
+			\item indexes of Round 3: 0,7, 8,15, 16,23 \ldots
+			\item \ldots
+			\item indexes of last Round: 0, SIZE-1 			
+		\end{itemize}
+As shown in the example it is implemented in the following steps:
+		\begin{enumerate}
+			\item Merge all pairs, starting from index 0
+			\item Merge all doubles pairs, starting from index 0 and so on until the last index equals SIZE-1
+		\end{enumerate}
+	\item[Pseudocode]: Bottom-Up Mergesort
+		\begin{lstlisting}
+		 unsorted[SIZE];
+		 tmpStorage[SIZE];
+		 rounds := determineRounds(unsorted[SIZE]);
+		 for(currRound := 1 to currRounds <= rounds do rounds++)
+		 begin {
+		 	for index:= 0 to SIZE-1 do step := pow(2,currRound)
+		 	begin {	
+				lo := index;
+				mid := lo + pow(2, currRound-1)
+				hi := index + pow(2, currRound) - 1
+				merge(unsorted, tmpStorage, lo, mid, hi);
+	 		} end;	
+		} end;		 
+		\end{lstlisting}
+	\item[Example] The {\color{blue}blue} and {\color{red}red} coloured numbers represent the pre-sorted parts of the data and in the following step the blue part will be merged with its following red part. \\[.5cm]
+		\mergeSortsExample{unsorted}{-1}{1}{2}{1}{3}{2}{10}{5} \\
+		\mergeSortsExample{1st step: merge}{\color{blue}-1}{\color{blue}10}{\color{red}1}{\color{red}7}{\color{blue}2}{\color{blue}8}{\color{red}5}{\color{red}10} \\
+		\mergeSortsExample{2nd step: merge}{\color{blue}-1}{\color{blue}1}{\color{blue}7}{\color{blue}12}{\color{red}2}{\color{red}5}{\color{red}8}{\color{red}10} \\
+		\mergeSortsExample{3rd step: merge}{\color{green}-1}{\color{green}1}{\color{green}2}{\color{green}5}{\color{green}7}{\color{green}8}{\color{green}10}{\color{green}12} \\
+	\item[$O$-Notation]:
+		\begin{table}[htdp]
+		\caption{Bottom-Up-Mergesort Complexity}
+		\begin{tabular}{|c|c|c|} \hline
+			Worst Case & Average Case & Best Case \\ \hline
+			$O(n*log_2~n)$ & $O(n*log_2~n)$ & $O(n*log_2~n)$ \\ \hline
+		\end{tabular}
+		\label{defaulttt}
+		\end{table}%
+\end{description}
+
+\subsection{3-way-partitioning Quicksort}
+\begin{description}
+	\item[Short Description] The 3-way-partitioning Quicksort also orders the elements which are equal to the Pivot-element in the middle of the to-sorting data.
+It is implemented in the following steps:
+		\begin{enumerate}
+			\item Choose the element in the middle as pivot and move it to the right end.
+			\item Find an element on the left side of the pivot which is greater than the pivot and one on the right side which is smaller. Swap these two elements if the pointers haven't crossed.
+			\item If an element on the left or right side of the pivot is equal to the pivot move it the left or right end respectively. 
+			\item Continue swapping and moving equal elements until the pointers starting from left and right cross.
+			\item Bring the pivots from the left and right end to the middle.
+			\item Perform two recursive Quicksorts: one from the left end until the beginning of the pivot brought into the middle before and the other one from the right end of the pivot in the middle until the right outer end.
+		\end{enumerate}
+	\item[Pseudocode]:
+		\begin{lstlisting}
+		 	TODO
+		\end{lstlisting}	
+	\item[Example] TODO	
+	\item[$O$-Notation]:
+		\begin{table}[htdp]
+		\caption{3-way-partitioning Quicksort Complexity}
+		\begin{tabular}{|c|c|c|} \hline
+			Worst Case & Average Case & Best Case \\ \hline
+			$O(n^2)$ & $O(n*log_2~n)$ & $O(n * log_2~n)$ \\ \hline %TODO
+		\end{tabular}
+		\label{defaulttt}
+		\end{table}%
+\end{description}
+
+\subsection{Quicksort with hybridisation}
+\begin{description}
+	\item[Short Description] The hybrid Quicksort is a variation of the Quicksort avoiding special cases. These are
+	\begin{enumerate}
+		\item limiting recursion depth and performing an Insertsort instead
+		\item performing a merge step on heavily unequal sizes of partial Quicksorts
+	\end{enumerate}
+Otherwise the previously mentioned 3-way-partitioning Quicksort is performed. Additionally to make it hybrid the following steps are added:
+		\begin{enumerate}
+			\item If the recursion depth has reached a certain limit (we use 25) a sort via direct insert is performed.
+			\item If the case occurs that before the next recursion of the Quicksort starts one half contains $10x$ the amount of the other half the next recursion step is performed by diving the remaining data in the middle. To adjust this change a \texttt{merge}-step is performed after the recursion returns.
+		\end{enumerate}
+	\item[Pseudocode]:
+		\begin{lstlisting}
+			TODO 
+		\end{lstlisting}
+	\item[Example] TODO	
+	\item[$O$-Notation]:
+		\begin{table}[htdp]
+		\caption{Hybrid Quicksort Complexity}
+		\begin{tabular}{|c|c|c|} \hline
+			Worst Case & Average Case & Best Case \\ \hline
+			$O(n^2)$ & $O(n*log_2~n)$ & $O(n * log_2~n)$ \\ \hline %TODO
+		\end{tabular}
+		\label{defaulttt}
+		\end{table}%
+\end{description}
+
+%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+\section{Setup}
+%
+% here will be the environment details: cLion, gTest, C++14
+% OS, Language and IDE, Compiler + flags, code examples
+% automated tests, no warnings
+%
+\subsection{Used Frameworks}
+The only framework which was used is the Google Test Framework \textbf{gtest}\footnote{\url{https://github.com/google/googletest}}. It was compiled and added as a shared library to the project. 
+
+\subsection{Preconditions}
+The following preconditions were given by the professor:
+\begin{enumerate}
+	\item Programming language: C++14
+	\item Compiler flags: -03 -g0 -Wall
+	\item No warning on compilation
+	\item Sorting algorithms have to work with \texttt{integer}, \texttt{double} and \texttt{std::string}
+	\item For each sorting algorithm test should be written with the gTest library
+	\item A separate project for time measuring has to be set up with the compiler flags mentioned above. The condition are:
+	\begin{itemize}
+		\item Before each test the cache has to be emptied by filling an array with 20MB of data.
+		\item Time measurement with data initialised with random, ascending and descending sorted values to point out the best, worst and average case.
+		\item The amount of data to be sorted shall increase from 8KB\footnote{kilo bytes = $10^3$ bytes} over 8MB\footnote{mega bytes = $10^6$ bytes} up to 8GB\footnote{giga bytes = $10^9$ bytes} in step of multiplying by 2. Hence the sizes of the data are: 8KB, 16KB, 32KB, 64KB, 128KB, 256KB, 512MB, 1MB, 2MB, 4MB and 8MB. Exceptions are the sorting by direct insert and direct select which have $O(n^2)$ in almost every case. The test cases are limited to 8MB.
+	\end{itemize}
+\end{enumerate}
+
+\subsection{Realisation}
+With the given preconditions the exercise was realised with
+\begin{itemize}
+	\item The cLion IDE\footnote{\url{https://www.jetbrains.com/clion/}}, for platform independent compilation with \texttt{cmake}
+	\item On a Macbook Pro 13-inch, Early 2011, OS Version 10.11) with 1 processor and 2 cores
+	\begin{itemize}
+		\item L2-Cache: 256KB per core $\Rightarrow$ 512KB in total
+		\item L3-Cache: 3MB
+		\item Main memory: 8 GB
+	\end{itemize}
+\end{itemize}
+
+%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+\section{Execution}
+This section describes how the execution was implemented. 
+
+First the algorithm were implemented in a generic manner with template methods to make certain parts reusable. This can also be seen in the code snippets in the previous section. For each function separate tests were written to ensure their correct behaviour. In total 32 tests were written and the project was continuously refactored. In general the project was implemented in a test-driven approach and documented in detail in the source files. This will be explained in detain in the first subsection.
+
+As the time measuring should be implemented with no debug information, a separate project was set up with an appropriate time measuring environment. The flags for optimisation were used as well to gain the maximum performance. This will be explained in detain in the second subsection.
+
+%
+% show tests, random generators, helpers
+%
+\subsection{Test project with gTest}
+The test project to verify the correctness of the implemented sort algorithms was realised with the gTest library from Google. Self-written tests were demanded. 
+
+Several helpers for generating test values and verifies the data structures after sorting were implemented a better structure of the tests. For the generation of the random \texttt{double} values, the algorithm of Mersenne-Twister\footnote{\url{https://en.wikipedia.org/wiki/Mersenne_Twister}} between \texttt{INT\_MIN and INT\_MAX} is used.
+%
+% time measuring, data types, amount of data, empty cache before each run
+%
+\subsection{Time measuring with chronos}
+As already pointed out in the introduction of parent section, a separate project for time measuring is implemented with the desired compiler flags \texttt{-g0 -03}. 
+
+For each size all possible combinations will be executed and results printed on the command line. Shared pointers were used all along, so it was not necessary to worry about memory management.
+
+%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+\section{Results}
+In this section the results of time measuring are printed as tables. For each algorithm an interpretation of the results is provided below the table.
+%
+% no graphics just tables!
+%
+\subsection{Sorting via direct selection}
+\begin{table}[htdp]
+	\caption{Direct Select Sort with \textbf{optimal} minimum search - Results in $seconds$}
+	\begin{tabular}{|c|c|r|r|r|} \hline
+		Size of data & Loop rounds & Descending ($O(n^2)$) & Random ($O(n^2)$) & Ascending ($O(n^2)$) \\ \hline
+		64KB & 8.000 & 0.06880 & 0.06908 & 0.68131 \\ \hline
+		128KB & 16.000 & 0.28182 & 0.27292 & 0.29510 \\ \hline
+		256KB & 32.000& 1.05742 & 1.07465 & 1.09839 \\ \hline
+		512KB & 64.000 & 4.18521 & 4.17479 & 4.15151 \\ \hline
+		1MB & 128.000 & 16.54322 & 16.51044 & 16.4533 \\ \hline
+		2MB & 256.000 & 66.16571 & 65.69392 & 65.37212 \\ \hline
+		4MB & 512.000 & 273.48222 & 292.71435 & 292.25256 \\ \hline
+		8MB & 1024.000 & 1083.03456 & 1082.49234 & 1082.05422 \\ \hline
+	\end{tabular}
+	\label{default}
+\end{table}%
+
+\begin{table}[htdp]
+	\caption{Direct Select Sort with \textbf{non-optimal} minimum search - Results in $seconds$}
+	\begin{tabular}{|c|c|r|r|r|} \hline
+		Size of data & Loop rounds & Descending ($O(n^2)$) & Random ($O(n^2)$) & Ascending ($O(n^2)$) \\ \hline
+		64KB & 8.000 & 0.06762 & 0.06823 & 0.06917 \\ \hline
+		128KB & 16.000 & 0.29155 & 0.28366 & 0.30631 \\ \hline
+		256KB & 32.000& 1.03674 & 1.07577 & 1.08151 \\ \hline
+		512KB & 64.000 & 4.24692 & 4.30123 & 4.20431 \\ \hline
+		1MB & 128.000 & 16.72085 & 16.65843 & 16.64763 \\ \hline
+		2MB & 256.000 & 66.10511 & 66.30912 & 69.62134 \\ \hline
+		4MB & 512.000 & 296.13454 & 286.12545 & 274.93242‚ \\ \hline
+		8MB & 1024.000 & 1095.62345 & 1096.52785 & 1096.83123 \\ \hline
+	\end{tabular}
+	\label{default}
+\end{table}%
+
+\subsection{Sorting via direct insert}
+\begin{table}[htdp]
+	\caption{Direct Insert Sort \textbf{with watcher} element - Results in $seconds$}
+	\begin{tabular}{|c|c|r|r|r|} \hline
+		Size of data & Loop rounds & Descending ($O(n^2)$) & Random ($O(n^2)$) & Ascending ($O(n)$) \\ \hline
+		64KB & 8.000 & 0.02852 & 0.03053 & 0.00005 \\ \hline
+		128KB & 16.000 & 0.14466 & 0.15854 & 0.00012 \\ \hline
+		256KB & 32.000& 0.50444 & 0.51895 & 0.00013 \\ \hline
+		512KB & 64.000 & 2.00758 & 2.00924 & 0.00023 \\ \hline
+		1MB & 128.000 & 8.03232 & 8.06599 & 0.00067 \\ \hline
+		2MB & 256.000 & 32.44567 & 34.43811 & 0.00076 \\ \hline
+		4MB & 512.000 & 144.41144 & 147.33765 & 0.00216 \\ \hline
+		8MB & 1024.000 & 502.87532 & 502.97723 & 0.00574 \\ \hline
+	\end{tabular}
+	\label{default}
+\end{table}%
+
+\begin{table}[htdp]
+	\caption{Direct Insert Sort \textbf{without watcher} element - Results in $seconds$}
+	\begin{tabular}{|c|c|r|r|r|} \hline
+		Size of data & Loop rounds & Descending ($O(n^2)$) & Random ($O(n^2)$) & Ascending ($O(n)$) \\ \hline
+		64KB & 8.000 & 0.03265 & 0.03766 & 0.00004 \\ \hline
+		128KB & 16.000 & 0.13647 & 0.13074 & 0.00005 \\ \hline
+		256KB & 32.000& 0.49180 & 0.50789 & 0.00009 \\ \hline
+		512KB & 64.000 & 1.99823 & 2.01932 & 0.00015 \\ \hline
+		1MB & 128.000 & 8.00159 & 8.01399 & 0.00043 \\ \hline
+		2MB & 256.000 & 34.26731 & 32.32018 & 0.00058 \\ \hline
+		4MB & 512.000 & 142.89432 & 131.39254 & 0.00104 \\ \hline
+		8MB & 1024.000 & 503.12823 & 504.12832 & 0.00424 \\ \hline
+	\end{tabular}
+	\label{default}
+\end{table}%
+
+
+\subsection{Mergesort}
+\begin{table}[htdp]
+	\caption{\textbf{Bottom-up} Mergesort - Results in $nanoseconds$}
+	\begin{tabular}{|c|c|c|c|c|} \hline
+		Size of data & Loop rounds & \parbox[c]{3.5cm}{Descending \\ $O(n*log_2~n)$} & \parbox[c]{3.5cm}{Random \\$O(n*log_2~n)$} & \parbox[c]{3.5cm}{Ascending \\ $O(n*log_2~n)$} \\ \hline
+		64KB & 8.000 & TODO & TODO & TODO \\ \hline
+		128KB & 16.000 & TODO & TODO & TODO \\ \hline
+		256KB & 32.000& TODO & TODO & TODO \\ \hline
+		512KB & 64.000 & TODO & TODO & TODO \\ \hline
+		1MB & 128.000 & TODO & TODO & TODO \\ \hline
+		2MB & 256.000 & TODO & TODO & TODO \\ \hline
+		4MB & 512.000 & TODO & TODO & TODO \\ \hline
+		8MB & 1024.000 & TODO & TODO & TODO \\ \hline
+		16MB & 2048.000 & TODO & TODO & TODO \\ \hline
+		32MB & 4096.000 & TODO & TODO & TODO \\ \hline
+		64MB & 8192.000 & TODO & TODO & TODO \\ \hline
+		128MB & 16.386.000 & TODO & TODO & TODO \\ \hline
+		256MB & 32.768.000 & TODO & TODO & TODO \\ \hline
+		512MB & 65.536.000 & TODO & TODO & TODO \\ \hline
+		1GB & 131.072.000 & TODO & TODO & TODO \\ \hline
+		2GB & 262.144.000 & TODO & TODO & TODO \\ \hline
+		4GB & 524.288.000 & TODO & TODO & TODO \\ \hline
+		8GB & 1.048.576.000 & TODO & TODO & TODO \\ \hline
+	\end{tabular}
+	\label{default}
+\end{table}%
+
+\begin{table}[htdp]
+	\caption{\textbf{Natural} Mergesort - Results in $nanoseconds$}
+	\begin{tabular}{|c|c|c|c|c|} \hline
+		Size of data & Loop rounds & \parbox[c]{3.5cm}{Descending \\ $O(n*log_2~n)$} & \parbox[c]{3.5cm}{Random \\$O(n*log_2~n)$} & \parbox[c]{3.5cm}{Ascending \\ $O(n*log_2~n)$} \\ \hline
+		64KB & 8.000 & TODO & TODO & TODO \\ \hline
+		128KB & 16.000 & TODO & TODO & TODO \\ \hline
+		256KB & 32.000& TODO & TODO & TODO \\ \hline
+		512KB & 64.000 & TODO & TODO & TODO \\ \hline
+		1MB & 128.000 & TODO & TODO & TODO \\ \hline
+		2MB & 256.000 & TODO & TODO & TODO \\ \hline
+		4MB & 512.000 & TODO & TODO & TODO \\ \hline
+		8MB & 1024.000 & TODO & TODO & TODO \\ \hline
+		16MB & 2048.000 & TODO & TODO & TODO \\ \hline
+		32MB & 4096.000 & TODO & TODO & TODO \\ \hline
+		64MB & 8192.000 & TODO & TODO & TODO \\ \hline
+		128MB & 16.386.000 & TODO & TODO & TODO \\ \hline
+		256MB & 32.768.000 & TODO & TODO & TODO \\ \hline
+		512MB & 65.536.000 & TODO & TODO & TODO \\ \hline
+		1GB & 131.072.000 & TODO & TODO & TODO \\ \hline
+		2GB & 262.144.000 & TODO & TODO & TODO \\ \hline
+		4GB & 524.288.000 & TODO & TODO & TODO \\ \hline
+		8GB & 1.048.576.000 & TODO & TODO & TODO \\ \hline
+	\end{tabular}
+	\label{default}
+\end{table}%
+
+
+\subsection{Quicksort}
+\begin{table}[htdp]
+	\caption{Quicksort with \textbf{three-way-partitionoing} - Results in $nanoseconds$}
+	\begin{tabular}{|c|c|c|c|c|} \hline
+		Size of data & Loop rounds & \parbox[c]{3.5cm}{Descending \\ $O(n*log_2~n)$} & \parbox[c]{3.5cm}{Random \\$O(n*log_2~n)$} & \parbox[c]{3.5cm}{Ascending \\ $O(n*log_2~n)$} \\ \hline
+		64KB & 8.000 & TODO & TODO & TODO \\ \hline
+		128KB & 16.000 & TODO & TODO & TODO \\ \hline
+		256KB & 32.000& TODO & TODO & TODO \\ \hline
+		512KB & 64.000 & TODO & TODO & TODO \\ \hline
+		1MB & 128.000 & TODO & TODO & TODO \\ \hline
+		2MB & 256.000 & TODO & TODO & TODO \\ \hline
+		4MB & 512.000 & TODO & TODO & TODO \\ \hline
+		8MB & 1024.000 & TODO & TODO & TODO \\ \hline
+		16MB & 2048.000 & TODO & TODO & TODO \\ \hline
+		32MB & 4096.000 & TODO & TODO & TODO \\ \hline
+		64MB & 8192.000 & TODO & TODO & TODO \\ \hline
+		128MB & 16.386.000 & TODO & TODO & TODO \\ \hline
+		256MB & 32.768.000 & TODO & TODO & TODO \\ \hline
+		512MB & 65.536.000 & TODO & TODO & TODO \\ \hline
+		1GB & 131.072.000 & TODO & TODO & TODO \\ \hline
+		2GB & 262.144.000 & TODO & TODO & TODO \\ \hline
+		4GB & 524.288.000 & TODO & TODO & TODO \\ \hline
+		8GB & 1.048.576.000 & TODO & TODO & TODO \\ \hline
+	\end{tabular}
+	\label{default}
+\end{table}%
+
+\begin{table}[htdp]
+	\caption{Quicksort with \textbf{hybridisation} - Results in $nanoseconds$}
+	\begin{tabular}{|c|c|c|c|c|} \hline
+		Size of data & Loop rounds & \parbox[c]{3.5cm}{Descending \\ $O(n*log_2~n)$} & \parbox[c]{3.5cm}{Random \\$O(n*log_2~n)$} & \parbox[c]{3.5cm}{Ascending \\ $O(n*log_2~n)$} \\ \hline
+		64KB & 8.000 & TODO & TODO & TODO \\ \hline
+		128KB & 16.000 & TODO & TODO & TODO \\ \hline
+		256KB & 32.000& TODO & TODO & TODO \\ \hline
+		512KB & 64.000 & TODO & TODO & TODO \\ \hline
+		1MB & 128.000 & TODO & TODO & TODO \\ \hline
+		2MB & 256.000 & TODO & TODO & TODO \\ \hline
+		4MB & 512.000 & TODO & TODO & TODO \\ \hline
+		8MB & 1024.000 & TODO & TODO & TODO \\ \hline
+		16MB & 2048.000 & TODO & TODO & TODO \\ \hline
+		32MB & 4096.000 & TODO & TODO & TODO \\ \hline
+		64MB & 8192.000 & TODO & TODO & TODO \\ \hline
+		128MB & 16.386.000 & TODO & TODO & TODO \\ \hline
+		256MB & 32.768.000 & TODO & TODO & TODO \\ \hline
+		512MB & 65.536.000 & TODO & TODO & TODO \\ \hline
+		1GB & 131.072.000 & TODO & TODO & TODO \\ \hline
+		2GB & 262.144.000 & TODO & TODO & TODO \\ \hline
+		4GB & 524.288.000 & TODO & TODO & TODO \\ \hline
+		8GB & 1.048.576.000 & TODO & TODO & TODO \\ \hline
+	\end{tabular}
+	\label{default}
+\end{table}%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+\section{Summary}
+%
+% sum up the results for O(n) algorithm in comparison with the n^2 ones ... maybe
+%
+
+
+\end{document}  

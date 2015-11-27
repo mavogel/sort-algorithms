@@ -1,0 +1,9 @@
+**/*.swp
+.DS_STORE
+.idea
+algorithm_lab_tests/lib/gtest-1.7.0/CMakeCache.txt
+algorithm_lab_tests/lib/gtest-1.7.0/CMakeFiles
+algorithm_lab_tests/lib/gtest-1.7.0/CMakeLists.txt
+algorithm_lab_tests/lib/gtest-1.7.0/Makefile
+algorithm_lab_tests/lib/gtest-1.7.0/cmake_install.cmake
+algorithm_lab_tests/lib/gtest-1.7.0/*.a

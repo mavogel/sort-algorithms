@@ -38,30 +38,31 @@ int main() {
 //    std::shared_ptr<std::array<double, 1048576000>> G8_list(new std::array<double, 1048576000>);
 
     // == go ==
-    runCombination(*KB1_list);
-    runCombination(*KB2_list);
-    runCombination(*KB4_list);
-    runCombination(*KB8_list);
-    runCombination(*KB16_list);
-//    runCombination(*KB32_list);
-//    runCombination(*KB64_list);
-//    runCombination(*KB128_list);
-//    runCombination(*KB256_list);
-//    runCombination(*KB512_list);
-//    runCombination(*M1_list);
-//    runCombination(*M2_list);
-//    runCombination(*M4_list);
-//    runCombination(*M8_list);
-//    runCombination(*M16_list);
-//    runCombination(*M32_list);
-//    runCombination(*M64_list);
-//    runCombination(*M128_list);
-//    runCombination(*M256_list);
-//    runCombination(*M512_list);
-//    runCombination(*G1_list);
-//    runCombination(*G2_list);
-//    runCombination(*G4_list);
-//    runCombination(*G8_list);
+
+    runSortingAlgorithms(*KB1_list);
+    runSortingAlgorithms(*KB2_list);
+    runSortingAlgorithms(*KB4_list);
+    runSortingAlgorithms(*KB8_list);
+    runSortingAlgorithms(*KB16_list);
+    runSortingAlgorithms(*KB32_list);
+//    runSortingAlgorithms(*KB64_list);
+//    runSortingAlgorithms(*KB128_list);
+//    runSortingAlgorithms(*KB256_list);
+//    runSortingAlgorithms(*KB512_list);
+//    runSortingAlgorithms(*M1_list);
+//    runSortingAlgorithms(*M2_list);
+//    runSortingAlgorithms(*M4_list);
+//    runSortingAlgorithms(*M8_list);
+//    runSortingAlgorithms(*M16_list);
+//    runSortingAlgorithms(*M32_list);
+//    runSortingAlgorithms(*M64_list);
+//    runSortingAlgorithms(*M128_list);
+//    runSortingAlgorithms(*M256_list);
+//    runSortingAlgorithms(*M512_list);
+//    runSortingAlgorithms(*G1_list);
+//    runSortingAlgorithms(*G2_list);
+//    runSortingAlgorithms(*G4_list);
+//    runSortingAlgorithms(*G8_list);
 
     return 0;
 }

@@ -39,7 +39,7 @@ void sortViaNonOptimalDirectSelection(std::array<T, SIZE>& array) {
  *  Starting from startIndex (inclusive) until endIndex (exclusive)
  */
 template <typename T, size_t SIZE>
-void sortViaDirectInsertWithWatcherElement(std::array<T, SIZE>& array, const size_t startIndex = 0, const size_t endIndex = SIZE) {
+void sortViaDirectInsertWithWatcherElement(std::array<T, SIZE>& array, const size_t startIndex, const size_t endIndex) {
     size_t minIndex = optimalMinSearch(array, startIndex, endIndex);
     std::swap(array[startIndex], array[minIndex]);
 
@@ -52,12 +52,27 @@ void sortViaDirectInsertWithWatcherElement(std::array<T, SIZE>& array, const siz
 }
 
 /**
- *  Sorts the given array via normal 'direct insert' without a watcher.
- *  Starting from startIndex (inclusive) until endIndex (exclusive)
+ *  Sorts the given array via 'direct insert' with a watcher element.
  */
 template <typename T, size_t SIZE>
-void sortViaNormalDirectInsert(std::array<T, SIZE>& array, const size_t startIndex = 0, const size_t endIndex = SIZE) {
-    for(unsigned long i = startIndex; i < endIndex; i++) {
+void sortViaDirectInsertWithWatcherElement(std::array<T, SIZE>& array) {
+    size_t minIndex = optimalMinSearch(array, 0, SIZE);
+    std::swap(array[0], array[minIndex]);
+
+    for(unsigned long i = 2; i < SIZE; i++) {
+        T curr = array[i];
+        for (size_t j = i; array[j - 1] > curr; j--) {
+            std::swap(array[j], array[j - 1]);
+        }
+    }
+}
+
+/**
+ *  Sorts the given array via normal 'direct insert' without a watcher.
+ */
+template <typename T, size_t SIZE>
+void sortViaNormalDirectInsert(std::array<T, SIZE>& array) {
+    for(unsigned long i = 0; i < SIZE; i++) {
         T curr = array[i];
         for (size_t j = i; j > 0 && array[j - 1] > curr; j--) {
             std::swap(array[j], array[j - 1]);

@@ -631,8 +631,26 @@ It is implemented in the following steps:
 			\item Perform two recursive Quicksorts: one from the left end until the beginning of the pivot brought into the middle before and the other one from the right end of the pivot in the middle until the right outer end.
 		\end{enumerate}
 	\item[Pseudocode]:
-		\begin{lstlisting}
-		 	TODO
+		\begin{lstlisting}		
+		unsorted[];
+		swap(unsorted[mid], unsorted[right]);
+		pivot := unsorted[right];
+			
+		if(left <= right) return;
+		while(true) 
+		begin {
+			find element < pivot from starting from left
+			find element > pivot from starting from right (break if left end is reached)
+			stop if pointers cross
+			if (elements are not smaller or greater but equal) {
+				Bring them to the left or right side
+			} fi
+		}
+		bring pivot from right to the middle
+		swap elements equal to pivot to the center
+			
+		quicksort from left to start of elements equal to pivot
+		quicksort from end of elements equal to pivot to the right
 		\end{lstlisting}	
 	\item[Example] TODO	
 	\item[$O$-Notation]:
@@ -656,11 +674,23 @@ It is implemented in the following steps:
 Otherwise the previously mentioned 3-way-partitioning Quicksort is performed. Additionally to make it hybrid the following steps are added:
 		\begin{enumerate}
 			\item If the recursion depth has reached a certain limit (we use 25) a sort via direct insert is performed.
-			\item If the case occurs that before the next recursion of the Quicksort starts one half contains $10x$ the amount of the other half the next recursion step is performed by diving the remaining data in the middle. To adjust this change a \texttt{merge}-step is performed after the recursion returns.
+			\item If the case occurs that before the next recursion of the Quicksort starts one half contains 10 times the amount of the other half the next recursion step is performed by diving the remaining data in the middle. To adjust this change a \texttt{merge}-step is performed after the recursion.
 		\end{enumerate}
 	\item[Pseudocode]:
 		\begin{lstlisting}
-			TODO 
+		if(DEPTH >= 25) {
+			perform insertSort and return
+		else {
+			perform 3-way-part. quicksort as above
+			
+			if(one recursive quicksort is 10-times bigger than the other) {
+				quicksort from left to middle
+				quicksort from middle+1 to right
+				merge(left, mid, right)
+			} else {
+				normal 3-way-part. quicksort recursion
+			} fi
+		} fi;			 
 		\end{lstlisting}
 	\item[Example] TODO	
 	\item[$O$-Notation]:
@@ -744,7 +774,7 @@ In this section the results of time measuring are printed as tables. For each al
 %
 % no graphics just tables!
 %
-\subsection{Sorting via direct selection}
+%\subsection{Sorting via direct selection}
 \begin{table}[htdp]
 	\caption{Direct Select Sort with \textbf{optimal} minimum search - Results in $seconds$}
 	\begin{tabular}{|c|c|r|r|r|} \hline
@@ -777,7 +807,7 @@ In this section the results of time measuring are printed as tables. For each al
 	\label{default}
 \end{table}%
 
-\subsection{Sorting via direct insert}
+%\subsection{Sorting via direct insert}
 \begin{table}[htdp]
 	\caption{Direct Insert Sort \textbf{with watcher} element - Results in $seconds$}
 	\begin{tabular}{|c|c|r|r|r|} \hline
@@ -810,8 +840,7 @@ In this section the results of time measuring are printed as tables. For each al
 	\label{default}
 \end{table}%
 
-
-\subsection{Mergesort}
+%\subsection{Mergesort}
 \begin{table}[htdp]
 	\caption{\textbf{Bottom-up} Mergesort - Results in $nanoseconds$}
 	\begin{tabular}{|c|c|c|c|c|} \hline
@@ -865,7 +894,7 @@ In this section the results of time measuring are printed as tables. For each al
 \end{table}%
 
 
-\subsection{Quicksort}
+%\subsection{Quicksort}
 \begin{table}[htdp]
 	\caption{Quicksort with \textbf{three-way-partitionoing} - Results in $nanoseconds$}
 	\begin{tabular}{|c|c|c|c|c|} \hline

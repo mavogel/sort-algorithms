@@ -118,7 +118,7 @@ void runSortingAlgorithms(std::array<double, SIZE> &array) {
     sortFunctions.push_back(std::make_pair<void (*) (std::array<double, SIZE>&), std::string>(sortViaHybridQuicksort, "sortViaHybridQuicksort"));
 
     for(auto&sortFunction : sortFunctions) {
-        std::cout << sortFunction.second << ": '" << SIZE << "' doubles rounds\n";
+        std::cout << sortFunction.second << ": '" << SIZE << "' doubles rounds (="<< SIZE * sizeof(double) <<  "bytes)\n";
         testSortFunction(sortFunction.first, array, FILL_MODE::DESC);
         testSortFunction(sortFunction.first, array, FILL_MODE::RANDOM);
         testSortFunction(sortFunction.first, array, FILL_MODE::ASC);

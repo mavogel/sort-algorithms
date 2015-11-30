@@ -31,10 +31,9 @@ void afterTestEvaluation(std::chrono::steady_clock::time_point& start, std::chro
     unsigned long seconds = nanos / 10e9;
 
     os << std::boolalpha << std::setprecision(width);
-    os << ">> " <<  testCase <<"\t-> " << std::setfill('0') << std::setw(width)
-    << seconds << "s\t"
-    << millis << "ms\t"
-    << micros << "us\t"
-    << nanos << "ns";
-    os << "\n";
+    os << ">> " <<  testCase <<"\t-> "
+    << std::setfill('0') << std::setw(width) << seconds << "s\t"
+    << std::setfill('0') << std::setw(width) << millis << "ms\t"
+    << std::setfill('0') << std::setw(width)<< micros << "us\t"
+    << std::setfill('0') << std::setw(width)<< nanos << "ns\n";
 }

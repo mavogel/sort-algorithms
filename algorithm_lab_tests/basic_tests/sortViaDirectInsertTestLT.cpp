@@ -23,14 +23,13 @@ protected:
 TEST_F(InsertSortWithBiggerSizesTest, sortViaDirectInsertWithWatcher2kIntegerTest) {
     // == conditions ==
     const int size = 2000;
-    const bool withWatcher = true;
 
     // == prepare ==
     std::shared_ptr<std::array<int, size>> list(new std::array<int, size>);
     initRandomIntegers(*list);
 
     // == go ==
-    sortViaDirectInsert<withWatcher>(*list);
+    sortViaDirectInsertWithWatcherElement(*list);
 
     // == verify ==
     verifySorted(*list);
@@ -39,14 +38,13 @@ TEST_F(InsertSortWithBiggerSizesTest, sortViaDirectInsertWithWatcher2kIntegerTes
 TEST_F(InsertSortWithBiggerSizesTest, sortViaNonDirectInsertWithoutWatcher2kIntegerTest) {
     // == conditions ==
     const int size = 2000;
-    const bool withWatcher = false;
 
     // == prepare ==
     std::shared_ptr<std::array<int, size>> list(new std::array<int, size>);
     initRandomIntegers(*list);
 
     // == go ==
-    sortViaDirectInsert<withWatcher>(*list);
+    sortViaNormalDirectInsert(*list);
 
     // == verify ==
     verifySorted(*list);
@@ -55,14 +53,13 @@ TEST_F(InsertSortWithBiggerSizesTest, sortViaNonDirectInsertWithoutWatcher2kInte
 //TEST_F(InsertSortWithBiggerSizesTest, sortViaDirectInsertWithWatcher10kIntegerTest) {
 //    // == conditions ==
 //    const int size = 10000;
-//    const bool withWatcher = true;
 
 //    // == prepare ==
 //    std::shared_ptr<std::array<int, size>> list(new std::array<int, size>);
 //    initRandomIntegers(*list);
 
 //    // == go ==
-//    sortViaDirectInsert<withWatcher>(*list);
+//    sortViaDirectInsertWithWatcherElement(*list);
 
 //    // == verify ==
 //    verifySorted(*list);
@@ -71,14 +68,13 @@ TEST_F(InsertSortWithBiggerSizesTest, sortViaNonDirectInsertWithoutWatcher2kInte
 //TEST_F(InsertSortWithBiggerSizesTest, sortViaNonDirectInsertWithoutWatcher10kIntegerTest) {
 //    // == conditions ==
 //    const int size = 10000;
-//    const bool withWatcher = false;
 
 //    // == prepare ==
 //    std::shared_ptr<std::array<int, size>> list(new std::array<int, size>);
 //    initRandomIntegers(*list);
 
 //    // == go ==
-//    sortViaDirectInsert<withWatcher>(*list);
+//    sortViaNormalDirectInsert(*list);
 
 //    // == verify ==
 //    verifySorted(*list);
@@ -89,14 +85,13 @@ TEST_F(InsertSortWithBiggerSizesTest, sortViaNonDirectInsertWithoutWatcher2kInte
 TEST_F(InsertSortWithBiggerSizesTest, sortViaDirectInsertWithWatcher2kDoubleTest) {
     // == conditions ==
     const int size = 2000;
-    const bool withWatcher = true;
 
     // == prepare ==
     std::shared_ptr<std::array<double, size>> dList(new std::array<double, size>);
     initRandomDoubles(*dList);
 
     // == go ==
-    sortViaDirectInsert<withWatcher>(*dList);
+    sortViaDirectInsertWithWatcherElement(*dList);
 
     // == verify ==
     verifySorted(*dList);
@@ -105,14 +100,13 @@ TEST_F(InsertSortWithBiggerSizesTest, sortViaDirectInsertWithWatcher2kDoubleTest
 TEST_F(InsertSortWithBiggerSizesTest, sortViaNonDirectInsertWithoutWatcher2kDoubleTest) {
     // == conditions ==
     const int size = 2000;
-    const bool withWatcher = false;
 
     // == prepare ==
     std::shared_ptr<std::array<double, size>> dList(new std::array<double, size>);
     initRandomDoubles(*dList);
 
     // == go ==
-    sortViaDirectInsert<withWatcher>(*dList);
+    sortViaNormalDirectInsert(*dList);
 
     // == verify ==
     verifySorted(*dList);
@@ -121,14 +115,13 @@ TEST_F(InsertSortWithBiggerSizesTest, sortViaNonDirectInsertWithoutWatcher2kDoub
 //TEST_F(InsertSortWithBiggerSizesTest, sortViaDirectInsertWithWatcher10kDoubleTest) {
 //    // == conditions ==
 //    const int size = 10000;
-//    const bool withWatcher = true;
 
 //    // == prepare ==
 //    std::shared_ptr<std::array<double, size>> dList(new std::array<double, size>);
 //    initRandomDoubles(*dList);
 
 //    // == go ==
-//    sortViaDirectInsert<withWatcher>(*dList);
+//    sortViaDirectInsertWithWatcherElement(*dList);
 
 //    // == verify ==
 //    verifySorted(*dList);
@@ -137,14 +130,13 @@ TEST_F(InsertSortWithBiggerSizesTest, sortViaNonDirectInsertWithoutWatcher2kDoub
 //TEST_F(InsertSortWithBiggerSizesTest, sortViaNonDirectInsertWithoutWatcher10kDoubleTest) {
 //    // == conditions ==
 //    const int size = 10000;
-//    const bool withWatcher = false;
 
 //    // == prepare ==
 //    std::shared_ptr<std::array<double, size>> dList(new std::array<double, size>);
 //    initRandomDoubles(*dList);
 
 //    // == go ==
-//    sortViaDirectInsert<withWatcher>(*dList);
+//    sortViaNormalDirectInsert(*dList);
 
 //    // == verify ==
 //    verifySorted(*dList);
@@ -153,14 +145,13 @@ TEST_F(InsertSortWithBiggerSizesTest, sortViaNonDirectInsertWithoutWatcher2kDoub
 TEST_F(InsertSortWithBiggerSizesTest, sortViaDirectInsert2kStringTest) {
     // == conditions ==
     const int size = 500;
-    const bool withWatcher = true;
 
     // == prepare ==
     std::shared_ptr<std::array<std::string, size>> sList(new std::array<std::string, size>);
     initRandomStrings(*sList);
 
     // == go ==
-    sortViaDirectInsert<withWatcher>(*sList);
+    sortViaDirectInsertWithWatcherElement(*sList);
 
     // == verify ==
     verifySorted(*sList);
@@ -169,14 +160,13 @@ TEST_F(InsertSortWithBiggerSizesTest, sortViaDirectInsert2kStringTest) {
 TEST_F(InsertSortWithBiggerSizesTest, sortViaNonDirectInsert2kStringTest) {
     // == conditions ==
     const int size = 500;
-    const bool withWatcher = false;
 
     // == prepare ==
     std::shared_ptr<std::array<std::string, size>> sList(new std::array<std::string, size>);
     initRandomStrings(*sList);
 
     // == go ==
-    sortViaDirectInsert<withWatcher>(*sList);
+    sortViaNormalDirectInsert(*sList);
 
     // == verify ==
     verifySorted(*sList);

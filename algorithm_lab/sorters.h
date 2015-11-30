@@ -11,43 +11,56 @@
 #define FACTOR_WORST_QS 10
 
 /**
- *  Sorts the given array via 'direct selection'.
+ *  Sorts the given array via optimal 'direct selection'.
  */
-template <bool OPTIMAL, typename T, size_t SIZE>
-void sortViaDirectSelection(std::array<T, SIZE>& array) {
+template <typename T, size_t SIZE>
+void sortViaOptimalDirectSelection(std::array<T, SIZE>& array) {
     size_t minIndex = 0;
     for(size_t i = 0; i < (SIZE - 1); i++) {
-        if(OPTIMAL) {
-            minIndex = optimalMinSearch(array, i);
-        } else {
-            minIndex = nonOptimalMinSearch(array, i);
-        }
+        minIndex = optimalMinSearch(array, i);
         std::swap(array[i], array[minIndex]);
     }
 }
 
 /**
- *  Sorts the given array via 'direct insert'.
+ *  Sorts the given array via non-optimal 'direct selection'.
+ */
+template <typename T, size_t SIZE>
+void sortViaNonOptimalDirectSelection(std::array<T, SIZE>& array) {
+    size_t minIndex = 0;
+    for(size_t i = 0; i < (SIZE - 1); i++) {
+        minIndex = nonOptimalMinSearch(array, i);
+        std::swap(array[i], array[minIndex]);
+    }
+}
+
+/**
+ *  Sorts the given array via 'direct insert' with a watcher element.
  *  Starting from startIndex (inclusive) until endIndex (exclusive)
  */
-template <bool WATCHER, typename T, size_t SIZE>
-void sortViaDirectInsert(std::array<T, SIZE>& array, const size_t startIndex = 0, const size_t endIndex = SIZE) {
-    if(WATCHER) {
-        size_t minIndex = optimalMinSearch(array, startIndex, endIndex);
-        std::swap(array[startIndex], array[minIndex]);
+template <typename T, size_t SIZE>
+void sortViaDirectInsertWithWatcherElement(std::array<T, SIZE>& array, const size_t startIndex = 0, const size_t endIndex = SIZE) {
+    size_t minIndex = optimalMinSearch(array, startIndex, endIndex);
+    std::swap(array[startIndex], array[minIndex]);
 
-        for(unsigned long i = startIndex+2; i < endIndex; i++) {
-            T curr = array[i];
-            for(size_t j = i; array[j - 1] > curr; j--) {
-                std::swap(array[j], array[j - 1]);
-            }
+    for(unsigned long i = startIndex+2; i < endIndex; i++) {
+        T curr = array[i];
+        for (size_t j = i; array[j - 1] > curr; j--) {
+            std::swap(array[j], array[j - 1]);
         }
-    } else {
-        for(unsigned long i = startIndex; i < endIndex; i++) {
-            T curr = array[i];
-            for(size_t j = i; j > 0 && array[j - 1] > curr; j--) {
-                std::swap(array[j], array[j - 1]);
-            }
+    }
+}
+
+/**
+ *  Sorts the given array via normal 'direct insert' without a watcher.
+ *  Starting from startIndex (inclusive) until endIndex (exclusive)
+ */
+template <typename T, size_t SIZE>
+void sortViaNormalDirectInsert(std::array<T, SIZE>& array, const size_t startIndex = 0, const size_t endIndex = SIZE) {
+    for(unsigned long i = startIndex; i < endIndex; i++) {
+        T curr = array[i];
+        for (size_t j = i; j > 0 && array[j - 1] > curr; j--) {
+            std::swap(array[j], array[j - 1]);
         }
     }
 }
@@ -241,7 +254,7 @@ bool isWorstQuickSortCase(const size_t left, const size_t r, const size_t l,cons
 template <typename T, size_t SIZE>
 void internalHybridQuicksort(std::array<T, SIZE>& array, const size_t left, const size_t right, const unsigned int depth) {
     if(depth >= MAX_QS_DEPTH) {
-        sortViaDirectInsert<true>(array, left, right+1); //because qs inclusive and insertSort exclusive
+        sortViaDirectInsertWithWatcherElement(array, left, right+1); //because qs inclusive and insertSort exclusive
     } else {
         size_t i = left-1, j = right;
         size_t p = left, q = right-1;

@@ -21,7 +21,7 @@ protected:
 
 TEST_F(SortViaDirectInsertTest, sortViaDirectInsertWithoutWatcher) {
     std::shared_ptr<std::array<int, 9>> list(new std::array<int, 9>{{5,2,7,8,-4,3,1,10,9}});
-    sortViaDirectInsert<false>(*list);
+    sortViaNormalDirectInsert(*list);
     EXPECT_EQ(-4, (*list)[0]);
     EXPECT_EQ(1, (*list)[1]);
     EXPECT_EQ(2, (*list)[2]);
@@ -34,7 +34,7 @@ TEST_F(SortViaDirectInsertTest, sortViaDirectInsertWithoutWatcher) {
 
 
     std::shared_ptr<std::array<double,7>> dList(new std::array<double,7>{{5.2, 2.3, 13.8, 9.9, 10.8, 1.1, -0.5}});
-    sortViaDirectInsert<false>(*dList);
+    sortViaNormalDirectInsert(*dList);
     EXPECT_EQ(-0.5, (*dList)[0]);
     EXPECT_EQ(1.1, (*dList)[1]);
     EXPECT_EQ(2.3, (*dList)[2]);
@@ -44,7 +44,7 @@ TEST_F(SortViaDirectInsertTest, sortViaDirectInsertWithoutWatcher) {
     EXPECT_EQ(13.8, (*dList)[6]);
 
     std::shared_ptr<std::array<std::string, 6>> sList(new std::array<std::string, 6>{{"a", "1a", "ab", "a1", "A1", "1A"}});
-    sortViaDirectInsert<false>(*sList);
+    sortViaNormalDirectInsert(*sList);
     EXPECT_EQ("1A", (*sList)[0]);
     EXPECT_EQ("1a", (*sList)[1]);
     EXPECT_EQ("A1", (*sList)[2]);
@@ -55,7 +55,7 @@ TEST_F(SortViaDirectInsertTest, sortViaDirectInsertWithoutWatcher) {
 
 TEST_F(SortViaDirectInsertTest, sortViaDirectInsertWithoutWatcherDoubledValues) {
     std::shared_ptr<std::array<int, 9>> list(new std::array<int, 9>{{5,2,7,8,-4,3,1,5,9}});
-    sortViaDirectInsert<false>(*list);
+    sortViaNormalDirectInsert(*list);
     EXPECT_EQ(-4, (*list)[0]);
     EXPECT_EQ(1, (*list)[1]);
     EXPECT_EQ(2, (*list)[2]);
@@ -68,7 +68,7 @@ TEST_F(SortViaDirectInsertTest, sortViaDirectInsertWithoutWatcherDoubledValues) 
 
 
     std::shared_ptr<std::array<double,7>> dList(new std::array<double,7>{{5.2, 2.3, 13.8, 9.9, 10.8, 2.3, -0.5}});
-    sortViaDirectInsert<false>(*dList);
+    sortViaNormalDirectInsert(*dList);
     EXPECT_EQ(-0.5, (*dList)[0]);
     EXPECT_EQ(2.3, (*dList)[1]);
     EXPECT_EQ(2.3, (*dList)[2]);
@@ -78,7 +78,7 @@ TEST_F(SortViaDirectInsertTest, sortViaDirectInsertWithoutWatcherDoubledValues) 
     EXPECT_EQ(13.8, (*dList)[6]);
 
     std::shared_ptr<std::array<std::string, 6>> sList(new std::array<std::string, 6>{{"a", "1a", "ab", "a", "A1", "1A"}});
-    sortViaDirectInsert<false>(*sList);
+    sortViaNormalDirectInsert(*sList);
     EXPECT_EQ("1A", (*sList)[0]);
     EXPECT_EQ("1a", (*sList)[1]);
     EXPECT_EQ("A1", (*sList)[2]);
@@ -89,19 +89,19 @@ TEST_F(SortViaDirectInsertTest, sortViaDirectInsertWithoutWatcherDoubledValues) 
 
 TEST_F(SortViaDirectInsertTest, sortViaDirectInsertWithWatcherEmptyData) {
     std::shared_ptr<std::array<int, 0>> list(new std::array<int, 0>);
-    ASSERT_THROW(sortViaDirectInsert<true>(*list), DataEmptyException);
+    ASSERT_THROW(sortViaDirectInsertWithWatcherElement(*list), DataEmptyException);
 
     std::shared_ptr<std::array<double,0>> dList(new std::array<double,0>);
-    ASSERT_THROW(sortViaDirectInsert<true>(*dList), DataEmptyException);
+    ASSERT_THROW(sortViaDirectInsertWithWatcherElement(*dList), DataEmptyException);
 
     std::shared_ptr<std::array<std::string, 0>> sList(new std::array<std::string, 0>);
-    ASSERT_THROW(sortViaDirectInsert<true>(*sList), DataEmptyException);
+    ASSERT_THROW(sortViaDirectInsertWithWatcherElement(*sList), DataEmptyException);
 }
 
 
 TEST_F(SortViaDirectInsertTest, sortViaDirectInsertWithWatcherElement) {
     std::shared_ptr<std::array<int, 9>> list(new std::array<int, 9>{{5,2,7,8,-4,3,1,10,9}});
-    sortViaDirectInsert<true>(*list);
+    sortViaDirectInsertWithWatcherElement(*list);
     EXPECT_EQ(-4, (*list)[0]);
     EXPECT_EQ(1, (*list)[1]);
     EXPECT_EQ(2, (*list)[2]);
@@ -114,7 +114,7 @@ TEST_F(SortViaDirectInsertTest, sortViaDirectInsertWithWatcherElement) {
 
 
     std::shared_ptr<std::array<double,7>> dList(new std::array<double,7>{{5.2, 2.3, 13.8, 9.9, 10.8, 1.1, -0.5}});
-    sortViaDirectInsert<true>(*dList);
+    sortViaDirectInsertWithWatcherElement(*dList);
     EXPECT_EQ(-0.5, (*dList)[0]);
     EXPECT_EQ(1.1, (*dList)[1]);
     EXPECT_EQ(2.3, (*dList)[2]);
@@ -124,7 +124,7 @@ TEST_F(SortViaDirectInsertTest, sortViaDirectInsertWithWatcherElement) {
     EXPECT_EQ(13.8, (*dList)[6]);
 
     std::shared_ptr<std::array<std::string, 6>> sList(new std::array<std::string, 6>{{"a", "1a", "ab", "a1", "A1", "1A"}});
-    sortViaDirectInsert<true>(*sList);
+    sortViaDirectInsertWithWatcherElement(*sList);
     EXPECT_EQ("1A", (*sList)[0]);
     EXPECT_EQ("1a", (*sList)[1]);
     EXPECT_EQ("A1", (*sList)[2]);
@@ -135,7 +135,7 @@ TEST_F(SortViaDirectInsertTest, sortViaDirectInsertWithWatcherElement) {
 
 TEST_F(SortViaDirectInsertTest, sortViaDirectInsertWitWatcherDoubledValues) {
     std::shared_ptr<std::array<int, 9>> list(new std::array<int, 9>{{5,2,7,8,-4,3,1,5,9}});
-    sortViaDirectInsert<true>(*list);
+    sortViaDirectInsertWithWatcherElement(*list);
     EXPECT_EQ(-4, (*list)[0]);
     EXPECT_EQ(1, (*list)[1]);
     EXPECT_EQ(2, (*list)[2]);
@@ -148,7 +148,7 @@ TEST_F(SortViaDirectInsertTest, sortViaDirectInsertWitWatcherDoubledValues) {
 
 
     std::shared_ptr<std::array<double,7>> dList(new std::array<double,7>{{5.2, 2.3, 13.8, 9.9, 10.8, 2.3, -0.5}});
-    sortViaDirectInsert<true>(*dList);
+    sortViaDirectInsertWithWatcherElement(*dList);
     EXPECT_EQ(-0.5, (*dList)[0]);
     EXPECT_EQ(2.3, (*dList)[1]);
     EXPECT_EQ(2.3, (*dList)[2]);
@@ -158,7 +158,7 @@ TEST_F(SortViaDirectInsertTest, sortViaDirectInsertWitWatcherDoubledValues) {
     EXPECT_EQ(13.8, (*dList)[6]);
 
     std::shared_ptr<std::array<std::string, 6>> sList(new std::array<std::string, 6>{{"a", "1a", "ab", "a", "A1", "1A"}});
-    sortViaDirectInsert<true>(*sList);
+    sortViaDirectInsertWithWatcherElement(*sList);
     EXPECT_EQ("1A", (*sList)[0]);
     EXPECT_EQ("1a", (*sList)[1]);
     EXPECT_EQ("A1", (*sList)[2]);
@@ -169,26 +169,26 @@ TEST_F(SortViaDirectInsertTest, sortViaDirectInsertWitWatcherDoubledValues) {
 
 TEST_F(SortViaDirectInsertTest, sortViaDirectInsertWithoutWatcherEmptyData) {
     std::shared_ptr<std::array<int, 0>> list(new std::array<int, 0>);
-    sortViaDirectInsert<false>(*list);
+    sortViaNormalDirectInsert(*list);
 
     std::shared_ptr<std::array<double,0>> dList(new std::array<double,0>);
-    sortViaDirectInsert<false>(*dList);
+    sortViaNormalDirectInsert(*dList);
 
     std::shared_ptr<std::array<std::string, 0>> sList(new std::array<std::string, 0>);
-    sortViaDirectInsert<false>(*sList);
+    sortViaNormalDirectInsert(*sList);
 }
 
 TEST_F(SortViaDirectInsertTest, sortPartiallyViaDirectInsertWithWatcher) {
     std::shared_ptr<std::array<int, 9>> list(new std::array<int, 9>{{-1,2,7,8, 10,9,13,8,11}});
-    sortViaDirectInsert<true>(*list, 4, 9);
+    sortViaDirectInsertWithWatcherElement(*list, 4, 9);
     verifySorted(*list);
 
     std::shared_ptr<std::array<int, 9>> list2(new std::array<int, 9>{{-1,2,5, 8,10,9,13,6, 55}});
-    sortViaDirectInsert<true>(*list2, 3, 8);
+    sortViaDirectInsertWithWatcherElement(*list2, 3, 8);
     verifySorted(*list2);
 
     std::shared_ptr<std::array<int, 9>> list3(new std::array<int, 9>{{-1, 22,40,8,10,9,13, 41,55}});
-    sortViaDirectInsert<true>(*list3, 1, 7);
+    sortViaDirectInsertWithWatcherElement(*list3, 1, 7);
     verifySorted(*list3);
 }
 

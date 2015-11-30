@@ -89,7 +89,8 @@ void pretestFill(std::array<double, SIZE>& array, const FILL_MODE fillMode) {
  * Tests the given sortFunction with the data of the array which will be filled in the desired mode
  */
 template <size_t SIZE>
-void testSortFunction(void (*sortFunction) (std::array<double, SIZE>&), std::array<double, SIZE>& array, const FILL_MODE fillMode) {
+void runSortingAlgorithm(void (*sortFunction)(std::array<double, SIZE> &), std::array<double, SIZE> &array,
+                         const FILL_MODE fillMode) {
     pretestFill(array, fillMode);
 
     // == go ==
@@ -107,22 +108,28 @@ void testSortFunction(void (*sortFunction) (std::array<double, SIZE>&), std::arr
  */
 template <size_t SIZE>
 void runSortingAlgorithms(std::array<double, SIZE> &array) {
-    std::vector<std::pair<void (*) (std::array<double, SIZE>&), std::string>> sortFunctions;
-    sortFunctions.push_back(std::make_pair<void (*) (std::array<double, SIZE>&), std::string>(sortViaOptimalDirectSelection, "sortViaOptimalDirectSelection"));
-    sortFunctions.push_back(std::make_pair<void (*) (std::array<double, SIZE>&), std::string>(sortViaNonOptimalDirectSelection, "sortViaNonOptimalDirectSelection"));
-    sortFunctions.push_back(std::make_pair<void (*) (std::array<double, SIZE>&), std::string>(sortViaDirectInsertWithWatcherElement, "sortViaDirectInsertWithWatcherElement"));
-    sortFunctions.push_back(std::make_pair<void (*) (std::array<double, SIZE>&), std::string>(sortViaNormalDirectInsert, "sortViaNormalDirectInsert"));
-    sortFunctions.push_back(std::make_pair<void (*) (std::array<double, SIZE>&), std::string>(sortViaNaturalMergesort, "sortViaNaturalMergesort"));
-    sortFunctions.push_back(std::make_pair<void (*) (std::array<double, SIZE>&), std::string>(sortViaBottomUpMergesort, "sortViaBottomUpMergesort"));
-    sortFunctions.push_back(std::make_pair<void (*) (std::array<double, SIZE>&), std::string>(sortVia3WayPartitioningQuicksort, "sortVia3WayPartitioningQuicksort"));
-    sortFunctions.push_back(std::make_pair<void (*) (std::array<double, SIZE>&), std::string>(sortViaHybridQuicksort, "sortViaHybridQuicksort"));
+    std::vector<std::tuple<void (*) (std::array<double, SIZE>&), std::string, size_t>> sortFunctions;
+    sortFunctions.push_back(std::make_tuple<void (*) (std::array<double, SIZE>&), std::string, size_t>(sortViaOptimalDirectSelection, "sortViaOptimalDirectSelection", MAX_ON2_ROUNDS));
+    sortFunctions.push_back(std::make_tuple<void (*) (std::array<double, SIZE>&), std::string, size_t>(sortViaNonOptimalDirectSelection, "sortViaNonOptimalDirectSelection", MAX_ON2_ROUNDS));
+    sortFunctions.push_back(std::make_tuple<void (*) (std::array<double, SIZE>&), std::string, size_t>(sortViaDirectInsertWithWatcherElement, "sortViaDirectInsertWithWatcherElement", MAX_ON2_ROUNDS));
+    sortFunctions.push_back(std::make_tuple<void (*) (std::array<double, SIZE>&), std::string, size_t>(sortViaNormalDirectInsert, "sortViaNormalDirectInsert", MAX_ON2_ROUNDS));
+    sortFunctions.push_back(std::make_tuple<void (*) (std::array<double, SIZE>&), std::string, size_t>(sortViaNaturalMergesort, "sortViaNaturalMergesort", SIZE_1GB));
+    sortFunctions.push_back(std::make_tuple<void (*) (std::array<double, SIZE>&), std::string, size_t>(sortViaBottomUpMergesort, "sortViaBottomUpMergesort", SIZE_1GB));
+    sortFunctions.push_back(std::make_tuple<void (*) (std::array<double, SIZE>&), std::string, size_t>(sortVia3WayPartitioningQuicksort, "sortVia3WayPartitioningQuicksort", SIZE_1GB));
+    sortFunctions.push_back(std::make_tuple<void (*) (std::array<double, SIZE>&), std::string, size_t>(sortViaHybridQuicksort, "sortViaHybridQuicksort", SIZE_1GB));
 
-    for(auto&sortFunction : sortFunctions) {
-        std::cout << sortFunction.second << ": '" << SIZE << "' doubles rounds (="<< SIZE * sizeof(double) <<  "bytes)\n";
-        testSortFunction(sortFunction.first, array, FILL_MODE::DESC);
-        testSortFunction(sortFunction.first, array, FILL_MODE::RANDOM);
-        testSortFunction(sortFunction.first, array, FILL_MODE::ASC);
-        std::cout << "------------------------------------\n";
+    std::string name;
+    void (*functionPointer) (std::array<double, SIZE>&);
+    size_t maxSize;
+    for(auto& sortFunction : sortFunctions) {
+        if (SIZE <= maxSize) {
+            std::tie(functionPointer, name, maxSize) = sortFunction;
+            std::cout << name << ": '" << SIZE << "' doubles rounds (=" << SIZE * sizeof(double) << "bytes)\n";
+            runSortingAlgorithm(functionPointer, array, FILL_MODE::DESC);
+            runSortingAlgorithm(functionPointer, array, FILL_MODE::RANDOM);
+            runSortingAlgorithm(functionPointer, array, FILL_MODE::ASC);
+            std::cout << "------------------------------------\n";
+        }
     }
 }
 

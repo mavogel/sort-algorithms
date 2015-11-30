@@ -1,15 +1,6 @@
 #include "testbuilder.h"
 
 int main() {
-    // TODOs:
-    // - start field size: (64*10^3)/8 = 8000 rounds. except direct insert DESC sorted (= worst case)
-    // - for each algorithm (there are 4) (only double)
-    // -- 1) ascending sorted
-    // -- 2) descending sorted
-    // -- 3) random sorted
-    // => 12 scenarios
-    // - fill array with 20mb ((20*10^6)/8 = 2.500.000 iterations of 8 byte double value)
-
     // == init ==
     std::shared_ptr<std::array<double, 125>> KB1_list(new std::array<double, 125>);
     std::shared_ptr<std::array<double, 250>> KB2_list(new std::array<double, 250>);
@@ -33,36 +24,35 @@ int main() {
     std::shared_ptr<std::array<double, 32768000>> M256_list(new std::array<double, 32768000>);
     std::shared_ptr<std::array<double, 65536000>> M512_list(new std::array<double, 65536000>);
     std::shared_ptr<std::array<double, 131072000>> G1_list(new std::array<double, 131072000>);
-//    std::shared_ptr<std::array<double, 262144000>> G2_list(new std::array<double, 262144000>);
-//    std::shared_ptr<std::array<double, 524288000>> G4_list(new std::array<double, 524288000>);
-//    std::shared_ptr<std::array<double, 1048576000>> G8_list(new std::array<double, 1048576000>);
+    std::shared_ptr<std::array<double, 262144000>> G2_list(new std::array<double, 262144000>);
+    std::shared_ptr<std::array<double, 524288000>> G4_list(new std::array<double, 524288000>);
+    std::shared_ptr<std::array<double, 1048576000>> G8_list(new std::array<double, 1048576000>);
 
     // == go ==
-
     runSortingAlgorithms(*KB1_list);
     runSortingAlgorithms(*KB2_list);
     runSortingAlgorithms(*KB4_list);
     runSortingAlgorithms(*KB8_list);
     runSortingAlgorithms(*KB16_list);
     runSortingAlgorithms(*KB32_list);
-//    runSortingAlgorithms(*KB64_list);
-//    runSortingAlgorithms(*KB128_list);
-//    runSortingAlgorithms(*KB256_list);
-//    runSortingAlgorithms(*KB512_list);
-//    runSortingAlgorithms(*M1_list);
-//    runSortingAlgorithms(*M2_list);
-//    runSortingAlgorithms(*M4_list);
-//    runSortingAlgorithms(*M8_list);
-//    runSortingAlgorithms(*M16_list);
-//    runSortingAlgorithms(*M32_list);
-//    runSortingAlgorithms(*M64_list);
-//    runSortingAlgorithms(*M128_list);
-//    runSortingAlgorithms(*M256_list);
-//    runSortingAlgorithms(*M512_list);
-//    runSortingAlgorithms(*G1_list);
-//    runSortingAlgorithms(*G2_list);
-//    runSortingAlgorithms(*G4_list);
-//    runSortingAlgorithms(*G8_list);
+    runSortingAlgorithms(*KB64_list);
+    runSortingAlgorithms(*KB128_list);
+    runSortingAlgorithms(*KB256_list);
+    runSortingAlgorithms(*KB512_list);
+    runSortingAlgorithms(*M1_list);
+    runSortingAlgorithms(*M2_list);
+    runSortingAlgorithms(*M4_list);
+    runSortingAlgorithms(*M8_list);
+    runSortingAlgorithms(*M16_list);
+    runSortingAlgorithms(*M32_list);
+    runSortingAlgorithms(*M64_list);
+    runSortingAlgorithms(*M128_list);
+    runSortingAlgorithms(*M256_list);
+    runSortingAlgorithms(*M512_list);
+    runSortingAlgorithms(*G1_list);
+    runSortingAlgorithms(*G2_list);
+    runSortingAlgorithms(*G4_list);
+    runSortingAlgorithms(*G8_list);
 
     return 0;
 }

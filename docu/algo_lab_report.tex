@@ -34,7 +34,7 @@
   frame=single,	                   % adds a frame around the code
   keepspaces=true,                 % keeps spaces in text, useful for keeping indentation of code (possibly needs columns=flexible)
   keywordstyle=\color{blue},       % keyword style
- % language=C++,                 % the language of the code
+  language=C++,                 % the language of the code
   otherkeywords={*,...},            % if you want to add more keywords to the set
   numbers=left,                    % where to put the line-numbers; possible values are (none, left, right)
   numbersep=5pt,                   % how far the line-numbers are from the code
@@ -256,7 +256,7 @@ arrows={north:.3cm}]
                			\node [on chain=1,tmtape] (fifth) {#6};
                 			\node [on chain=1,tmtape] (sixth) {#7};
 			        \node [on chain=1,tmtape] (eighth) {#8};
-			        \node [on chain=1,tmtape] (ninth) {#9};
+			        	\node [on chain=1,tmtape] (ninth) {#9};
            		\end{scope}
             	\end{tikzpicture}
 		\vspace{.5cm}	
@@ -519,7 +519,7 @@ First the algorithms will be described in detail with an added pseudocode, sketc
 			} fi
 		 } end;
 		\end{lstlisting}
-	\item[Example] The {\color{blue}blue} number is the middle, the {\color{red}red} numbers will be selected. \\[.5cm]
+	\item[Example] The {\color{blue}blue} number is the middle, the {\color{red}red} numbers will be selected and the {\color{green}green} numbers are sorted \\[.5cm]
 		\mergeExampleSorted{unmerged}{-1}{3}{6}{\color{blue}1}{2}{8}{first} \\
 		\mergeExampleTmp{tmp}{-1}{3}{6}{8}{2}{1}{first}{sixth} \\
 		\mergeExampleTmp{1st step (tmp)}{\color{red}-1}{3}{6}{8}{2}{1}{first}{sixth} \mergeExampleSorted{merged}{-1}{-}{-}{-}{-}{-}{first} \\
@@ -555,7 +555,7 @@ First the algorithms will be described in detail with an added pseudocode, sketc
 			boundaries[] := findBoundariesOfPresortedData(unsorted[SIZE]);	
 		} end;		 
 		\end{lstlisting}
-	\item[Example] The {\color{blue}blue} and {\color{red}red} coloured numbers represent the pre-sorted parts of the data and in the following step the blue part will be merged with its following red part. \\[.5cm]
+	\item[Example] The {\color{blue}blue} and {\color{red}red} coloured numbers represent the pre-sorted parts of the data and in the following step the blue part will be merged with its following red part. The {\color{green}green} numbers are sorted \\[.5cm] 
 		\mergeSortsExample{unsorted}{-1}{1}{2}{1}{3}{2}{10}{5} \\
 		\mergeSortsExample{1st step: boundaries}{\color{blue}-1}{\color{blue}1}{\color{blue}2}{\color{red}1}{\color{red}3}{\color{blue}2}{\color{blue}10}{\color{red}5} \\
 		\mergeSortsExample{2nd step: merge}{\color{blue}-1}{\color{blue}1}{\color{blue}1}{\color{blue}2}{\color{blue}3}{\color{red}2}{\color{red}5}{\color{red}10} \\
@@ -602,7 +602,7 @@ As shown in the example it is implemented in the following steps:
 	 		} end;	
 		} end;		 
 		\end{lstlisting}
-	\item[Example] The {\color{blue}blue} and {\color{red}red} coloured numbers represent the pre-sorted parts of the data and in the following step the blue part will be merged with its following red part. \\[.5cm]
+	\item[Example] The {\color{blue}blue} and {\color{red}red} coloured numbers represent the pre-sorted parts of the data and in the following step the blue part will be merged with its following red part. The {\color{green}green} numbers are sorted \\[.5cm]
 		\mergeSortsExample{unsorted}{-1}{1}{2}{1}{3}{2}{10}{5} \\
 		\mergeSortsExample{1st step: merge}{\color{blue}-1}{\color{blue}10}{\color{red}1}{\color{red}7}{\color{blue}2}{\color{blue}8}{\color{red}5}{\color{red}10} \\
 		\mergeSortsExample{2nd step: merge}{\color{blue}-1}{\color{blue}1}{\color{blue}7}{\color{blue}12}{\color{red}2}{\color{red}5}{\color{red}8}{\color{red}10} \\
@@ -652,7 +652,21 @@ It is implemented in the following steps:
 		quicksort from left to start of elements equal to pivot
 		quicksort from end of elements equal to pivot to the right
 		\end{lstlisting}	
-	\item[Example] TODO	
+	\item[Example] The {\color{red}red} number will be swapped,  {\color{blue}blue} number are the one for the next recursion. The {\color{green}green} numbers are sorted \\[.5cm]
+		\quicksortsExample{pivot to right end}{1}{5}{7}{\color{red}4}{3}{4}{9}{\color{red}2} \\
+		\quicksortsExample{1st step (1)}{1}{\color{red}5}{7}{2}{3}{\color{red}4}{9}{4} \\
+		\quicksortsExample{1st step (2)}{\color{red}1}{\color{red}4}{7}{2}{3}{5}{9}{4} \\
+		\quicksortsExample{2nd step (1)}{4}{1}{\color{red}7}{2}{\color{red}3}{5}{9}{4} \\
+		\quicksortsExample{3rd step (1)}{4}{1}{3}{2}{\color{red}7}{5}{9}{\color{red}4} \\
+		\quicksortsExample{3rd step (2)}{\color{red}4}{1}{3}{\color{red}2}{4}{5}{9}{7} \\
+		\quicksortsExample{3rd step (3)}{\color{blue}2}{\color{blue}1}{\color{blue}3}{\color{green}4}{\color{green}4}{5}{9}{7} \\
+		\quicksortsExample{4th step (1)}{2}{\color{red}1}{\color{red}3}{\color{green}4}{\color{green}4}{5}{9}{7} \\
+		\quicksortsExample{4th step (2)}{\color{red}2}{3}{\color{red}1}{\color{green}4}{\color{green}4}{5}{9}{7} \\
+		\quicksortsExample{4th step (2)}{1}{\color{blue}3}{\color{blue}2}{\color{green}4}{\color{green}4}{5}{9}{7} \\
+		\quicksortsExample{5th step (1)}{1}{\color{red}3}{\color{red}2}{\color{green}4}{\color{green}4}{5}{9}{7} \\
+		\quicksortsExample{5th step (2)}{\color{green}1}{\color{green}2}{\color{green}3}{\color{green}4}{\color{green}4}{\color{blue}5}{\color{blue}9}{\color{blue}7} \\
+		\quicksortsExample{6th step (1)}{\color{green}1}{\color{green}2}{\color{green}3}{\color{green}4}{\color{green}4}{5}{\color{red}9}{\color{red}7} \\
+		\quicksortsExample{6th step (2)}{\color{green}1}{\color{green}2}{\color{green}3}{\color{green}4}{\color{green}4}{5}{\color{green}7}{\color{green}9} \\
 	\item[$O$-Notation]:
 		\begin{table}[htdp]
 		\caption{3-way-partitioning Quicksort Complexity}
@@ -664,7 +678,7 @@ It is implemented in the following steps:
 		\end{table}%
 \end{description}
 
-\subsection{Quicksort with hybridisation}
+\subsection{3-way-partitioning Quicksort with hybridisation}
 \begin{description}
 	\item[Short Description] The hybrid Quicksort is a variation of the Quicksort avoiding special cases. These are
 	\begin{enumerate}
@@ -692,7 +706,7 @@ Otherwise the previously mentioned 3-way-partitioning Quicksort is performed. Ad
 			} fi
 		} fi;			 
 		\end{lstlisting}
-	\item[Example] TODO	
+	\item[Example] The {\color{red}red} number will be swapped,  {\color{blue}blue} number are the one for the next recursion. The {\color{green}green} numbers are sorted \\[.5cm]
 	\item[$O$-Notation]:
 		\begin{table}[htdp]
 		\caption{Hybrid Quicksort Complexity}

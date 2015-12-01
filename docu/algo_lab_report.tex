@@ -652,7 +652,7 @@ It is implemented in the following steps:
 		quicksort from left to start of elements equal to pivot
 		quicksort from end of elements equal to pivot to the right
 		\end{lstlisting}	
-	\item[Example] The {\color{red}red} number will be swapped,  {\color{blue}blue} number are the one for the next recursion. The {\color{green}green} numbers are sorted \\[.5cm]
+	\item[Example] The {\color{red}red} numbers will be swapped,  {\color{blue}blue} numbers are the one for the next recursion. The {\color{green}green} numbers are sorted \\[.5cm]
 		\quicksortsExample{pivot to right end}{1}{5}{7}{\color{red}4}{3}{4}{9}{\color{red}2} \\
 		\quicksortsExample{1st step (1)}{1}{\color{red}5}{7}{2}{3}{\color{red}4}{9}{4} \\
 		\quicksortsExample{1st step (2)}{\color{red}1}{\color{red}4}{7}{2}{3}{5}{9}{4} \\
@@ -706,7 +706,25 @@ Otherwise the previously mentioned 3-way-partitioning Quicksort is performed. Ad
 			} fi
 		} fi;			 
 		\end{lstlisting}
-	\item[Example] The {\color{red}red} number will be swapped,  {\color{blue}blue} number are the one for the next recursion. The {\color{green}green} numbers are sorted \\[.5cm]
+	\item[Example] The example is for showing how the worst case in quicksort is handled. As a matter of space the worst case in this example is if the size of elements in one recursion is 6-times bigger than the other one. \\ The {\color{red}red} numbers will be swapped,  {\color{blue}blue} numbers are the one for the next recursion. The {\color{green}green} numbers are sorted \\[.5cm]
+	\quicksortsExample{pivot to right end}{1}{4}{5}{\color{red}7}{6}{9}{3}{\color{red}3} \\
+	\quicksortsExample{1st step (1)}{1}{4}{5}{3}{6}{\color{red}9}{\color{red}3}{7} \\
+	\quicksortsExample{1st step (2)}{1}{4}{5}{3}{6}{3}{\color{red}9}{\color{red}7} \\
+	\quicksortsExample{worst case}{\color{blue}1}{\color{blue}4}{\color{blue}5}{\color{blue}3}{\color{blue}6}{\color{blue}3}{7}{9} \\
+	\quicksortsExample{correction}{\color{blue}1}{\color{blue}4}{\color{blue}5}{\color{blue}3}{6}{3}{7}{9} \\
+	\quicksortsExample{2nd step (1)}{1}{\color{red}4}{5}{\color{red}3}{6}{3}{7}{9} \\
+	\quicksortsExample{2nd step (2)}{1}{3}{\color{red}5}{\color{red}4}{6}{3}{7}{9} \\
+	\quicksortsExample{2nd step (3)}{\color{blue}1}{\color{blue}3}{4}{5}{6}{3}{7}{9} \\
+	\quicksortsExample{right recursion}{1}{3}{4}{5}{\color{blue}6}{\color{blue}3}{\color{blue}7}{\color{blue}9} \\
+	\quicksortsExample{3rd step (1)}{1}{3}{4}{5}{6}{\color{red}3}{7}{\color{red}9} \\
+	\quicksortsExample{3rd step (2)}{1}{3}{4}{5}{\color{red}6}{9}{7}{\color{red}3} \\
+	\quicksortsExample{right recursion)}{1}{3}{4}{5}{3}{\color{blue}9}{\color{blue}7}{\color{blue}6} \\
+	\quicksortsExample{4th step (1)}{1}{3}{4}{5}{3}{9}{\color{red}7}{\color{red}6} \\
+	\quicksortsExample{4th step (2)}{1}{3}{4}{5}{3}{\color{red}9}{\color{red}6}{7} \\
+	\quicksortsExample{next recursion}{1}{3}{4}{5}{3}{6}{\color{blue}9}{\color{blue}7} \\
+	\quicksortsExample{5th step (1)}{1}{3}{4}{5}{3}{6}{\color{red}9}{\color{red}7} \\
+	\quicksortsExample{merge halfs}{\color{blue}1}{\color{blue}3}{\color{blue}4}{\color{blue}5}{3}{6}{7}{9} \\
+	\quicksortsExample{done}{\color{green}1}{\color{green}3}{\color{green}3}{\color{green}4}{\color{green}5}{\color{green}6}{\color{green}7}{\color{green}9} \\
 	\item[$O$-Notation]:
 		\begin{table}[htdp]
 		\caption{Hybrid Quicksort Complexity}
@@ -741,7 +759,7 @@ The following preconditions were given by the professor:
 	\begin{itemize}
 		\item Before each test the cache has to be emptied by filling an array with 20MB of data.
 		\item Time measurement with data initialised with random, ascending and descending sorted values to point out the best, worst and average case.
-		\item The amount of data to be sorted shall increase from 8KB\footnote{kilo bytes = $10^3$ bytes} over 8MB\footnote{mega bytes = $10^6$ bytes} up to 8GB\footnote{giga bytes = $10^9$ bytes} in step of multiplying by 2. Hence the sizes of the data are: 8KB, 16KB, 32KB, 64KB, 128KB, 256KB, 512MB, 1MB, 2MB, 4MB and 8MB. Exceptions are the sorting by direct insert and direct select which have $O(n^2)$ in almost every case. The test cases are limited to 8MB.
+		\item The amount of data to be sorted shall increase from 8KB\footnote{kilo bytes = $10^3$ bytes} over 8MB\footnote{mega bytes = $10^6$ bytes} up to 8GB\footnote{giga bytes = $10^9$ bytes} in step of multiplying by 2. Hence the sizes of the data are: 8KB, 16KB, 32KB, 64KB, 128KB, 256KB, 512MB, 1MB, 2MB, 4MB, 8MB, 16MB, 32MB, 64MB, 128MB, 256MB, 512MB, 1GB, 2GB, 4GB and 8GB. Exceptions are the sorting by direct insert and direct select which have $O(n^2)$ in almost every case. The test cases are limited to 8MB.
 	\end{itemize}
 \end{enumerate}
 

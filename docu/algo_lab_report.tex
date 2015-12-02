@@ -872,22 +872,48 @@ In this section the results of time measuring are printed as tables. For each al
 	\label{default}
 \end{table}%
 
+\begin{table}[htdp]
+	\caption{\textbf{Natural} Mergesort - Results in $milliseconds$}
+	\begin{tabular}{|c|c|r|r|r|} \hline
+		Size of data & Loop rounds & \parbox[c]{3.5cm}{Descending \\ $O(n*log_2~n)$} & \parbox[c]{3.5cm}{Random \\$O(n*log_2~n)$} & \parbox[c]{3.5cm}{Ascending \\ $O(n*log_2~n)$} \\ \hline
+		64KB & 8.000 & 1,091 & 1,095 & 0,022 \\ \hline
+		128KB & 16.000 & 2,069 & 2,060 & 0,041 \\ \hline
+		256KB & 32.000& 5,428 & 4,305 & 0,072 \\ \hline
+		512KB & 64.000 & 9,537 & 11,520 & 0,137 \\ \hline
+		1MB & 128.000 & 19,458 & 199,914 & 0,319 \\ \hline
+		2MB & 256.000 & 43,344 & 46,762 & 0,951 \\ \hline
+		4MB & 512.000 & 102,000 & 91,000 & 1,766 \\ \hline
+		8MB & 1024.000 & 191,000 & 199,000 & 3,468 \\ \hline
+		16MB & 2048.000 & 418,000 & 410,000 & 7,048 \\ \hline
+		32MB & 4096.000 & 864,000 & 846,000 & 13,965 \\ \hline
+		64MB & 8192.000 & 1.861,000 & 1.847,000 & 27,211 \\ \hline
+		128MB & 16.386.000 & TODO & TODO & TODO \\ \hline
+		256MB & 32.768.000 & TODO & TODO & TODO \\ \hline
+		512MB & 65.536.000 & TODO & TODO & TODO \\ \hline
+		1GB & 131.072.000 & TODO & TODO & TODO \\ \hline
+		2GB & 262.144.000 & TODO & TODO & TODO \\ \hline
+		4GB & 524.288.000 & TODO & TODO & TODO \\ \hline
+		8GB & 1.048.576.000 & TODO & TODO & TODO \\ \hline
+	\end{tabular}
+	\label{default}
+\end{table}%
+
 %\subsection{Mergesort}
 \begin{table}[htdp]
-	\caption{\textbf{Bottom-up} Mergesort - Results in $nanoseconds$}
-	\begin{tabular}{|c|c|c|c|c|} \hline
-		Size of data & Loop rounds & \parbox[c]{3.5cm}{Descending \\ $O(n*log_2~n)$} & \parbox[c]{3.5cm}{Random \\$O(n*log_2~n)$} & \parbox[c]{3.5cm}{Ascending \\ $O(n*log_2~n)$} \\ \hline
-		64KB & 8.000 & TODO & TODO & TODO \\ \hline
-		128KB & 16.000 & TODO & TODO & TODO \\ \hline
-		256KB & 32.000& TODO & TODO & TODO \\ \hline
-		512KB & 64.000 & TODO & TODO & TODO \\ \hline
-		1MB & 128.000 & TODO & TODO & TODO \\ \hline
-		2MB & 256.000 & TODO & TODO & TODO \\ \hline
-		4MB & 512.000 & TODO & TODO & TODO \\ \hline
-		8MB & 1024.000 & TODO & TODO & TODO \\ \hline
-		16MB & 2048.000 & TODO & TODO & TODO \\ \hline
-		32MB & 4096.000 & TODO & TODO & TODO \\ \hline
-		64MB & 8192.000 & TODO & TODO & TODO \\ \hline
+	\caption{\textbf{Bottom-up} Mergesort - Results in $milliseconds$}
+	\begin{tabular}{|c|c|r|r|r|} \hline
+		Size of data & Loop rounds & \parbox[c]{3.5cm}{Descending \\ $O(n*log_2~n)$} & \parbox[c]{3.5cm}{Random \\$O(n*log_2~n)$} & \parbox[c]{3.5cm}{Ascending \\ $O(n*log_2~n)$} \\ \hline	
+		64KB & 8.000 & 0,861 & 0,924 & 0,446 \\ \hline
+		128KB & 16.000 & 1,955 & 1,827 & 0,929 \\ \hline
+		256KB & 32.000& 3,971 & 3,997 & 1,952 \\ \hline
+		512KB & 64.000 & 9,597 & 9,627 & 4,126 \\ \hline
+		1MB & 128.000 & 18,046 & 17,678 & 9,767 \\ \hline
+		2MB & 256.000 & 39,095 & 39,290 & 19,236 \\ \hline
+		4MB & 512.000 & 83,000 & 83,000 & 41,000 \\ \hline
+		8MB & 1024.000 & 172,000 & 174,000 & 87,770 \\ \hline
+		16MB & 2048.000 & 383,000 & 361,000 & 180,000 \\ \hline
+		32MB & 4096.000 & 766,000 & 754,000 & 381,000 \\ \hline
+		64MB & 8192.000 & 1.641,000 & 1.658,000 & 847,000 \\ \hline
 		128MB & 16.386.000 & TODO & TODO & TODO \\ \hline
 		256MB & 32.768.000 & TODO & TODO & TODO \\ \hline
 		512MB & 65.536.000 & TODO & TODO & TODO \\ \hline
@@ -898,50 +924,23 @@ In this section the results of time measuring are printed as tables. For each al
 	\end{tabular}
 	\label{default}
 \end{table}%
-
-\begin{table}[htdp]
-	\caption{\textbf{Natural} Mergesort - Results in $nanoseconds$}
-	\begin{tabular}{|c|c|c|c|c|} \hline
-		Size of data & Loop rounds & \parbox[c]{3.5cm}{Descending \\ $O(n*log_2~n)$} & \parbox[c]{3.5cm}{Random \\$O(n*log_2~n)$} & \parbox[c]{3.5cm}{Ascending \\ $O(n*log_2~n)$} \\ \hline
-		64KB & 8.000 & TODO & TODO & TODO \\ \hline
-		128KB & 16.000 & TODO & TODO & TODO \\ \hline
-		256KB & 32.000& TODO & TODO & TODO \\ \hline
-		512KB & 64.000 & TODO & TODO & TODO \\ \hline
-		1MB & 128.000 & TODO & TODO & TODO \\ \hline
-		2MB & 256.000 & TODO & TODO & TODO \\ \hline
-		4MB & 512.000 & TODO & TODO & TODO \\ \hline
-		8MB & 1024.000 & TODO & TODO & TODO \\ \hline
-		16MB & 2048.000 & TODO & TODO & TODO \\ \hline
-		32MB & 4096.000 & TODO & TODO & TODO \\ \hline
-		64MB & 8192.000 & TODO & TODO & TODO \\ \hline
-		128MB & 16.386.000 & TODO & TODO & TODO \\ \hline
-		256MB & 32.768.000 & TODO & TODO & TODO \\ \hline
-		512MB & 65.536.000 & TODO & TODO & TODO \\ \hline
-		1GB & 131.072.000 & TODO & TODO & TODO \\ \hline
-		2GB & 262.144.000 & TODO & TODO & TODO \\ \hline
-		4GB & 524.288.000 & TODO & TODO & TODO \\ \hline
-		8GB & 1.048.576.000 & TODO & TODO & TODO \\ \hline
-	\end{tabular}
-	\label{default}
-\end{table}%
-
 
 %\subsection{Quicksort}
 \begin{table}[htdp]
-	\caption{Quicksort with \textbf{three-way-partitionoing} - Results in $nanoseconds$}
-	\begin{tabular}{|c|c|c|c|c|} \hline
+	\caption{Quicksort with \textbf{three-way-partitionoing} - Results in $milliseconds$}
+	\begin{tabular}{|c|c|r|r|r|} \hline
 		Size of data & Loop rounds & \parbox[c]{3.5cm}{Descending \\ $O(n*log_2~n)$} & \parbox[c]{3.5cm}{Random \\$O(n*log_2~n)$} & \parbox[c]{3.5cm}{Ascending \\ $O(n*log_2~n)$} \\ \hline
-		64KB & 8.000 & TODO & TODO & TODO \\ \hline
-		128KB & 16.000 & TODO & TODO & TODO \\ \hline
-		256KB & 32.000& TODO & TODO & TODO \\ \hline
-		512KB & 64.000 & TODO & TODO & TODO \\ \hline
-		1MB & 128.000 & TODO & TODO & TODO \\ \hline
-		2MB & 256.000 & TODO & TODO & TODO \\ \hline
-		4MB & 512.000 & TODO & TODO & TODO \\ \hline
-		8MB & 1024.000 & TODO & TODO & TODO \\ \hline
-		16MB & 2048.000 & TODO & TODO & TODO \\ \hline
-		32MB & 4096.000 & TODO & TODO & TODO \\ \hline
-		64MB & 8192.000 & TODO & TODO & TODO \\ \hline
+		64KB & 8.000 & 0,557 & 0,601 & 0,144 \\ \hline
+		128KB & 16.000 & 1,207 & 1,261 & 0,270 \\ \hline
+		256KB & 32.000& 2,718 & 2,643 & 0,691 \\ \hline
+		512KB & 64.000 & 5,475 & 9,919 & 1,933 \\ \hline
+		1MB & 128.000 & 12,990 & 11,501 & 2,593 \\ \hline
+		2MB & 256.000 & 23,610 & 23,631 & 5,438 \\ \hline
+		4MB & 512.000 & 50,000 & 50,000 & 11,000 \\ \hline
+		8MB & 1024.000 & 104,000 & 105,000 & 30,920 \\ \hline
+		16MB & 2048.000 & 221,000 & 215,000 & 49,072 \\ \hline
+		32MB & 4096.000 & 481,000 & 461,000 & 102,228 \\ \hline
+		64MB & 8192.000 & 989,000 & 988,000 & 214,053 \\ \hline
 		128MB & 16.386.000 & TODO & TODO & TODO \\ \hline
 		256MB & 32.768.000 & TODO & TODO & TODO \\ \hline
 		512MB & 65.536.000 & TODO & TODO & TODO \\ \hline
@@ -954,19 +953,19 @@ In this section the results of time measuring are printed as tables. For each al
 \end{table}%
 
 \begin{table}[htdp]
-	\caption{Quicksort with \textbf{hybridisation} - Results in $nanoseconds$}
-	\begin{tabular}{|c|c|c|c|c|} \hline
-		Size of data & Loop rounds & \parbox[c]{3.5cm}{Descending \\ $O(n*log_2~n)$} & \parbox[c]{3.5cm}{Random \\$O(n*log_2~n)$} & \parbox[c]{3.5cm}{Ascending \\ $O(n*log_2~n)$} \\ \hline
-		64KB & 8.000 & TODO & TODO & TODO \\ \hline
-		128KB & 16.000 & TODO & TODO & TODO \\ \hline
-		256KB & 32.000& TODO & TODO & TODO \\ \hline
-		512KB & 64.000 & TODO & TODO & TODO \\ \hline
-		1MB & 128.000 & TODO & TODO & TODO \\ \hline
-		2MB & 256.000 & TODO & TODO & TODO \\ \hline
-		4MB & 512.000 & TODO & TODO & TODO \\ \hline
-		8MB & 1024.000 & TODO & TODO & TODO \\ \hline
-		16MB & 2048.000 & TODO & TODO & TODO \\ \hline
-		32MB & 4096.000 & TODO & TODO & TODO \\ \hline
+	\caption{Quicksort with \textbf{hybridisation} - Results in $milliseconds$}
+	\begin{tabular}{|c|c|r|r|r|} \hline
+		Size of data & Loop rounds & \parbox[c]{3.5cm}{Descending \\ $O(n^2)$} & \parbox[c]{3.5cm}{Random \\$O(n^2)$} & \parbox[c]{3.5cm}{Ascending \\ $O(n)$} \\ \hline
+		64KB & 8.000 & 1,160 & 1,059 & 0,200 \\ \hline
+		128KB & 16.000 & 3,159 & 3,251 & 0,486 \\ \hline
+		256KB & 32.000& 10,423 & 12,458 & 0,796 \\ \hline
+		512KB & 64.000 & 39,779 & 34,004 & 2,235 \\ \hline
+		1MB & 128.000 & 296,967 & 384,121 & 3,481 \\ \hline
+		2MB & 256.000 & 2043,118 & 2135,965 & 7,685 \\ \hline
+		4MB & 512.000 & 9731,000 & 9646,000 & 14,920 \\ \hline
+		8MB & 1024.000 &  37.248,000  & 37.970,000 & 30,688 \\ \hline
+		16MB & 2048.000 & 139.709,625 & 143.272,505 & 64,679 \\ \hline
+		32MB & 4096.000 & 552.917,514 & 566.968,305 & 131,563 \\ \hline
 		64MB & 8192.000 & TODO & TODO & TODO \\ \hline
 		128MB & 16.386.000 & TODO & TODO & TODO \\ \hline
 		256MB & 32.768.000 & TODO & TODO & TODO \\ \hline

@@ -12,3 +12,4 @@ docu/*.log
 docu/*.out
 docu/*.pdf
 docu/*.gz
+build/*

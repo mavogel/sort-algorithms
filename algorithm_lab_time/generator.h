@@ -35,10 +35,8 @@ void initRandomDoubles(std::array<double, SIZE>& array) {
  */
 template <size_t SIZE>
 void initDescendingSortedDoubles(std::array<double, SIZE>& array) {
-    double curr = INT_MAX;
     for(size_t i = 0; i < SIZE; i++) {
-        curr -= generateRandomDouble(0,1);
-        array[i] = curr;
+        array[i] = SIZE-1-i;
     }
 }
 
@@ -48,7 +46,7 @@ void initDescendingSortedDoubles(std::array<double, SIZE>& array) {
 template <size_t SIZE>
 void initAscendingSortedDoubles(std::array<double, SIZE>& array) {
     for(size_t i = 0; i < SIZE; i++) {
-        array[i] = i + generateRandomDouble(0,1);
+        array[i] = i;
     }
 }
 

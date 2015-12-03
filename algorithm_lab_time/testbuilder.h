@@ -2,9 +2,11 @@
 #define TESTBUILDER
 
 // Limits
-#define MAX_ON2_ROUNDS 1024000
-#define ROUNDS_1GB 131072000
-#define ROUNDS_8GB 1048576000
+#define MAX_ON2_ROUNDS  1024000
+#define ROUNDS_128MB   16386000
+#define ROUNDS_1GB    131072000
+#define ROUNDS_4GB    524288000
+#define ROUNDS_8GB   1048576000
 
 #define GB_IN_BYTES 1000000000
 #define MB_IN_BYTES 1000000
@@ -72,7 +74,12 @@ void afterTestEvaluation(std::chrono::steady_clock::time_point& start, std::chro
 /**
  * Prints the timings in the desired LaTeX format for copy and paste
  */
-void printTimings(std::ostream& os, size_t rounds, std::vector<double>& timings);
+void printTimingsForTex(std::ostream& os, size_t rounds, std::vector<double>& timings);
+
+/**
+ * Prints the duration in seconds and ms with the given prompt if not empty
+ */
+void printDuration(std::ostream& os, std::string& prompt, std::chrono::steady_clock::time_point& start, std::chrono::steady_clock::time_point& end);
 
 /**
  * Calculates and format the corresponding KB, MB or GBs from the rounds
@@ -83,7 +90,8 @@ std::string getBytesSizeFromRounds(size_t rounds);
  * Fills the array in the given mode
  */
 template <size_t SIZE>
-void pretestFill(std::array<double, SIZE>& array, const FILL_MODE fillMode) {
+void pretestFill(std::array<double, SIZE>& array, const FILL_MODE fillMode, std::ostream& os) {
+    auto preFillStart = std::chrono::high_resolution_clock::now();
     switch (fillMode) {
         case FILL_MODE::ASC:
             initAscendingSortedDoubles(array);
@@ -95,6 +103,9 @@ void pretestFill(std::array<double, SIZE>& array, const FILL_MODE fillMode) {
             initRandomDoubles(array);
         break;
     }
+    auto preFillEnd = std::chrono::high_resolution_clock::now();
+    std::string prompt = "prefill ("  + toString(fillMode) + ")";
+    printDuration(os, prompt, preFillStart, preFillEnd);
 
     // clears L2 & 3 Cache
     preTestFillArrayWith20mb();
@@ -106,7 +117,9 @@ void pretestFill(std::array<double, SIZE>& array, const FILL_MODE fillMode) {
 template <size_t SIZE>
 void runSortingAlgorithm(void (*sortFunction)(std::array<double, SIZE> &), std::array<double, SIZE> &array,
                          const FILL_MODE fillMode, std::ostream& os, std::vector<double>& timings) {
-    pretestFill(array, fillMode);
+
+    // == prepare ==
+    pretestFill(array, fillMode, os);
 
     // == go ==
     auto start = std::chrono::high_resolution_clock::now();
@@ -124,22 +137,22 @@ void runSortingAlgorithm(void (*sortFunction)(std::array<double, SIZE> &), std::
 template <size_t SIZE>
 void runSortingAlgorithms(std::array<double, SIZE> &array) {
     std::vector<std::tuple<void (*) (std::array<double, SIZE>&), std::string, size_t>> sortFunctions;
-    sortFunctions.push_back(std::make_tuple<void (*) (std::array<double, SIZE>&), std::string, size_t>(sortViaOptimalDirectSelection, "sortViaOptimalDirectSelection",
-                                                                                                       MAX_ON2_ROUNDS));
-    sortFunctions.push_back(std::make_tuple<void (*) (std::array<double, SIZE>&), std::string, size_t>(sortViaNonOptimalDirectSelection, "sortViaNonOptimalDirectSelection",
-                                                                                                       MAX_ON2_ROUNDS));
-    sortFunctions.push_back(std::make_tuple<void (*) (std::array<double, SIZE>&), std::string, size_t>(sortViaDirectInsertWithWatcherElement, "sortViaDirectInsertWithWatcherElement",
-                                                                                                       MAX_ON2_ROUNDS));
-    sortFunctions.push_back(std::make_tuple<void (*) (std::array<double, SIZE>&), std::string, size_t>(sortViaNormalDirectInsert, "sortViaNormalDirectInsert",
-                                                                                                       MAX_ON2_ROUNDS));
-    sortFunctions.push_back(std::make_tuple<void (*) (std::array<double, SIZE>&), std::string, size_t>(sortViaNaturalMergesort, "sortViaNaturalMergesort",
-                                                                                                       ROUNDS_1GB));
-    sortFunctions.push_back(std::make_tuple<void (*) (std::array<double, SIZE>&), std::string, size_t>(sortViaBottomUpMergesort, "sortViaBottomUpMergesort",
-                                                                                                       ROUNDS_1GB));
-    sortFunctions.push_back(std::make_tuple<void (*) (std::array<double, SIZE>&), std::string, size_t>(sortVia3WayPartitioningQuicksort, "sortVia3WayPartitioningQuicksort",
-                                                                                                       ROUNDS_1GB));
-    sortFunctions.push_back(std::make_tuple<void (*) (std::array<double, SIZE>&), std::string, size_t>(sortViaHybridQuicksort, "sortViaHybridQuicksort",
-                                                                                                       ROUNDS_1GB));
+//    sortFunctions.push_back(std::make_tuple<void (*) (std::array<double, SIZE>&), std::string, size_t>(sortViaOptimalDirectSelection, "sortViaOptimalDirectSelection",
+//                                                                                                       MAX_ON2_ROUNDS));
+//    sortFunctions.push_back(std::make_tuple<void (*) (std::array<double, SIZE>&), std::string, size_t>(sortViaNonOptimalDirectSelection, "sortViaNonOptimalDirectSelection",
+//                                                                                                       MAX_ON2_ROUNDS));
+//    sortFunctions.push_back(std::make_tuple<void (*) (std::array<double, SIZE>&), std::string, size_t>(sortViaDirectInsertWithWatcherElement, "sortViaDirectInsertWithWatcherElement",
+//                                                                                                       MAX_ON2_ROUNDS));
+//    sortFunctions.push_back(std::make_tuple<void (*) (std::array<double, SIZE>&), std::string, size_t>(sortViaNormalDirectInsert, "sortViaNormalDirectInsert",
+//                                                                                                       MAX_ON2_ROUNDS));
+//    sortFunctions.push_back(std::make_tuple<void (*) (std::array<double, SIZE>&), std::string, size_t>(sortViaNaturalMergesort, "sortViaNaturalMergesort",
+//                                                                                                       ROUNDS_8GB));
+//    sortFunctions.push_back(std::make_tuple<void (*) (std::array<double, SIZE>&), std::string, size_t>(sortViaBottomUpMergesort, "sortViaBottomUpMergesort",
+//                                                                                                       ROUNDS_8GB));
+      sortFunctions.push_back(std::make_tuple<void (*) (std::array<double, SIZE>&), std::string, size_t>(sortVia3WayPartitioningQuicksort, "sortVia3WayPartitioningQuicksort",
+                                                                                                       ROUNDS_8GB));
+//    sortFunctions.push_back(std::make_tuple<void (*) (std::array<double, SIZE>&), std::string, size_t>(sortViaHybridQuicksort, "sortViaHybridQuicksort",
+//                                                                                                       ROUNDS_128MB));
 
     std::string name;
     void (*functionPointer) (std::array<double, SIZE>&);
@@ -153,7 +166,7 @@ void runSortingAlgorithms(std::array<double, SIZE> &array) {
             runSortingAlgorithm(functionPointer, array, FILL_MODE::DESC, std::cout, timings);
             runSortingAlgorithm(functionPointer, array, FILL_MODE::RANDOM, std::cout, timings);
             runSortingAlgorithm(functionPointer, array, FILL_MODE::ASC, std::cout, timings);
-            printTimings(std::cout, SIZE, timings);
+            printTimingsForTex(std::cout, SIZE, timings);
             std::cout << "------------------------------------\n";
         }
     }

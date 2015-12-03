@@ -50,7 +50,7 @@ std::string getBytesSizeFromRounds(size_t rounds) {
     }
 }
 
-void printTimings(std::ostream& os, size_t rounds, std::vector<double>& timings) {
+void printTimingsForTex(std::ostream& os, size_t rounds, std::vector<double>& timings) {
     os << "TeX: "<< getBytesSizeFromRounds(rounds) << " & " << rounds << " & ";
     for(size_t i = 0; i < timings.size(); i++) {
         os << timings[i];
@@ -60,4 +60,18 @@ void printTimings(std::ostream& os, size_t rounds, std::vector<double>& timings)
             os << " \\\\ \\hline\n";
         }
     }
+}
+
+void printDuration(std::ostream& os, std::string& prompt, std::chrono::steady_clock::time_point& start, std::chrono::steady_clock::time_point& end) {
+    using namespace std::chrono;
+
+    if(!prompt.empty()) os << prompt << ": ";
+    unsigned long millis = duration_cast<milliseconds>(end-start).count();
+    unsigned long seconds = millis / (1000);
+    unsigned long minutes = seconds / (60);
+    const unsigned int width = 12;
+
+    os << std::setfill('0') << std::setw(width) << minutes<< "min\t"
+       << std::setfill('0') << std::setw(width) << seconds << "s\t"
+       << std::setfill('0') << std::setw(width) << millis << "ms\n";
 }

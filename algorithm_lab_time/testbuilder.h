@@ -69,7 +69,7 @@ std::ostream& operator<<(std::ostream& os, const FILL_MODE fillMode);
  * @param testCase the context of the current test case
  * @param os the outputstream
  */
-void afterTestEvaluation(std::chrono::steady_clock::time_point& start, std::chrono::steady_clock::time_point& end, std::string& testCase, std::ostream& os, std::vector<double>& timings);
+void afterTestEvaluation(std::chrono::high_resolution_clock::time_point& start, std::chrono::high_resolution_clock::time_point& end, std::string& testCase, std::ostream& os, std::vector<double>& timings);
 
 /**
  * Prints the timings in the desired LaTeX format for copy and paste
@@ -79,7 +79,7 @@ void printTimingsForTex(std::ostream& os, size_t rounds, std::vector<double>& ti
 /**
  * Prints the duration in seconds and ms with the given prompt if not empty
  */
-void printDuration(std::ostream& os, std::string& prompt, std::chrono::steady_clock::time_point& start, std::chrono::steady_clock::time_point& end);
+void printDuration(std::ostream& os, std::string& prompt, std::chrono::high_resolution_clock::time_point& start, std::chrono::high_resolution_clock::time_point& end);
 
 /**
  * Calculates and format the corresponding KB, MB or GBs from the rounds
@@ -91,7 +91,7 @@ std::string getBytesSizeFromRounds(size_t rounds);
  */
 template <size_t SIZE>
 void pretestFill(std::array<double, SIZE>& array, const FILL_MODE fillMode, std::ostream& os) {
-    auto preFillStart = std::chrono::high_resolution_clock::now();
+    std::chrono::high_resolution_clock::time_point preFillStart = std::chrono::high_resolution_clock::now();
     switch (fillMode) {
         case FILL_MODE::ASC:
             initAscendingSortedDoubles(array);
@@ -103,7 +103,7 @@ void pretestFill(std::array<double, SIZE>& array, const FILL_MODE fillMode, std:
             initRandomDoubles(array);
         break;
     }
-    auto preFillEnd = std::chrono::high_resolution_clock::now();
+    std::chrono::high_resolution_clock::time_point preFillEnd = std::chrono::high_resolution_clock::now();
     std::string prompt = "prefill ("  + toString(fillMode) + ")";
     printDuration(os, prompt, preFillStart, preFillEnd);
 
@@ -122,9 +122,9 @@ void runSortingAlgorithm(void (*sortFunction)(std::array<double, SIZE> &), std::
     pretestFill(array, fillMode, os);
 
     // == go ==
-    auto start = std::chrono::high_resolution_clock::now();
+    std::chrono::high_resolution_clock::time_point start = std::chrono::high_resolution_clock::now();
     sortFunction(array);
-    auto end = std::chrono::high_resolution_clock::now();
+    std::chrono::high_resolution_clock::time_point end = std::chrono::high_resolution_clock::now();
 
     // == evaluate ==
     std::string testCase = toString(fillMode);
@@ -156,7 +156,7 @@ void runSortingAlgorithms(std::array<double, SIZE> &array) {
 
     std::string name;
     void (*functionPointer) (std::array<double, SIZE>&);
-    size_t maxSize;
+    size_t maxSize = ROUNDS_8GB;
     std::vector<double> timings;
     for(auto& sortFunction : sortFunctions) {
         timings.clear();

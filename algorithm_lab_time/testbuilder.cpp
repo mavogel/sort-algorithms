@@ -21,7 +21,7 @@ std::string toString(const bool theBool) {
     return theBool ? "true " : "false";
 }
 
-void afterTestEvaluation(std::chrono::steady_clock::time_point& start, std::chrono::steady_clock::time_point& end, std::string& testCase, std::ostream& os, std::vector<double>& timings) {
+void afterTestEvaluation(std::chrono::high_resolution_clock::time_point& start, std::chrono::high_resolution_clock::time_point& end, std::string& testCase, std::ostream& os, std::vector<double>& timings) {
     using namespace std::chrono;
     const unsigned int width = 12;
 
@@ -62,7 +62,7 @@ void printTimingsForTex(std::ostream& os, size_t rounds, std::vector<double>& ti
     }
 }
 
-void printDuration(std::ostream& os, std::string& prompt, std::chrono::steady_clock::time_point& start, std::chrono::steady_clock::time_point& end) {
+void printDuration(std::ostream& os, std::string& prompt, std::chrono::high_resolution_clock::time_point& start, std::chrono::high_resolution_clock::time_point& end) {
     using namespace std::chrono;
 
     if(!prompt.empty()) os << prompt << ": ";

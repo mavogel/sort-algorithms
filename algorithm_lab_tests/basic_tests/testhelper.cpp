@@ -1,3 +1,4 @@
+#include <algorithm>
 #include "testhelper.h"
 
 std::string generateRandomString(size_t length) {

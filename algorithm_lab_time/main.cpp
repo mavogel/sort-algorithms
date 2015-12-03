@@ -1,32 +1,39 @@
+#include <memory>
 #include "testbuilder.h"
+
+#if defined(_STD_TR1_SHARED_PTR)
+using std::tr1::shared_ptr;
+#else
+using std::shared_ptr;
+#endif
 
 int main() {
     // == init ==
-    std::shared_ptr<std::array<double, 125>> KB1_list(new std::array<double, 125>);
-    std::shared_ptr<std::array<double, 250>> KB2_list(new std::array<double, 250>);
-    std::shared_ptr<std::array<double, 500>> KB4_list(new std::array<double, 500>);
-    std::shared_ptr<std::array<double, 1000>> KB8_list(new std::array<double, 1000>);
-    std::shared_ptr<std::array<double, 2000>> KB16_list(new std::array<double, 2000>);
-    std::shared_ptr<std::array<double, 4000>> KB32_list(new std::array<double, 4000>);
-    std::shared_ptr<std::array<double, 8000>> KB64_list(new std::array<double, 8000>);
-    std::shared_ptr<std::array<double, 16000>> KB128_list(new std::array<double, 16000>);
-    std::shared_ptr<std::array<double, 32000>> KB256_list(new std::array<double, 32000>);
-    std::shared_ptr<std::array<double, 64000>> KB512_list(new std::array<double, 64000>);
-    std::shared_ptr<std::array<double, 128000>> M1_list(new std::array<double, 128000>);
-    std::shared_ptr<std::array<double, 256000>> M2_list(new std::array<double, 256000>);
-    std::shared_ptr<std::array<double, 512000>> M4_list(new std::array<double, 512000>);
-    std::shared_ptr<std::array<double, 1024000>> M8_list(new std::array<double, 1024000>);
+    shared_ptr<std::array<double, 125>> KB1_list(new std::array<double, 125>);
+    shared_ptr<std::array<double, 250>> KB2_list(new std::array<double, 250>);
+    shared_ptr<std::array<double, 500>> KB4_list(new std::array<double, 500>);
+    shared_ptr<std::array<double, 1000>> KB8_list(new std::array<double, 1000>);
+    shared_ptr<std::array<double, 2000>> KB16_list(new std::array<double, 2000>);
+    shared_ptr<std::array<double, 4000>> KB32_list(new std::array<double, 4000>);
+    shared_ptr<std::array<double, 8000>> KB64_list(new std::array<double, 8000>);
+    shared_ptr<std::array<double, 16000>> KB128_list(new std::array<double, 16000>);
+    shared_ptr<std::array<double, 32000>> KB256_list(new std::array<double, 32000>);
+    shared_ptr<std::array<double, 64000>> KB512_list(new std::array<double, 64000>);
+    shared_ptr<std::array<double, 128000>> M1_list(new std::array<double, 128000>);
+    shared_ptr<std::array<double, 256000>> M2_list(new std::array<double, 256000>);
+    shared_ptr<std::array<double, 512000>> M4_list(new std::array<double, 512000>);
+    shared_ptr<std::array<double, 1024000>> M8_list(new std::array<double, 1024000>);
     // for MS and QS only
-    std::shared_ptr<std::array<double, 2048000>> M16_list(new std::array<double, 2048000>);
-    std::shared_ptr<std::array<double, 4096000>> M32_list(new std::array<double, 4096000>);
-    std::shared_ptr<std::array<double, 8192000>> M64_list(new std::array<double, 8192000>);
-    std::shared_ptr<std::array<double, 16386000>> M128_list(new std::array<double, 16386000>);
-    std::shared_ptr<std::array<double, 32768000>> M256_list(new std::array<double, 32768000>);
-    std::shared_ptr<std::array<double, 65536000>> M512_list(new std::array<double, 65536000>);
-    std::shared_ptr<std::array<double, 131072000>> G1_list(new std::array<double, 131072000>);
-    std::shared_ptr<std::array<double, 262144000>> G2_list(new std::array<double, 262144000>);
-    std::shared_ptr<std::array<double, 524288000>> G4_list(new std::array<double, 524288000>);
-    std::shared_ptr<std::array<double, 1048576000>> G8_list(new std::array<double, 1048576000>);
+    shared_ptr<std::array<double, 2048000>> M16_list(new std::array<double, 2048000>);
+    shared_ptr<std::array<double, 4096000>> M32_list(new std::array<double, 4096000>);
+    shared_ptr<std::array<double, 8192000>> M64_list(new std::array<double, 8192000>);
+    shared_ptr<std::array<double, 16386000>> M128_list(new std::array<double, 16386000>);
+    shared_ptr<std::array<double, 32768000>> M256_list(new std::array<double, 32768000>);
+    shared_ptr<std::array<double, 65536000>> M512_list(new std::array<double, 65536000>);
+    shared_ptr<std::array<double, 131072000>> G1_list(new std::array<double, 131072000>);
+    shared_ptr<std::array<double, 262144000>> G2_list(new std::array<double, 262144000>);
+    shared_ptr<std::array<double, 524288000>> G4_list(new std::array<double, 524288000>);
+    shared_ptr<std::array<double, 1048576000>> G8_list(new std::array<double, 1048576000>);
 
     // == go ==
 //    runSortingAlgorithms(*KB1_list);

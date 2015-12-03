@@ -2,6 +2,12 @@
 #define GENERATOR
 
 #include <random>
+#include <cstdint>
+#include <limits>
+#include <array>
+#ifdef _OPENMP
+#include <omp.h>
+#endif
 
 /**
  * Fills a array with 20mb data
@@ -14,37 +20,46 @@ void preTestFillArrayWith20mb();
  * Generates a random double value between the given boundaries
  *
  * @brief generateRandomDouble
- * @param lowerBound the lower bound @default INT_MIN
- * @param upperBound the upper bound @default INT_MAX
+ * @param lowerBound the lower bound
+ * @param upperBound the upper bound
  * @return the random double
  */
-double generateRandomDouble(const int lowerBound = INT_MIN, const int upperBound = INT_MAX);
+double generateRandomDouble(const int lowerBound, const int upperBound);
 
 /**
  *  Initializes the given array with random double values in the range [INT_MIN,INT_MAX]
  */
 template <size_t SIZE>
 void initRandomDoubles(std::array<double, SIZE>& array) {
+#ifdef _OPENMP
+    #pragma omp parallel for num_threads(6)
+#endif
     for(size_t i = 0; i < SIZE; i++) {
-        array[i] = generateRandomDouble(INT_MIN, INT_MAX);
+        array[i] = generateRandomDouble(std::numeric_limits<std::int32_t>::min(),std::numeric_limits<std::int32_t>::max());
     }
 }
 
 /**
- *  Initializes the given array with DESCENDING sortet double values
+ *  Initializes the given array with DESCENDING sorted double values
  */
 template <size_t SIZE>
 void initDescendingSortedDoubles(std::array<double, SIZE>& array) {
+#ifdef _OPENMP
+    #pragma omp parallel for
+#endif
     for(size_t i = 0; i < SIZE; i++) {
         array[i] = SIZE-1-i;
     }
 }
 
 /**
- *  Initializes the given array with ASCENDING sortet double values
+ *  Initializes the given array with ASCENDING sorted double values
  */
 template <size_t SIZE>
 void initAscendingSortedDoubles(std::array<double, SIZE>& array) {
+#ifdef _OPENMP
+    #pragma omp parallel for
+#endif
     for(size_t i = 0; i < SIZE; i++) {
         array[i] = i;
     }

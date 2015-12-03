@@ -4,11 +4,18 @@
 #include <array>
 #include <vector>
 #include <cmath>
+#include <memory>
 #include "minsearch.h"
 #include "notSortedException.h"
 
 #define MAX_QS_DEPTH 25
 #define FACTOR_WORST_QS 10
+
+#if defined(_STD_TR1_SHARED_PTR)
+using std::tr1::shared_ptr;
+#else
+using std::shared_ptr;
+#endif
 
 /**
  *  Sorts the given array via optimal 'direct selection'.
@@ -159,7 +166,7 @@ void sortViaNaturalMergesort(std::array<T, SIZE>& array) {
 
     std::vector<size_t> boundaries = findIndexesOfPresortedData(array);
 
-    std::shared_ptr<std::array<T, SIZE>> tmp(new std::array<T, SIZE>());
+    shared_ptr<std::array<T, SIZE>> tmp(new std::array<T, SIZE>());
     while(boundaries.size() >=3) {
         for(size_t i = 0; i < boundaries.size() - 2; i+=2) {
             size_t lo, mid, hi;
@@ -189,7 +196,7 @@ void sortViaBottomUpMergesort(std::array<T, SIZE>& array) {
         rounds = (size_t) integral;
     }
 
-    std::shared_ptr<std::array<T, SIZE>> tmp(new std::array<T, SIZE>());
+    shared_ptr<std::array<T, SIZE>> tmp(new std::array<T, SIZE>());
     for(size_t i = 1; i <= rounds; i++) {
         for(size_t j = 0; j < SIZE; j+=std::pow(2,i)) {
             size_t lo, mid, hi;
@@ -305,7 +312,7 @@ void internalHybridQuicksort(std::array<T, SIZE>& array, const size_t left, cons
 
         if(isWorstQuickSortCase(left,j,i,right)) {
             // == step 6a: split recursion and merge
-            std::shared_ptr<std::array<T, SIZE>> tmp(new std::array<T, SIZE>());
+            shared_ptr<std::array<T, SIZE>> tmp(new std::array<T, SIZE>());
             size_t mid = (left + right) / 2;
             internalHybridQuicksort(array, left, mid, depth+1);
             internalHybridQuicksort(array, mid+1, right, depth+1);

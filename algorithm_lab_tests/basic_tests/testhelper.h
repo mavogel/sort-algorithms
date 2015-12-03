@@ -4,6 +4,8 @@
 #include <array>
 #include <random>
 #include <iostream>
+#include <cstdint>
+#include <limits>
 #include "gtest/gtest.h"
 
 /**
@@ -71,7 +73,7 @@ template <size_t SIZE>
 void initRandomIntegers(std::array<int, SIZE>& array) {
     std::random_device rd;     // only used once to initialise (seed) engine
     std::mt19937 rng(rd());    // random-number engine used (Mersenne-Twister in this case)
-    std::uniform_int_distribution<int> uni(INT_MIN,INT_MAX); // guaranteed unbiased
+    std::uniform_int_distribution<int> uni(std::numeric_limits<std::int32_t>::min(),std::numeric_limits<std::int32_t>::max()); // guaranteed unbiased
 
     for(size_t i = 0; i < SIZE; i++) {
         auto random_integer = uni(rng);
@@ -86,7 +88,7 @@ template <size_t SIZE>
 void initRandomDoubles(std::array<double, SIZE>& array) {
     std::random_device rd;     // only used once to initialise (seed) engine
     std::mt19937 rng(rd());    // random-number engine used (Mersenne-Twister in this case)
-    std::uniform_real_distribution<double> uni(INT_MIN,INT_MAX);
+    std::uniform_real_distribution<double> uni(std::numeric_limits<std::int32_t>::min(),std::numeric_limits<std::int32_t>::max());
 
     for(size_t i = 0; i < SIZE; i++) {
         auto random_double = uni(rng);

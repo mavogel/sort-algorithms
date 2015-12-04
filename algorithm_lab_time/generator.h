@@ -32,10 +32,11 @@ double generateRandomDouble(const int lowerBound, const int upperBound);
 template <size_t SIZE>
 void initRandomDoubles(std::array<double, SIZE>& array) {
 #ifdef _OPENMP
-    #pragma omp parallel for num_threads(6)
+    #pragma omp parallel for num_threads(2)
 #endif
-    for(size_t i = 0; i < SIZE; i++) {
+    for(size_t i = 0; i < SIZE/2; i++) {
         array[i] = generateRandomDouble(std::numeric_limits<std::int32_t>::min(),std::numeric_limits<std::int32_t>::max());
+        array[SIZE-i-1] = generateRandomDouble(std::numeric_limits<std::int32_t>::min(),std::numeric_limits<std::int32_t>::max());
     }
 }
 
@@ -45,10 +46,11 @@ void initRandomDoubles(std::array<double, SIZE>& array) {
 template <size_t SIZE>
 void initDescendingSortedDoubles(std::array<double, SIZE>& array) {
 #ifdef _OPENMP
-    #pragma omp parallel for
+    #pragma omp parallel for num_threads(2)
 #endif
-    for(size_t i = 0; i < SIZE; i++) {
+    for(size_t i = 0; i < SIZE/2; i++) {
         array[i] = SIZE-1-i;
+        array[SIZE-i-1] = i;
     }
 }
 
@@ -58,7 +60,7 @@ void initDescendingSortedDoubles(std::array<double, SIZE>& array) {
 template <size_t SIZE>
 void initAscendingSortedDoubles(std::array<double, SIZE>& array) {
 #ifdef _OPENMP
-    #pragma omp parallel for
+    #pragma omp parallel for num_threads(2)
 #endif
     for(size_t i = 0; i < SIZE; i++) {
         array[i] = i;

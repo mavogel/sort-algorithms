@@ -1,5 +1,17 @@
 include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
 
+add_executable(runMergeTests
+        testhelper.cpp
+        mergeTest.cpp
+        )
+target_link_libraries(runMergeTests gtest gtest_main algorithms_lab)
+
+add_executable(runPresortedDataTests
+        testhelper.cpp
+        presortedDataTest.cpp
+        )
+target_link_libraries(runPresortedDataTests gtest gtest_main algorithms_lab)
+
 add_executable(runSelectSortTests
         testhelper.cpp
         sortViaDirectSelectionTest.cpp sortViaDirectSelectionTestLT.cpp

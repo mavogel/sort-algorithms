@@ -17,7 +17,10 @@ double generateRandomDouble(const int lowerBound, const int upperBound) {
 
 void preTestFillArrayWith20mb() {
     shared_ptr<std::array<double,2500000>> dList(new std::array<double,2500000>);
-    for(unsigned long i = 0; i< dList->size(); i++) {
+    for(size_t i = 0; i< dList->size(); i++) {
         (*dList)[i] = i*i;
+    }
+    for(size_t i = 0; i< dList->size(); i++) {
+        if(i % 2 == 0) (*dList)[i] = 4*i;
     }
 }

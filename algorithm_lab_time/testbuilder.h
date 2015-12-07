@@ -6,7 +6,6 @@
 #define ROUNDS_128MB   16386000
 #define ROUNDS_1GB    131072000
 #define ROUNDS_4GB    524288000
-#define ROUNDS_8GB   1048576000
 
 #define GB_IN_BYTES 1000000000
 #define MB_IN_BYTES 1000000
@@ -145,18 +144,18 @@ void runSortingAlgorithms(std::array<double, SIZE> &array) {
 //                                                                                                       MAX_ON2_ROUNDS));
 //    sortFunctions.push_back(std::make_tuple<void (*) (std::array<double, SIZE>&), std::string, size_t>(sortViaNormalDirectInsert, "sortViaNormalDirectInsert",
 //                                                                                                       MAX_ON2_ROUNDS));
-//    sortFunctions.push_back(std::make_tuple<void (*) (std::array<double, SIZE>&), std::string, size_t>(sortViaNaturalMergesort, "sortViaNaturalMergesort",
-//                                                                                                       ROUNDS_8GB));
-//    sortFunctions.push_back(std::make_tuple<void (*) (std::array<double, SIZE>&), std::string, size_t>(sortViaBottomUpMergesort, "sortViaBottomUpMergesort",
-//                                                                                                       ROUNDS_8GB));
-      sortFunctions.push_back(std::make_tuple<void (*) (std::array<double, SIZE>&), std::string, size_t>(sortVia3WayPartitioningQuicksort, "sortVia3WayPartitioningQuicksort",
-                                                                                                       ROUNDS_8GB));
-//    sortFunctions.push_back(std::make_tuple<void (*) (std::array<double, SIZE>&), std::string, size_t>(sortViaHybridQuicksort, "sortViaHybridQuicksort",
-//                                                                                                       ROUNDS_128MB));
+    sortFunctions.push_back(std::make_tuple<void (*) (std::array<double, SIZE>&), std::string, size_t>(sortViaNaturalMergesort, "sortViaNaturalMergesort",
+                                                                                                       ROUNDS_4GB));
+    sortFunctions.push_back(std::make_tuple<void (*) (std::array<double, SIZE>&), std::string, size_t>(sortViaBottomUpMergesort, "sortViaBottomUpMergesort",
+                                                                                                       ROUNDS_4GB));
+//    sortFunctions.push_back(std::make_tuple<void (*) (std::array<double, SIZE>&), std::string, size_t>(sortVia3WayPartitioningQuicksort, "sortVia3WayPartitioningQuicksort",
+//                                                                                                       ROUNDS_4GB));
+    sortFunctions.push_back(std::make_tuple<void (*) (std::array<double, SIZE>&), std::string, size_t>(sortViaHybridQuicksort, "sortViaHybridQuicksort",
+                                                                                                       ROUNDS_4GB));
 
     std::string name;
     void (*functionPointer) (std::array<double, SIZE>&);
-    size_t maxSize = ROUNDS_8GB;
+    size_t maxSize = ROUNDS_4GB;
     std::vector<double> timings;
     for(auto& sortFunction : sortFunctions) {
         timings.clear();

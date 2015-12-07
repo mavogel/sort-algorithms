@@ -9,12 +9,12 @@ using std::shared_ptr;
 
 int main() {
     // == init ==
-    shared_ptr<std::array<double, 125>> KB1_list(new std::array<double, 125>);
-    shared_ptr<std::array<double, 250>> KB2_list(new std::array<double, 250>);
-    shared_ptr<std::array<double, 500>> KB4_list(new std::array<double, 500>);
-    shared_ptr<std::array<double, 1000>> KB8_list(new std::array<double, 1000>);
-    shared_ptr<std::array<double, 2000>> KB16_list(new std::array<double, 2000>);
-    shared_ptr<std::array<double, 4000>> KB32_list(new std::array<double, 4000>);
+//    shared_ptr<std::array<double, 125>> KB1_list(new std::array<double, 125>);
+//    shared_ptr<std::array<double, 250>> KB2_list(new std::array<double, 250>);
+//    shared_ptr<std::array<double, 500>> KB4_list(new std::array<double, 500>);
+//    shared_ptr<std::array<double, 1000>> KB8_list(new std::array<double, 1000>);
+//    shared_ptr<std::array<double, 2000>> KB16_list(new std::array<double, 2000>);
+//    shared_ptr<std::array<double, 4000>> KB32_list(new std::array<double, 4000>);
     shared_ptr<std::array<double, 8000>> KB64_list(new std::array<double, 8000>);
     shared_ptr<std::array<double, 16000>> KB128_list(new std::array<double, 16000>);
     shared_ptr<std::array<double, 32000>> KB256_list(new std::array<double, 32000>);
@@ -33,7 +33,6 @@ int main() {
     shared_ptr<std::array<double, 131072000>> G1_list(new std::array<double, 131072000>);
     shared_ptr<std::array<double, 262144000>> G2_list(new std::array<double, 262144000>);
     shared_ptr<std::array<double, 524288000>> G4_list(new std::array<double, 524288000>);
-    shared_ptr<std::array<double, 1048576000>> G8_list(new std::array<double, 1048576000>);
 
     // == go ==
 //    runSortingAlgorithms(*KB1_list);
@@ -42,24 +41,23 @@ int main() {
 //    runSortingAlgorithms(*KB8_list);
 //    runSortingAlgorithms(*KB16_list);
 //    runSortingAlgorithms(*KB32_list);
-//    runSortingAlgorithms(*KB64_list);
-//    runSortingAlgorithms(*KB128_list);
-//    runSortingAlgorithms(*KB256_list);
-//    runSortingAlgorithms(*KB512_list);
-//    runSortingAlgorithms(*M1_list);
-//    runSortingAlgorithms(*M2_list);
-//    runSortingAlgorithms(*M4_list);
-//    runSortingAlgorithms(*M8_list);
-//    runSortingAlgorithms(*M16_list);
+    runSortingAlgorithms(*KB64_list);
+    runSortingAlgorithms(*KB128_list);
+    runSortingAlgorithms(*KB256_list);
+    runSortingAlgorithms(*KB512_list);
+    runSortingAlgorithms(*M1_list);
+    runSortingAlgorithms(*M2_list);
+    runSortingAlgorithms(*M4_list);
+    runSortingAlgorithms(*M8_list);
+    runSortingAlgorithms(*M16_list);
     runSortingAlgorithms(*M32_list);
-//    runSortingAlgorithms(*M64_list);
-//    runSortingAlgorithms(*M128_list);
-//    runSortingAlgorithms(*M256_list);
-//    runSortingAlgorithms(*M512_list);
-//    runSortingAlgorithms(*G1_list);
-//    runSortingAlgorithms(*G2_list);
-//    runSortingAlgorithms(*G4_list);
-//    runSortingAlgorithms(*G8_list);
+    runSortingAlgorithms(*M64_list);
+    runSortingAlgorithms(*M128_list);
+    runSortingAlgorithms(*M256_list);
+    runSortingAlgorithms(*M512_list);
+    runSortingAlgorithms(*G1_list);
+    runSortingAlgorithms(*G2_list);
+    runSortingAlgorithms(*G4_list);
 
     return 0;
 }

@@ -8,7 +8,7 @@
 #include "minsearch.h"
 #include "notSortedException.h"
 
-#define MAX_QS_DEPTH 25
+#define QS_TO_INSERT_THRESHOLD 25
 #define FACTOR_WORST_QS 10
 
 #if defined(_STD_TR1_SHARED_PTR)
@@ -270,12 +270,12 @@ void sortVia3WayPartitioningQuicksort(std::array<T, SIZE>& array) {
 bool isWorstQuickSortCase(const size_t left, const size_t r, const size_t l,const size_t right);
 
 /**
- * Performs an regular quicksort until a recursion depth of 25. Then the halfs will be sorted via direct insert. Furthermore it handles
+ * Performs an regular quicksort until a size of 25. Then the halfs will be sorted via direct insert. Furthermore it handles
  * the worst case for Quicksort, which is if one half contains more than 10 times the amount of values than the other half of the pivot element.
  */
 template <typename T, size_t SIZE>
 void internalHybridQuicksort(std::array<T, SIZE>& array, const size_t left, const size_t right, const unsigned int depth) {
-    if(depth >= MAX_QS_DEPTH) {
+    if((right - left) <= QS_TO_INSERT_THRESHOLD) {
         sortViaDirectInsertWithWatcherElement(array, left, right+1); //because qs inclusive and insertSort exclusive
     } else {
         size_t i = left-1, j = right;

@@ -688,12 +688,12 @@ It is implemented in the following steps:
 	\end{enumerate}
 Otherwise the previously mentioned 3-way-partitioning Quicksort is performed. Additionally to make it hybrid the following steps are added:
 		\begin{enumerate}
-			\item If the recursion depth has reached a certain limit (we use 25) a sort via direct insert is performed.
+			\item If the amount of elements to sort is smaller or equal than 25, an InsertSort is used
 			\item If the case occurs that before the next recursion of the Quicksort starts one half contains 10 times the amount of the other half the next recursion step is performed by diving the remaining data in the middle. To adjust this change a \texttt{merge}-step is performed after the recursion.
 		\end{enumerate}
 	\item[Pseudocode]:
 		\begin{lstlisting}
-		if(DEPTH >= 25) {
+		if(left - right <= 25) {
 			perform insertSort and return
 		else {
 			perform 3-way-part. quicksort as above
@@ -726,6 +726,7 @@ Otherwise the previously mentioned 3-way-partitioning Quicksort is performed. Ad
 	\quicksortsExample{5th step (1)}{1}{3}{4}{5}{3}{6}{\color{red}9}{\color{red}7} \\
 	\quicksortsExample{merge halfs}{\color{blue}1}{\color{blue}3}{\color{blue}4}{\color{blue}5}{3}{6}{7}{9} \\
 	\quicksortsExample{done}{\color{green}1}{\color{green}3}{\color{green}3}{\color{green}4}{\color{green}5}{\color{green}6}{\color{green}7}{\color{green}9} \\
+	%TODO other example
 	\item[$O$-Notation]:
 		\begin{table}[htdp]
 		\caption{Hybrid Quicksort Complexity}
@@ -890,11 +891,11 @@ In this section the results of time measuring are printed as tables. For each al
 		64MB & 8192.000 & 1.861,000 & 1.847,000 & 27,211 \\ \hline
 		128MB & 16.386.000 & 3.712,697 & 3.642,668 & 48,644 \\ \hline
 		256MB & 32.768.000 & 7.799,726 & 7.791,702 & 168,263 \\ \hline
-		512MB & 65536000 & 16.741,109 & 16.899,239 & 295,932 \\ \hline
-		1GB & 131072000 & 34.086,131 & 34.125,291 & 607,632 \\ \hline
-		2GB & 262144000 & 85.843,567 & 76.078,378 & 1.330,653 \\ \hline
+		512MB & 65.536.000 & 16.741,109 & 16.899,239 & 295,932 \\ \hline
+		1GB & 131.072.000 & 34.086,131 & 34.125,291 & 607,632 \\ \hline
+		2GB & 262.144.000 & 85.843,567 & 76.078,378 & 1.330,653 \\ \hline
 		4GB & 524.288.000 & 2.954.109,768 & 2.946.364,554 & 5.099,874 \\ \hline
-		8GB & 1.048.576.000 & TODO & TODO & TODO \\ \hline
+		8GB & 1.048.576.000 & $\infty$ & $\infty$ & $\infty$ \\ \hline
 	\end{tabular}
 	\label{default}
 \end{table}%
@@ -915,20 +916,20 @@ In this section the results of time measuring are printed as tables. For each al
 		16MB & 2048.000 & 383,000 & 361,000 & 180,000 \\ \hline
 		32MB & 4096.000 & 766,000 & 754,000 & 381,000 \\ \hline
 		64MB & 8192.000 & 1.641,000 & 1.658,000 & 847,000 \\ \hline
-		128MB & 16386000 & 3.304,314 & 3.342,386 & 1.629,869 \\ \hline
+		128MB & 16.386.000 & 3.304,314 & 3.342,386 & 1.629,869 \\ \hline
 		256MB & 32.768.000 & 6.939,091 & 6.969,053 & 3.434,097 \\ \hline
-		512MB & 65536000 & 14.943,215 & 16.344,875 & 7315,546 \\ \hline
-		1GB & 131072000 & 30.463,418 & 30.378,241 & 15.083,457 \\ \hline
+		512MB & 65.536.000 & 14.943,215 & 16.344,875 & 7315,546 \\ \hline
+		1GB & 131.072.000 & 30.463,418 & 30.378,241 & 15.083,457 \\ \hline
 		2GB & 262.144.000 & 64.691,651 & 64.807,992 & 31.273,719 \\ \hline
-		4GB & 524.288.000 & TODO & TODO & TODO \\ \hline
-		8GB & 1.048.576.000 & TODO & TODO & TODO \\ \hline
+		4GB & 524.288.000 & 2.929.851,036 & 2.735.258,633 & 544.107,184 \\ \hline
+		8GB & 1.048.576.000 & $\infty$ & $\infty$ & $\infty$ \\ \hline
 	\end{tabular}
 	\label{default}
 \end{table}%
 
 %\subsection{Quicksort}
 \begin{table}[htdp]
-	\caption{Quicksort with \textbf{three-way-partitionoing} - Results in $milliseconds$}
+	\caption{Quicksort with \textbf{three-way-partitioning} - Results in $milliseconds$}
 	\begin{tabular}{|c|c|r|r|r|} \hline
 		Size of data & Loop rounds & \parbox[c]{3.5cm}{Descending \\ $O(n*log_2~n)$} & \parbox[c]{3.5cm}{Random \\$O(n*log_2~n)$} & \parbox[c]{3.5cm}{Ascending \\ $O(n*log_2~n)$} \\ \hline
 		64KB & 8.000 & 0,557 & 0,601 & 0,144 \\ \hline
@@ -944,37 +945,37 @@ In this section the results of time measuring are printed as tables. For each al
 		64MB & 8192.000 & 989,000 & 988,000 & 214,053 \\ \hline
 		128MB & 16.386.000 & 2.042,638 & 2.040,686 & 450,071 \\ \hline
 		256MB & 32.768.000 & 4.233,067 & 4.167,985 & 950,415 \\ \hline
-		512MB & 65536000 & 8.964,916 & 8.928,053 & 2.062,972 \\ \hline
-		1GB & 131072000 & 18.383,604 & 18.484,818 & 4.169,181 \\ \hline
+		512MB & 65.536.000 & 8.964,916 & 8.928,053 & 2.062,972 \\ \hline
+		1GB & 131.072.000 & 18.383,604 & 18.484,818 & 4.169,181 \\ \hline
 		2GB & 262.144.000 & 39.167,371 & 39.258,816 & 9.035,457 \\ \hline
-		4GB & 524.288.000 & TODO & TODO & TODO \\ \hline
-		8GB & 1.048.576.000 & TODO & TODO & TODO \\ \hline
+		4GB & 524.288.000 & 82.576,764 & 82.608,998 & 18.382,807 \\ \hline
+		8GB & 1.048.576.000 & 699.439,001 & 472.780,513 & 75.123,002 \\ \hline
 	\end{tabular}
 	\label{default}
 \end{table}%
 
 \begin{table}[htdp]
-	\caption{Quicksort with \textbf{hybridisation} - Results in $milliseconds$}
+	\caption{Quicksort with \textbf{three-way-partitioning} and \textbf{hybridisation} - Results in $milliseconds$}
 	\begin{tabular}{|c|c|r|r|r|} \hline
 		Size of data & Loop rounds & \parbox[c]{3.5cm}{Descending \\ $O(n^2)$} & \parbox[c]{3.5cm}{Random \\$O(n^2)$} & \parbox[c]{3.5cm}{Ascending \\ $O(n)$} \\ \hline
-		64KB & 8.000 & 1,160 & 1,059 & 0,200 \\ \hline
-		128KB & 16.000 & 3,159 & 3,251 & 0,486 \\ \hline
-		256KB & 32.000 & 10,423 & 12,458 & 0,796 \\ \hline
-		512KB & 64.000 & 39,779 & 34,004 & 2,235 \\ \hline
-		1MB & 128.000 & 296,967 & 384,121 & 3,481 \\ \hline
-		2MB & 256.000 & 2043,118 & 2135,965 & 7,685 \\ \hline
-		4MB & 512.000 & 9731,000 & 9646,000 & 14,920 \\ \hline
-		8MB & 1024.000 &  37.248,000  & 37.970,000 & 30,688 \\ \hline
-		16MB & 2048.000 & 139.709,625 & 143.272,505 & 64,679 \\ \hline
-		32MB & 4096.000 & 552.917,514 & 566.968,305 & 131,563 \\ \hline
-		64MB & 8192000 & 1.787.922,816 & 1.749.802,094 & 286,454 \\ \hline
-		128MB & 16.386.000 & 6.221.224,132 & 6.094.617,381 & 580,033 \\ \hline
-%		256MB & 32.768.000 & TODO & TODO & TODO \\ \hline
-%		512MB & 65.536.000 & TODO & TODO & TODO \\ \hline
-%		1GB & 131.072.000 & TODO & TODO & TODO \\ \hline
-%		2GB & 262.144.000 & TODO & TODO & TODO \\ \hline
-%		4GB & 524.288.000 & TODO & TODO & TODO \\ \hline
-%		8GB & 1.048.576.000 & TODO & TODO & TODO \\ \hline
+		64KB & 8.000 & 0,953 & 0,911 & 0,126 \\ \hline
+		128KB & 16.000 & 2,449 & 2,126 & 0,365 \\ \hline
+		256KB & 32.000 & 7,142 & 5,843 & 0,643 \\ \hline
+		512KB & 64.000 & 24,361 & 22,316 & 1,176 \\ \hline
+		1MB & 128.000 & 236,851 & 232,276 & 2,796 \\ \hline
+		2MB & 256.000 & 1283,422 & 1332,522 & 5,186 \\ \hline
+		4MB & 512.000 & 6164,017 & 6145,188 & 10,625 \\ \hline
+		8MB & 1024.000 & 24.440,955 & 24.319,446 & 21,819 \\ \hline
+		16MB & 2048.000 & 94.198,943 & 94.342,912 & 57,796 \\ \hline
+		32MB & 4096.000 & 387.037,993 & 386.141,674 & 98,372 \\ \hline
+		64MB & 8192000 & 1.564.161,808 & 1.548.931,306 & 217,539 \\ \hline
+		128MB & 16.386.000 &  6.166.597,097 & 6.189.492,175 & 439,491 \\ \hline
+		256MB & 32.768.000 & TODO & TODO & TODO \\ \hline
+		512MB & 65.536.000 & TODO & TODO & TODO \\ \hline
+		1GB & 131.072.000 & TODO & TODO & TODO \\ \hline
+		2GB & 262.144.000 & TODO & TODO & TODO \\ \hline
+		4GB & 524.288.000 & TODO & TODO & TODO \\ \hline
+		8GB & 1.048.576.000 & TODO & TODO & TODO \\ \hline
 	\end{tabular}
 	\label{default}
 \end{table}%

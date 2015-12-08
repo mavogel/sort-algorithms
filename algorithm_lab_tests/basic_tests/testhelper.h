@@ -19,6 +19,16 @@ void verifySorted(std::array<T, SIZE>& array) {
 }
 
 /**
+ *  Verifies that the given array is sorted DESC.
+ */
+template <typename T, size_t SIZE>
+void verifySortedDESC(std::array<T, SIZE>& array) {
+    for(size_t j = 1; j < SIZE; j++) {
+        EXPECT_TRUE(array[j - 1] >= array[j]);
+    }
+}
+
+/**
  * Print the given prompt if not empty
  *
  * @brief promptPrint

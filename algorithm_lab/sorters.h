@@ -137,27 +137,11 @@ std::vector<size_t> findIndexesOfBitonicRuns(std::array<T, SIZE>& array) {
 }
 
 /**
- * Determines if the data between both indexes (inclusive) is sorted
- *
- * @brief isDataSorted
- * @param lo the lower index
- * @param hi the higher index
- * @return true if the data is sorted, false otherwise
- */
-template <typename T, size_t SIZE>
-bool isDataSorted(std::array<T, SIZE>& array, size_t lo, size_t hi) {
-    for(size_t i = lo; i < hi; i++) {
-        if(array[i] > array[i+1]) return false;
-    }
-    return true;
-}
-
-/**
  * Merges / sorts the given array ascending from low index (lo) to the high index (hi)
  * => both indexes INCLUSIVE
  */
 template <typename T, size_t SIZE>
-void myMerge(std::array<T, SIZE>& array, std::array<T, SIZE>& tmp, size_t lo, size_t m, size_t hi, bool isSecondAscending) {
+void myMerge(std::array<T, SIZE>& array, std::array<T, SIZE>& tmp, size_t lo, size_t m, size_t hi, bool isSecondAscending, bool writeBackAscening) {
     if(lo < 0 || hi > (SIZE - 1)) throw IndexOutOfRangeException(lo, hi, 0, SIZE - 1);
     if(SIZE <= 1) return;
     // TODO asserts then disable via compile or header flag
@@ -174,15 +158,30 @@ void myMerge(std::array<T, SIZE>& array, std::array<T, SIZE>& tmp, size_t lo, si
         while(i <= k) { tmp[i] = array[i]; i++;}
     }
 
-    // == step 2: sort and write back until pointers cross
-    i = lo, j = lo, k = hi;
-    while(j <= k) {
-        if(tmp[j] < tmp[k]) {
-            array[i++] = tmp[j++];
-        } else {
-            array[i++] = tmp[k];
-            if(k > j) k--;
-            else break;
+    // == step 2a: sort and write back ASC until pointers cross
+    if(writeBackAscening) {
+        i = lo, j = lo, k = hi;
+        while (j <= k) {
+            if (tmp[j] < tmp[k]) {
+                array[i++] = tmp[j++];
+            } else {
+                array[i++] = tmp[k];
+                if (k > j) k--;
+                else break;
+            }
+        }
+    }
+    // == step 2b: sort and write back DESC until pointers cross
+    else {
+        i = hi, j = lo, k = hi;
+        while (j <= k) {
+            if (tmp[j] < tmp[k]) {
+                array[i--] = tmp[j++];
+            } else {
+                array[i--] = tmp[k];
+                if (k > j) k--;
+                else break;
+            }
         }
     }
 }
@@ -205,7 +204,7 @@ void sortViaNaturalMergesort(std::array<T, SIZE>& array) {
             mid = boundaries.at(i+1);
             hi = boundaries.at(i+2);
 
-            myMerge(array, *tmp, lo, mid, hi-1, true);
+            myMerge(array, *tmp, lo, mid, hi-1, true, true);
         }
         boundaries = findIndexesOfPresortedData(array);
     }
@@ -235,7 +234,7 @@ void sortViaBottomUpMergesort(std::array<T, SIZE>& array) {
             hi = (j+(std::pow(2,i))-1) > (SIZE-1) ? (SIZE-1): j+(std::pow(2,i))-1;
             mid = (lo+(std::pow(2,i-1))) > (SIZE-1) ? (SIZE-1) : lo+(std::pow(2,i-1));
 
-            myMerge(array, *tmp, lo, mid, hi, true);
+            myMerge(array, *tmp, lo, mid, hi, true, true);
         }
     }
 }
@@ -347,7 +346,7 @@ void internalHybridQuicksort(std::array<T, SIZE>& array, std::array<T, SIZE>& tm
             size_t mid = (left + right) / 2;
             internalHybridQuicksort(array, tmp, left, mid, depth+1);
             internalHybridQuicksort(array, tmp, mid+1, right, depth+1);
-            myMerge(array, tmp, left, mid+1, right, true);
+            myMerge(array, tmp, left, mid+1, right, true, true);
         } else {
             // == step 6b: next recursion
             internalHybridQuicksort(array, tmp, left, j, depth+1);

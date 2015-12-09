@@ -194,25 +194,22 @@ void sortViaNaturalMergesort(std::array<T, SIZE>& array) {
  */
 template <typename T, size_t SIZE>
 void sortViaBottomUpMergesort(std::array<T, SIZE>& array) {
-    if(SIZE == 0) throw DataEmptyException();
-
-    size_t rounds;
-    double integral, log = std::log2(SIZE);
-    if(std::modf(log, &integral) != 0) {
-        rounds = (size_t) integral;
-        rounds++;
-    } else {
-        rounds = (size_t) integral;
+    size_t rounds = 0;
+    if(SIZE > 0) {
+        double integral, log = std::log2(SIZE);
+        if (std::modf(log, &integral) > 0) {
+            rounds = (size_t) integral; rounds++;
+        } else {
+            rounds = (size_t) integral;
+        }
     }
 
     shared_ptr<std::array<T, SIZE>> tmp(new std::array<T, SIZE>());
-    for(size_t i = 1; i <= rounds; i++) {
-        for(size_t j = 0; j < SIZE; j+=std::pow(2,i)) {
-            size_t lo, mid, hi;
-            lo = j;
-            mid = (lo+(std::pow(2,i-1))) > (SIZE) ? (SIZE) : lo+(std::pow(2,i-1));
-            hi = (j+(std::pow(2,i))) > (SIZE) ? (SIZE): j+(std::pow(2,i));
-
+    size_t mid, hi;
+    for(size_t round = 1; round <= rounds; round++) {
+        for(size_t lo = 0; lo < SIZE; lo+=std::pow(2,round)) {
+            mid = (lo+(std::pow(2,round-1))) > (SIZE) ? (SIZE) : lo+(std::pow(2,round-1));
+            hi = (lo+(std::pow(2,round))) > (SIZE) ? (SIZE): lo+(std::pow(2,round));
             myMerge(array, *tmp, lo, mid, hi);
         }
     }
@@ -286,7 +283,7 @@ bool isWorstQuickSortCase(const size_t left, const size_t r, const size_t l,cons
 template <typename T, size_t SIZE>
 void internalHybridQuicksort(std::array<T, SIZE>& array, std::array<T, SIZE>& tmp, const size_t left, const size_t right, const unsigned int depth) {
     if((right - left) <= QS_TO_INSERT_THRESHOLD) {
-        sortViaDirectInsertWithWatcherElement(array, left, right+1); //because qs inclusive and insertSort exclusive
+        sortViaDirectInsertWithWatcherElement(array, left, right+1);
     } else {
         size_t i = left-1, j = right;
         size_t p = left, q = right-1;

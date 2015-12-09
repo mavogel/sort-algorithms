@@ -92,6 +92,16 @@ TEST_F(BottomUpMergeSortTest, oddSizeTest) {
     verifySorted(*list6);
 }
 
+TEST_F(BottomUpMergeSortTest, cornerCasesTest) {
+    std::shared_ptr<std::array<int, 0>> list(new std::array<int, 0>);
+    sortViaBottomUpMergesort(*list);
+    verifySorted(*list);
+
+    std::shared_ptr<std::array<int, 1>> list2(new std::array<int, 1>{{5}});
+    sortViaBottomUpMergesort(*list2);
+    verifySorted(*list2);
+}
+
 TEST_F(BottomUpMergeSortTest, doublesTest) {
     std::shared_ptr<std::array<double, 2>> dList(new std::array<double, 2>{{5.3,4.4}});
     sortViaBottomUpMergesort(*dList);

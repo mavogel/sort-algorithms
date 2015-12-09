@@ -8,6 +8,8 @@
 #include "minsearch.h"
 #include "notSortedException.h"
 
+#include <iostream>
+
 #define QS_TO_INSERT_THRESHOLD 25
 #define FACTOR_WORST_QS 10
 
@@ -137,51 +139,28 @@ std::vector<size_t> findIndexesOfBitonicRuns(std::array<T, SIZE>& array) {
 }
 
 /**
- * Merges / sorts the given array ascending from low index (lo) to the high index (hi)
- * => both indexes INCLUSIVE
+ * Merges / sorts the given array ascending from low index (lo) via middle index (m) to the high index (hi)
+ * => lo INCLUSIVE and m and hi EXCLUSIVE
  */
 template <typename T, size_t SIZE>
-void myMerge(std::array<T, SIZE>& array, std::array<T, SIZE>& tmp, size_t lo, size_t m, size_t hi, bool isSecondAscending, bool writeBackAscening) {
-    if(lo < 0 || hi > (SIZE - 1)) throw IndexOutOfRangeException(lo, hi, 0, SIZE - 1);
-    if(SIZE <= 1) return;
-    // TODO asserts then disable via compile or header flag
+void myMerge(std::array<T, SIZE>& array, std::array<T, SIZE>& tmp, const size_t lo, const size_t m, const size_t hi) {
+    // == step 1: insert into tmp array: lo->mid: ASC; mid+1->hi: DESC => bitonic
+    for (size_t i = lo; i < m; i++) { tmp[i] = array[i]; }
+    for (size_t i = m, k = hi; m < k; i++) { tmp[i] = array[--k]; }
 
-    size_t i = lo, j = m, k = hi;
+//    std::cout << "tmp: ";
+//    for(auto a : tmp) {
+//        std::cout << a << ",";
+//    }
+//    std::cout << "\n";
 
-    // == step 1a: insert into tmp array: lo->mid: ASC; mid+1->hi: DESC => bitonic
-    if(isSecondAscending) {
-        while (i < j) { tmp[i] = array[i]; i++; }
-        while (j <= k) { tmp[i++] = array[k--]; }
-    }
-    // == step 1b: insert into tmp array: lo->hi: because already bitonic
-    else {
-        while(i <= k) { tmp[i] = array[i]; i++;}
-    }
-
-    // == step 2a: sort and write back ASC until pointers cross
-    if(writeBackAscening) {
-        i = lo, j = lo, k = hi;
-        while (j <= k) {
-            if (tmp[j] < tmp[k]) {
-                array[i++] = tmp[j++];
-            } else {
-                array[i++] = tmp[k];
-                if (k > j) k--;
-                else break;
-            }
-        }
-    }
-    // == step 2b: sort and write back DESC until pointers cross
-    else {
-        i = hi, j = lo, k = hi;
-        while (j <= k) {
-            if (tmp[j] < tmp[k]) {
-                array[i--] = tmp[j++];
-            } else {
-                array[i--] = tmp[k];
-                if (k > j) k--;
-                else break;
-            }
+    // == step 2: sort and write back ASC until pointers cross
+    for (size_t writeIdx = lo, readIdxLo = lo, readIdxHi = hi; readIdxLo < readIdxHi; writeIdx++) {
+        //std::cout << "reading: (" << readIdxLo << "," << readIdxHi << ") - comparing: (" << tmp[readIdxLo] << "," << tmp[readIdxHi] << ")\n";
+        if (tmp[readIdxLo] < tmp[--readIdxHi]) {
+            array[writeIdx] = tmp[readIdxLo++]; readIdxHi++;
+        } else {
+            array[writeIdx] = tmp[readIdxHi];
         }
     }
 }
@@ -204,7 +183,7 @@ void sortViaNaturalMergesort(std::array<T, SIZE>& array) {
             mid = boundaries.at(i+1);
             hi = boundaries.at(i+2);
 
-            myMerge(array, *tmp, lo, mid, hi-1, true, true);
+            myMerge(array, *tmp, lo, mid, hi);
         }
         boundaries = findIndexesOfPresortedData(array);
     }
@@ -231,10 +210,10 @@ void sortViaBottomUpMergesort(std::array<T, SIZE>& array) {
         for(size_t j = 0; j < SIZE; j+=std::pow(2,i)) {
             size_t lo, mid, hi;
             lo = j;
-            hi = (j+(std::pow(2,i))-1) > (SIZE-1) ? (SIZE-1): j+(std::pow(2,i))-1;
-            mid = (lo+(std::pow(2,i-1))) > (SIZE-1) ? (SIZE-1) : lo+(std::pow(2,i-1));
+            mid = (lo+(std::pow(2,i-1))) > (SIZE) ? (SIZE) : lo+(std::pow(2,i-1));
+            hi = (j+(std::pow(2,i))) > (SIZE) ? (SIZE): j+(std::pow(2,i));
 
-            myMerge(array, *tmp, lo, mid, hi, true, true);
+            myMerge(array, *tmp, lo, mid, hi);
         }
     }
 }
@@ -346,7 +325,7 @@ void internalHybridQuicksort(std::array<T, SIZE>& array, std::array<T, SIZE>& tm
             size_t mid = (left + right) / 2;
             internalHybridQuicksort(array, tmp, left, mid, depth+1);
             internalHybridQuicksort(array, tmp, mid+1, right, depth+1);
-            myMerge(array, tmp, left, mid+1, right, true, true);
+            myMerge(array, tmp, left, mid+1, right+1);
         } else {
             // == step 6b: next recursion
             internalHybridQuicksort(array, tmp, left, j, depth+1);
@@ -364,7 +343,7 @@ void internalHybridQuicksort(std::array<T, SIZE>& array, std::array<T, SIZE>& tm
 template <typename T, size_t SIZE>
 void sortViaHybridQuicksort(std::array<T, SIZE>& array) {
     shared_ptr<std::array<T, SIZE>> tmp(new std::array<T, SIZE>());
-     internalHybridQuicksort(array, *tmp, 0, SIZE-1, 0);
+    internalHybridQuicksort(array, *tmp, 0, SIZE-1, 0);
 }
 
 

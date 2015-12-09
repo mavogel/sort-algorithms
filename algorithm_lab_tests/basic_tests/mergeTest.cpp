@@ -29,32 +29,26 @@ TEST_F(MergeTest, basicTest) {
     std::shared_ptr<std::array<int, 10>> list(new std::array<int, 10>{{3,4,5,7,12, 2,8,8,9,10}});
     myMerge(*list, *tmp10, 0, 5, 10);
     verifySorted(*list);
-    print(*list, "list: ");
 
     std::shared_ptr<std::array<int, 11>> list2(new std::array<int, 11>{{3,4,5,7,12,13, 8,8,9,10,15}});
     myMerge(*list2, *tmp11, 0, 6, 11);
     verifySorted(*list2);
-    print(*list2, "list2: ");
 
     std::shared_ptr<std::array<int, 10>> list3(new std::array<int, 10>{{3,4,5,7,12, 13,18,19,20,22}});
     myMerge(*list3, *tmp10, 0, 5, 10);
     verifySorted(*list3);
-    print(*list3, "list3: ");
 
     std::shared_ptr<std::array<int, 11>> list4(new std::array<int, 11>{{3,4,5,7,12,13, 17,18,19,20,22}});
     myMerge(*list4, *tmp11, 0, 6, 11);
     verifySorted(*list4);
-    print(*list4, "list4: ");
 
     std::shared_ptr<std::array<int, 10>> list5(new std::array<int, 10>{{17,18,19,20,22, 2,4,5,7,12}});
     myMerge(*list5, *tmp10, 0, 5, 10);
     verifySorted(*list5);
-    print(*list5, "list5: ");
 
     std::shared_ptr<std::array<int, 11>> list6(new std::array<int, 11>{{17,18,19,20,22,24, 3,4,5,7,12}});
     myMerge(*list6, *tmp11, 0, 6, 11);
     verifySorted(*list6);
-    print(*list6, "list6: ");
 
     std::shared_ptr<std::array<double, 10>> dList(new std::array<double, 10>{{3.1,4.4,5.5,7.7,12.1, 2.1,8.8,8.8,9.5,10.1}});
     myMerge(*dList, *tmp10D, 0, 5, 10);
@@ -74,9 +68,14 @@ TEST_F(MergeTest, basicTest) {
 }
 
 TEST_F(MergeTest, smallTest) {
+    std::shared_ptr<std::array<int, 0>> tmp0(new std::array<int, 0>());
     std::shared_ptr<std::array<int, 1>> tmp1(new std::array<int, 1>());
     std::shared_ptr<std::array<int, 2>> tmp2(new std::array<int, 2>());
     std::shared_ptr<std::array<int, 3>> tmp3(new std::array<int, 3>());
+
+    std::shared_ptr<std::array<int, 0>> list0(new std::array<int, 0>);
+    myMerge(*list0, *tmp0, 0, 0, 0);
+    verifySorted(*list0);
 
     std::shared_ptr<std::array<int, 1>> list(new std::array<int, 1>{{3}});
     myMerge(*list, *tmp1, 0, 0, 1);
@@ -184,6 +183,53 @@ TEST_F(MergeTest, mixedTestForNaturalMergeSort) {
 
     myMerge(*list3, *tmp12, 0, 7, 12);
     verifySorted(*list3);
+}
+
+TEST_F(MergeTest, mixedTestForNaturalMergeSortDesc) {
+    std::shared_ptr<std::array<int, 0>> tmp0(new std::array<int, 0>());
+    std::shared_ptr<std::array<int, 1>> tmp1(new std::array<int, 1>());
+    std::shared_ptr<std::array<int, 2>> tmp2(new std::array<int, 2>());
+    std::shared_ptr<std::array<int, 3>> tmp3(new std::array<int, 3>());
+    std::shared_ptr<std::array<int, 7>> tmp7(new std::array<int, 7>());
+    std::shared_ptr<std::array<int, 12>> tmp12(new std::array<int, 12>());
+
+    std::shared_ptr<std::array<int, 0>> list0(new std::array<int, 0>);
+    myMergeDesc(*list0, *tmp0, 0, 0, 0);
+    verifySortedDESC(*list0);
+
+    std::shared_ptr<std::array<int, 1>> list(new std::array<int, 1>{{3}});
+    myMergeDesc(*list, *tmp1, 0, 0, 1);
+    verifySortedDESC(*list);
+
+    std::shared_ptr<std::array<int, 2>> list1(new std::array<int, 2>{{3,4}});
+    myMergeDesc(*list1, *tmp2, 0, 1, 2);
+    verifySortedDESC(*list1);
+
+    std::shared_ptr<std::array<int, 2>> list2(new std::array<int, 2>{{6,4}});
+    myMergeDesc(*list2, *tmp2, 0, 1, 2);
+    verifySortedDESC(*list2);
+
+    std::shared_ptr<std::array<int, 3>> list3(new std::array<int, 3>{{6,4, 1}});
+    myMerge(*list3, *tmp3, 0, 1, 2);
+    myMerge(*list3, *tmp3, 2, 2, 3);
+    myMergeDesc(*list3, *tmp3, 0, 2, 3);
+    verifySortedDESC(*list3);
+
+    std::shared_ptr<std::array<int, 7>> list4(new std::array<int, 7>{{-1,-1,2,2, 1,2,3}});
+    myMergeDesc(*list4, *tmp7, 0, 4, 7);
+    verifySortedDESC(*list4);
+
+    std::shared_ptr<std::array<int, 12>> list5(new std::array<int, 12>{{-1,-1,1,2,2,2,3,/**/2,6,7, 5,7}});
+    myMerge(*list5, *tmp12, 7, 10,12);
+    myMergeDesc(*list5, *tmp12, 0, 7, 12);
+    verifySortedDESC(*list5);
+
+    std::shared_ptr<std::array<int, 12>> list6(new std::array<int, 12>{{-1,-1,2,2, 1,2,3,/**/2,6,7, 5,7}});
+    myMerge(*list6, *tmp12, 0, 4, 7);
+    myMerge(*list6, *tmp12, 7, 10,12);
+
+    myMergeDesc(*list6, *tmp12, 0, 7, 12);
+    verifySortedDESC(*list6);
 }
 
 

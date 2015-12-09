@@ -153,4 +153,10 @@ TEST_F(PreSortedDataTest, cornerCasesTest) {
     EXPECT_EQ(2ul, indexes.size());
     EXPECT_EQ(0ul, indexes.at(0));
     EXPECT_EQ(1ul, indexes.at(1));
+
+    std::shared_ptr<std::array<int, 0>> list5(new std::array<int, 0>);
+    indexes = findIndexesOfPresortedData(*list5);
+    EXPECT_EQ(2ul, indexes.size());
+    EXPECT_EQ(0ul, indexes.at(0));
+    EXPECT_EQ(0ul, indexes.at(1));
 }

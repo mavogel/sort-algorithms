@@ -99,8 +99,6 @@ void sortViaNormalDirectInsert(std::array<T, SIZE>& array) {
  */
 template<typename T, size_t SIZE>
 std::vector<size_t> findIndexesOfPresortedData(std::array<T, SIZE>& array) {
-    if(SIZE == 0) throw DataEmptyException();
-
     std::vector<size_t> indexes;
     indexes.push_back(0);
     for(size_t i = 1; i < SIZE; i++) {
@@ -118,8 +116,6 @@ std::vector<size_t> findIndexesOfPresortedData(std::array<T, SIZE>& array) {
  */
 template<typename T, size_t SIZE>
 std::vector<size_t> findIndexesOfBitonicRuns(std::array<T, SIZE>& array) {
-    if(SIZE == 0) throw DataEmptyException();
-
     bool wasDescBefore = false;
     std::vector<size_t> indexes;
     indexes.push_back(0);
@@ -166,14 +162,43 @@ void myMerge(std::array<T, SIZE>& array, std::array<T, SIZE>& tmp, const size_t 
 }
 
 /**
+ * Merges / sorts the given array ascending from low index (lo) via middle index (m) to the high index (hi)
+ * => lo INCLUSIVE and m and hi EXCLUSIVE
+ * BUT writes back into the array descending
+ */
+template <typename T, size_t SIZE>
+void myMergeDesc(std::array<T, SIZE>& array, std::array<T, SIZE>& tmp, const size_t lo, const size_t m, const size_t hi) {
+    // == step 1: insert into tmp array: lo->mid: ASC; mid+1->hi: DESC => bitonic
+    for (size_t i = lo; i < m; i++) { tmp[i] = array[i]; }
+    for (size_t i = m, k = hi; m < k; i++) { tmp[i] = array[--k]; }
+
+//    std::cout << "tmp: ";
+//    for(auto a : tmp) {
+//        std::cout << a << ",";
+//    }
+//    std::cout << "\n";
+
+    // == step 2: sort and write back DESC until pointers cross
+    for (size_t writeIdx = hi-1, readIdxLo = lo, readIdxHi = hi; readIdxLo < readIdxHi; writeIdx--) {
+        //std::cout << "reading: (" << readIdxLo << "," << readIdxHi << ") - comparing: (" << tmp[readIdxLo] << "," << tmp[readIdxHi] << ")\n";
+        if (tmp[readIdxLo] < tmp[--readIdxHi]) {
+            array[writeIdx] = tmp[readIdxLo++]; readIdxHi++;
+        } else {
+            array[writeIdx] = tmp[readIdxHi];
+        }
+    }
+}
+
+/**
  * Sorts the given array via 'natural merge sort'
  * TODO absteigend auch linear
  */
 template <typename T, size_t SIZE>
 void sortViaNaturalMergesort(std::array<T, SIZE>& array) {
-    if(SIZE == 0) throw DataEmptyException();
-
     std::vector<size_t> boundaries = findIndexesOfPresortedData(array);
+//    if(boundaries.size() < 3 && SIZE > 1 && array[0] > array[1]) {
+//        std::reverse(array.begin(), array.end());
+//    }
 
     shared_ptr<std::array<T, SIZE>> tmp(new std::array<T, SIZE>());
     while(boundaries.size() >=3) {

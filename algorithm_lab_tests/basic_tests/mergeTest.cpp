@@ -185,6 +185,82 @@ TEST_F(MergeTest, mixedTestForNaturalMergeSort) {
     verifySorted(*list3);
 }
 
+TEST_F(MergeTest, basicTestForNaturalMergeSortDesc) {
+    std::shared_ptr<std::array<int, 2>> tmp2(new std::array<int, 2>());
+    std::shared_ptr<std::array<int, 3>> tmp3(new std::array<int, 3>());
+    std::shared_ptr<std::array<int, 7>> tmp7(new std::array<int, 7>());
+    std::shared_ptr<std::array<int, 12>> tmp12(new std::array<int, 12>());
+
+    // asc stays asc
+    std::shared_ptr<std::array<int, 2>> list0(new std::array<int, 2>{{2,3}});
+    myMerge(*list0, *tmp2, 0, 2, 2);
+    verifySorted(*list0);
+
+    // desc stays desc
+    std::shared_ptr<std::array<int, 2>> list1(new std::array<int, 2>{{3,2}});
+    myMergeDesc(*list1, *tmp2, 0, 2, 2);
+    verifySortedDESC(*list1);
+
+    // asc becomes desc
+    std::shared_ptr<std::array<int, 2>> list2(new std::array<int, 2>{{2,3}});
+    myMergeDesc(*list2, *tmp2, 0, 2, 2);
+    verifySortedDESC(*list2);
+
+    // desc becomes asc
+    std::shared_ptr<std::array<int, 2>> list4(new std::array<int, 2>{{3,2}});
+    myMerge(*list4, *tmp2, 0, 0, 2);
+    verifySorted(*list4);
+
+}
+
+TEST_F(MergeTest, forNaturalMergeSortBitonicCasesTest) {
+    std::shared_ptr<std::array<int, 16>> tmp16(new std::array<int, 16>());
+
+    // case 1: 2 exact bitonic runs
+    std::shared_ptr<std::array<int, 16>> list(new std::array<int, 16>{{-1,-1,2,2, 3,2,1,/**/2,4,6,7, 8,5,2,1,0}});
+    myMerge(*list, *tmp16, 0, 4, 7, true, false);
+    myMerge(*list, *tmp16, 7, 11,16, true, true);
+
+    myMerge(*list, *tmp16, 0, 7, 16, true, false);
+    verifySorted(*list);
+
+    // case 2: 2 exact bitonic runs but another asc only at the end
+    std::shared_ptr<std::array<int, 16>> list1(new std::array<int, 16>{{-1,-1,2,2, 3,2,1,/**/2,4,6,7, 8,5,2,/**/5,8}});
+    myMerge(*list1, *tmp16, 0, 4, 7, true, false); //asc
+    myMerge(*list1, *tmp16, 7, 11,14, true, true); // desc
+    myMerge(*list1, *tmp16, 14, 16, 16, true, false); // asc
+
+    myMerge(*list1, *tmp16, 0, 7, 14, true, false); //asc
+    myMerge(*list1, *tmp16, 14, 16, 16, true, true); //desc
+
+    myMerge(*list1, *tmp16, 0, 14, 16, true, false);
+    verifySorted(*list1);
+
+    // case 3: 2 exact bitonic runs but another desc only at the end
+    std::shared_ptr<std::array<int, 16>> list2(new std::array<int, 16>{{-1,-1,2,2, 3,2,1,/**/2,4,6,7, 8,5,2,/**/10,8}});
+    myMerge(*list2, *tmp16, 0, 4, 7, true, false); //asc
+    myMerge(*list2, *tmp16, 7, 11,14, true, true); // desc
+    myMerge(*list2, *tmp16, 14, 14, 16, true, false); // asc
+
+    myMerge(*list2, *tmp16, 0, 7, 14, true, false); //asc
+    myMerge(*list2, *tmp16, 14, 16, 16, true, true); //desc
+
+    myMerge(*list2, *tmp16, 0, 14, 16, true, false);
+    verifySorted(*list2);
+
+    // case 4: 3 exact bitonic runs
+    std::shared_ptr<std::array<int, 16>> list3(new std::array<int, 16>{{-1,-1,2, 3,1,/**/2,6,7, 8,1,0, /**/5,6, 7,3,1}});
+    myMerge(*list3, *tmp16, 0 , 3, 5, true, false); // asc
+    myMerge(*list3, *tmp16, 5 , 8,11, true, true); // desc
+    myMerge(*list3, *tmp16, 11, 13, 16, true, false); // asc
+
+    myMerge(*list3, *tmp16, 0 , 5,11, true, false); // asc
+    myMerge(*list3, *tmp16, 11,16,16, true, true); // desc
+
+    myMerge(*list3, *tmp16, 0 ,11,16, true, false); // asc
+    verifySorted(*list3);
+}
+
 TEST_F(MergeTest, mixedTestForNaturalMergeSortDesc) {
     std::shared_ptr<std::array<int, 0>> tmp0(new std::array<int, 0>());
     std::shared_ptr<std::array<int, 1>> tmp1(new std::array<int, 1>());

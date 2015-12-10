@@ -137,40 +137,20 @@ std::vector<size_t> findIndexesOfBitonicRuns(std::array<T, SIZE>& array) {
 /**
  * Merges / sorts the given array ascending from low index (lo) via middle index (m) to the high index (hi)
  * => lo INCLUSIVE and m and hi EXCLUSIVE
+ *
+ * Expects lo->m in ASCENDING ORDER and m->hi in DESCENDING ORDER
  */
 template <typename T, size_t SIZE>
-void myMerge(std::array<T, SIZE>& array, std::array<T, SIZE>& tmp, const size_t lo, const size_t m, const size_t hi) {
-    // == step 1: insert into tmp array: lo->mid: ASC; mid+1->hi: DESC => bitonic
-    for (size_t i = lo; i < m; i++) { tmp[i] = array[i]; }
-    for (size_t i = m, k = hi; m < k; i++) { tmp[i] = array[--k]; }
-
-//    std::cout << "tmp: ";
-//    for(auto a : tmp) {
-//        std::cout << a << ",";
-//    }
-//    std::cout << "\n";
-
-    // == step 2: sort and write back ASC until pointers cross
-    for (size_t writeIdx = lo, readIdxLo = lo, readIdxHi = hi; readIdxLo < readIdxHi; writeIdx++) {
-        //std::cout << "reading: (" << readIdxLo << "," << readIdxHi << ") - comparing: (" << tmp[readIdxLo] << "," << tmp[readIdxHi] << ")\n";
-        if (tmp[readIdxLo] < tmp[--readIdxHi]) {
-            array[writeIdx] = tmp[readIdxLo++]; readIdxHi++;
-        } else {
-            array[writeIdx] = tmp[readIdxHi];
-        }
+void myMerge(std::array<T, SIZE>& array, std::array<T, SIZE>& tmp, const size_t lo, const size_t m, const size_t hi,
+             const bool isSecondDesc, const bool writeDesc) {
+    if (isSecondDesc) {
+        // == step 1a: already bitonic, so insert into tmp array
+        for (size_t i = lo; i < hi; i++) { tmp[i] = array[i]; }
+    } else {
+        // == step 1b: insert into tmp array: lo->mid: ASC; mid+1->hi: DESC => bitonic
+        for (size_t i = lo; i < m; i++) { tmp[i] = array[i]; }
+        for (size_t i = m, k = hi; m < k; i++) { tmp[i] = array[--k]; }
     }
-}
-
-/**
- * Merges / sorts the given array ascending from low index (lo) via middle index (m) to the high index (hi)
- * => lo INCLUSIVE and m and hi EXCLUSIVE
- * BUT writes back into the array descending
- */
-template <typename T, size_t SIZE>
-void myMergeDesc(std::array<T, SIZE>& array, std::array<T, SIZE>& tmp, const size_t lo, const size_t m, const size_t hi) {
-    // == step 1: insert into tmp array: lo->mid: ASC; mid+1->hi: DESC => bitonic
-    for (size_t i = lo; i < m; i++) { tmp[i] = array[i]; }
-    for (size_t i = m, k = hi; m < k; i++) { tmp[i] = array[--k]; }
 
 //    std::cout << "tmp: ";
 //    for(auto a : tmp) {
@@ -178,13 +158,26 @@ void myMergeDesc(std::array<T, SIZE>& array, std::array<T, SIZE>& tmp, const siz
 //    }
 //    std::cout << "\n";
 
-    // == step 2: sort and write back DESC until pointers cross
-    for (size_t writeIdx = hi-1, readIdxLo = lo, readIdxHi = hi; readIdxLo < readIdxHi; writeIdx--) {
-        //std::cout << "reading: (" << readIdxLo << "," << readIdxHi << ") - comparing: (" << tmp[readIdxLo] << "," << tmp[readIdxHi] << ")\n";
-        if (tmp[readIdxLo] < tmp[--readIdxHi]) {
-            array[writeIdx] = tmp[readIdxLo++]; readIdxHi++;
-        } else {
-            array[writeIdx] = tmp[readIdxHi];
+    if(writeDesc) {
+        // == step 2a: sort and write back DESC until pointers cross
+        for (size_t writeIdx = hi-1, readIdxLo = lo, readIdxHi = hi; readIdxLo < readIdxHi; writeIdx--) {
+            //std::cout << "reading: (" << readIdxLo << "," << readIdxHi << ") - comparing: (" << tmp[readIdxLo] << "," << tmp[readIdxHi] << ")\n";
+            if (tmp[readIdxLo] < tmp[--readIdxHi]) {
+                array[writeIdx] = tmp[readIdxLo++]; readIdxHi++;
+            } else {
+                array[writeIdx] = tmp[readIdxHi];
+            }
+        }
+    } else {
+        // == step 2b: sort and write back ASC until pointers cross
+        for (size_t writeIdx = lo, readIdxLo = lo, readIdxHi = hi; readIdxLo < readIdxHi; writeIdx++) {
+            //std::cout << "reading: (" << readIdxLo << "," << readIdxHi << ") - comparing: (" << tmp[readIdxLo] << "," << tmp[readIdxHi] << ")\n";
+            if (tmp[readIdxLo] < tmp[--readIdxHi]) {
+                array[writeIdx] = tmp[readIdxLo++];
+                readIdxHi++;
+            } else {
+                array[writeIdx] = tmp[readIdxHi];
+            }
         }
     }
 }
@@ -208,7 +201,7 @@ void sortViaNaturalMergesort(std::array<T, SIZE>& array) {
             mid = boundaries.at(i+1);
             hi = boundaries.at(i+2);
 
-            myMerge(array, *tmp, lo, mid, hi);
+            myMerge(array, *tmp, lo, mid, hi, false, false);
         }
         boundaries = findIndexesOfPresortedData(array);
     }
@@ -235,7 +228,7 @@ void sortViaBottomUpMergesort(std::array<T, SIZE>& array) {
         for(size_t lo = 0; lo < SIZE; lo+=std::pow(2,round)) {
             mid = (lo+(std::pow(2,round-1))) > (SIZE) ? (SIZE) : lo+(std::pow(2,round-1));
             hi = (lo+(std::pow(2,round))) > (SIZE) ? (SIZE): lo+(std::pow(2,round));
-            myMerge(array, *tmp, lo, mid, hi);
+            myMerge(array, *tmp, lo, mid, hi, false, false);
         }
     }
 }
@@ -347,7 +340,7 @@ void internalHybridQuicksort(std::array<T, SIZE>& array, std::array<T, SIZE>& tm
             size_t mid = (left + right) / 2;
             internalHybridQuicksort(array, tmp, left, mid, depth+1);
             internalHybridQuicksort(array, tmp, mid+1, right, depth+1);
-            myMerge(array, tmp, left, mid+1, right+1);
+            myMerge(array, tmp, left, mid+1, right+1, false, false);
         } else {
             // == step 6b: next recursion
             internalHybridQuicksort(array, tmp, left, j, depth+1);

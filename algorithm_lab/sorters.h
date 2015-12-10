@@ -3,6 +3,7 @@
 
 #include <array>
 #include <vector>
+#include <queue>
 #include <cmath>
 #include <memory>
 #include "minsearch.h"
@@ -115,16 +116,16 @@ std::vector<size_t> findIndexesOfPresortedData(std::array<T, SIZE>& array) {
  * Finds the indexes of the bitonic runs
  */
 template<typename T, size_t SIZE>
-std::vector<size_t> findIndexesOfBitonicRuns(std::array<T, SIZE>& array) {
+std::queue<size_t> findIndexesOfBitonicRuns(std::array<T, SIZE>& array) {
     bool wasDescBefore = false;
-    std::vector<size_t> indexes;
+    std::queue<size_t> indexes;
 
-    indexes.push_back(0);
+    indexes.push(0);
     for(size_t i = 1; i < SIZE; i++) {
         if(array[i - 1] < array[i]) {
             if(wasDescBefore) {
-                indexes.push_back(i);
-                indexes.push_back(i);
+                indexes.push(i);
+                indexes.push(i);
                 wasDescBefore = false;
             }
         } else if(array[i - 1] == array[i]) {
@@ -132,13 +133,13 @@ std::vector<size_t> findIndexesOfBitonicRuns(std::array<T, SIZE>& array) {
         } else {
             if(!wasDescBefore) {
                 wasDescBefore = true;
-                indexes.push_back(i);
+                indexes.push(i);
             }
 
         }
     }
-    if(!wasDescBefore)indexes.push_back(SIZE);
-    indexes.push_back(SIZE);
+    if(!wasDescBefore)indexes.push(SIZE);
+    indexes.push(SIZE);
 
     return indexes;
 }
@@ -192,27 +193,38 @@ void myMerge(std::array<T, SIZE>& array, std::array<T, SIZE>& tmp, const size_t 
 }
 
 /**
+ * TODO
+ */
+void handleNewIndexes(std::queue<size_t>& indexes, size_t bitRunCount, size_t lo, size_t hi, size_t SIZE);
+
+/**
  * Sorts the given array via 'natural merge sort'
  * TODO absteigend auch linear
  */
 template <typename T, size_t SIZE>
 void sortViaNaturalMergesort(std::array<T, SIZE>& array) {
-    std::vector<size_t> boundaries = findIndexesOfPresortedData(array);
-//    if(boundaries.size() < 3 && SIZE > 1 && array[0] > array[1]) {
-//        std::reverse(array.begin(), array.end());
-//    }
+    std::queue<size_t> indexes = findIndexesOfBitonicRuns(array);
 
+    size_t lo, mid, hi;
+    bool writeDescending = false;
     shared_ptr<std::array<T, SIZE>> tmp(new std::array<T, SIZE>());
-    while(boundaries.size() >=3) {
-        for(size_t i = 0; i < boundaries.size() - 2; i+=2) {
-            size_t lo, mid, hi;
-            lo = boundaries.at(i);
-            mid = boundaries.at(i+1);
-            hi = boundaries.at(i+2);
+    while(!indexes.empty()) {
+        lo = indexes.front(); indexes.pop();
+        mid = indexes.front(); indexes.pop();
+        hi = indexes.front(); indexes.pop();
 
-            myMerge(array, *tmp, lo, mid, hi, false, false);
+        myMerge(array, *tmp, lo, mid, hi, true, writeDescending);
+        if(!writeDescending) {
+            indexes.push(lo);
         }
-        boundaries = findIndexesOfPresortedData(array);
+        indexes.push(hi);
+        writeDescending ? writeDescending = false : writeDescending = true;
+
+        std::cout << std::boolalpha << "lo:" << lo << ", mid:" << mid << ", hi:" << hi
+                  << ", writeDesc:" << writeDescending << ", idx size: " << indexes.size() << "\n";
+
+        //handleNewIndexes(indexes, bitRunCount, lo, hi, SIZE);
+        //bitRunCount == 2 ? bitRunCount = 0 : bitRunCount = bitRunCount;
     }
 }
 

@@ -118,17 +118,26 @@ template<typename T, size_t SIZE>
 std::vector<size_t> findIndexesOfBitonicRuns(std::array<T, SIZE>& array) {
     bool wasDescBefore = false;
     std::vector<size_t> indexes;
+
     indexes.push_back(0);
     for(size_t i = 1; i < SIZE; i++) {
-        if(array[i - 1] <= array[i]) {
+        if(array[i - 1] < array[i]) {
             if(wasDescBefore) {
+                indexes.push_back(i);
                 indexes.push_back(i);
                 wasDescBefore = false;
             }
+        } else if(array[i - 1] == array[i]) {
+            // just do nothing...
         } else {
-            wasDescBefore = true;
+            if(!wasDescBefore) {
+                wasDescBefore = true;
+                indexes.push_back(i);
+            }
+
         }
     }
+    if(!wasDescBefore)indexes.push_back(SIZE);
     indexes.push_back(SIZE);
 
     return indexes;

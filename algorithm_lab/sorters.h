@@ -125,7 +125,6 @@ std::queue<size_t> findIndexesOfBitonicRuns(std::array<T, SIZE>& array) {
         if(array[i - 1] < array[i]) {
             if(wasDescBefore) {
                 indexes.push(i);
-                indexes.push(i);
                 wasDescBefore = false;
             }
         } else if(array[i - 1] == array[i]) {
@@ -138,7 +137,7 @@ std::queue<size_t> findIndexesOfBitonicRuns(std::array<T, SIZE>& array) {
 
         }
     }
-    if(!wasDescBefore)indexes.push(SIZE);
+    if(!wasDescBefore && indexes.size() > 1) indexes.push(SIZE);
     indexes.push(SIZE);
 
     return indexes;
@@ -162,16 +161,9 @@ void myMerge(std::array<T, SIZE>& array, std::array<T, SIZE>& tmp, const size_t 
         for (size_t i = m, k = hi; m < k; i++) { tmp[i] = array[--k]; }
     }
 
-//    std::cout << "tmp: ";
-//    for(auto a : tmp) {
-//        std::cout << a << ",";
-//    }
-//    std::cout << "\n";
-
     if(writeDesc) {
         // == step 2a: sort and write back DESC until pointers cross
         for (size_t writeIdx = hi-1, readIdxLo = lo, readIdxHi = hi; readIdxLo < readIdxHi; writeIdx--) {
-            //std::cout << "reading: (" << readIdxLo << "," << readIdxHi << ") - comparing: (" << tmp[readIdxLo] << "," << tmp[readIdxHi] << ")\n";
             if (tmp[readIdxLo] < tmp[--readIdxHi]) {
                 array[writeIdx] = tmp[readIdxLo++]; readIdxHi++;
             } else {
@@ -181,10 +173,8 @@ void myMerge(std::array<T, SIZE>& array, std::array<T, SIZE>& tmp, const size_t 
     } else {
         // == step 2b: sort and write back ASC until pointers cross
         for (size_t writeIdx = lo, readIdxLo = lo, readIdxHi = hi; readIdxLo < readIdxHi; writeIdx++) {
-            //std::cout << "reading: (" << readIdxLo << "," << readIdxHi << ") - comparing: (" << tmp[readIdxLo] << "," << tmp[readIdxHi] << ")\n";
             if (tmp[readIdxLo] < tmp[--readIdxHi]) {
-                array[writeIdx] = tmp[readIdxLo++];
-                readIdxHi++;
+                array[writeIdx] = tmp[readIdxLo++]; readIdxHi++;
             } else {
                 array[writeIdx] = tmp[readIdxHi];
             }
@@ -193,38 +183,36 @@ void myMerge(std::array<T, SIZE>& array, std::array<T, SIZE>& tmp, const size_t 
 }
 
 /**
- * TODO
+ * Returns and removes/pops the head values of the queue
  */
-void handleNewIndexes(std::queue<size_t>& indexes, size_t bitRunCount, size_t lo, size_t hi, size_t SIZE);
+template <typename T>
+T popFront(std::queue<T>& queue) {
+    T retVal = queue.front();
+    queue.pop();
+    return retVal;
+}
+
+/**
+ * Append the new indexes to the queue and returns the new toggle for writing descending
+ */
+bool appendNewIndexesAndSetToogle(std::queue<size_t>& indexes, size_t writeDescendingToggle, size_t lo, size_t hi, size_t SIZE);
 
 /**
  * Sorts the given array via 'natural merge sort'
- * TODO absteigend auch linear
  */
 template <typename T, size_t SIZE>
 void sortViaNaturalMergesort(std::array<T, SIZE>& array) {
     std::queue<size_t> indexes = findIndexesOfBitonicRuns(array);
 
     size_t lo, mid, hi;
-    bool writeDescending = false;
+    bool writeDescendingToggle = false;
     shared_ptr<std::array<T, SIZE>> tmp(new std::array<T, SIZE>());
-    while(!indexes.empty()) {
-        lo = indexes.front(); indexes.pop();
-        mid = indexes.front(); indexes.pop();
-        hi = indexes.front(); indexes.pop();
+    while(indexes.size() > 2) {
+        lo = popFront(indexes); mid = popFront(indexes);
+        indexes.front() == SIZE ? hi = popFront(indexes) : hi = indexes.front();
 
-        myMerge(array, *tmp, lo, mid, hi, true, writeDescending);
-        if(!writeDescending) {
-            indexes.push(lo);
-        }
-        indexes.push(hi);
-        writeDescending ? writeDescending = false : writeDescending = true;
-
-        std::cout << std::boolalpha << "lo:" << lo << ", mid:" << mid << ", hi:" << hi
-                  << ", writeDesc:" << writeDescending << ", idx size: " << indexes.size() << "\n";
-
-        //handleNewIndexes(indexes, bitRunCount, lo, hi, SIZE);
-        //bitRunCount == 2 ? bitRunCount = 0 : bitRunCount = bitRunCount;
+        myMerge(array, *tmp, lo, mid, hi, true, writeDescendingToggle);
+        writeDescendingToggle = appendNewIndexesAndSetToogle(indexes, writeDescendingToggle, lo, hi, SIZE);
     }
 }
 
@@ -256,7 +244,6 @@ void sortViaBottomUpMergesort(std::array<T, SIZE>& array) {
 
 /**
  * Internal implementation of '3-way-partitioning quicksort' with additional depth parameter for debug
- * TODO random should be 30% faster than DESC
  */
 template <typename T, size_t SIZE>
 void internal3WayPartitioningQuicksort(std::array<T, SIZE>& array, const size_t left, const size_t right, const unsigned int depth) {

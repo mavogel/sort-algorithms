@@ -32,7 +32,7 @@ target_link_libraries(runInsertSortTests gtest gtest_main algorithms_lab)
 
 add_executable(runNaturalMergesortTests
         testhelper.cpp
-        sortViaNaturalMergeSortTest.cpp
+        sortViaNaturalMergeSortTest.cpp sortViaNaturalMergeSortTestLT.cpp
         )
 target_link_libraries(runNaturalMergesortTests gtest gtest_main algorithms_lab)
 

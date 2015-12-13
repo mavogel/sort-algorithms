@@ -810,66 +810,66 @@ In this section the results of time measuring are printed as tables. For each al
 %
 %\subsection{Sorting via direct selection}
 \begin{table}[htdp]
-	\caption{Direct Select Sort with \textbf{optimal} minimum search - Results in $seconds$}
+	\caption{Direct Select Sort with \textbf{optimal} minimum search - Results in $milliseconds$}
 	\begin{tabular}{|c|c|r|r|r|} \hline
-		Size of data & Loop rounds & Descending ($O(n^2)$) & Random ($O(n^2)$) & Ascending ($O(n^2)$) \\ \hline
-		64KB & 8.000 & 0.06880 & 0.06908 & 0.68131 \\ \hline
-		128KB & 16.000 & 0.28182 & 0.27292 & 0.29510 \\ \hline
-		256KB & 32.000& 1.05742 & 1.07465 & 1.09839 \\ \hline
-		512KB & 64.000 & 4.18521 & 4.17479 & 4.15151 \\ \hline
-		1MB & 128.000 & 16.54322 & 16.51044 & 16.4533 \\ \hline
-		2MB & 256.000 & 66.16571 & 65.69392 & 65.37212 \\ \hline
-		4MB & 512.000 & 273.48222 & 292.71435 & 292.25256 \\ \hline
-		8MB & 1024.000 & 1083.03456 & 1082.49234 & 1082.05422 \\ \hline
+		Size of data & Loop rounds & \parbox[c]{3.5cm}{Descending \\ $O(n^2)$} & \parbox[c]{3.5cm}{Random \\$O(n^2)$} & \parbox[c]{3.5cm}{Ascending \\ $O(n^2)$} \\ \hline
+		64KB & 8.000 & 6.880 & 6.908 & 6.813 \\ \hline
+		128KB & 16.000 & 28.182 & 27.292 & 29.510 \\ \hline
+		256KB & 32.000& 105.742 & 107.465 & 109.839 \\ \hline
+		512KB & 64.000 & 418.521 & 417.479 & 415.151 \\ \hline
+		1MB & 128.000 & 1.654.322 & 1.651.044 & 1.645.331 \\ \hline
+		2MB & 256.000 & 6.616.571 & 6.569.392 & 6.537.212 \\ \hline
+		4MB & 512.000 & 27.348.222 & 29.271.435 & 29.225.256 \\ \hline
+		8MB & 1024.000 & 108.303.456 & 108.249.234 & 108.205.422 \\ \hline
 	\end{tabular}
 	\label{default}
 \end{table}%
 
 \begin{table}[htdp]
-	\caption{Direct Select Sort with \textbf{non-optimal} minimum search - Results in $seconds$}
+	\caption{Direct Select Sort with \textbf{non-optimal} minimum search - Results in $milliseconds$}
 	\begin{tabular}{|c|c|r|r|r|} \hline
-		Size of data & Loop rounds & Descending ($O(n^2)$) & Random ($O(n^2)$) & Ascending ($O(n^2)$) \\ \hline
-		64KB & 8.000 & 0.06762 & 0.06823 & 0.06917 \\ \hline
-		128KB & 16.000 & 0.29155 & 0.28366 & 0.30631 \\ \hline
-		256KB & 32.000& 1.03674 & 1.07577 & 1.08151 \\ \hline
-		512KB & 64.000 & 4.24692 & 4.30123 & 4.20431 \\ \hline
-		1MB & 128.000 & 16.72085 & 16.65843 & 16.64763 \\ \hline
-		2MB & 256.000 & 66.10511 & 66.30912 & 69.62134 \\ \hline
-		4MB & 512.000 & 296.13454 & 286.12545 & 274.93242‚ \\ \hline
-		8MB & 1024.000 & 1095.62345 & 1096.52785 & 1096.83123 \\ \hline
+		Size of data & Loop rounds & \parbox[c]{3.5cm}{Descending \\ $O(n^2)$} & \parbox[c]{3.5cm}{Random \\$O(n^2)$} & \parbox[c]{3.5cm}{Ascending \\ $O(n^2)$} \\ \hline
+		64KB & 8.000 & 6.762 & 6.823 & 6.917 \\ \hline
+		128KB & 16.000 & 29.155 & 28.366 & 30.631 \\ \hline
+		256KB & 32.000& 103.674 & 107.577 & 108.151 \\ \hline
+		512KB & 64.000 & 424.692 & 430.123 & 420.431 \\ \hline
+		1MB & 128.000 & 1.672.085 & 1.665.843 & 1.664.763 \\ \hline
+		2MB & 256.000 & 6.610.511 & 6.630.912 & 6.962.134 \\ \hline
+		4MB & 512.000 & 29.613.454 & 28.612.545 & 27.493.242 \\ \hline
+		8MB & 1024.000 & 109.562.345 & 109.652.785 & 109.683.123 \\ \hline
 	\end{tabular}
 	\label{default}
 \end{table}%
 
 %\subsection{Sorting via direct insert}
 \begin{table}[htdp]
-	\caption{Direct Insert Sort \textbf{with watcher} element - Results in $seconds$}
+	\caption{Direct Insert Sort \textbf{with watcher} element - Results in $milliseconds$}
 	\begin{tabular}{|c|c|r|r|r|} \hline
-		Size of data & Loop rounds & Descending ($O(n^2)$) & Random ($O(n^2)$) & Ascending ($O(n)$) \\ \hline
-		64KB & 8.000 & 0.02852 & 0.03053 & 0.00005 \\ \hline
-		128KB & 16.000 & 0.14466 & 0.15854 & 0.00012 \\ \hline
-		256KB & 32.000& 0.50444 & 0.51895 & 0.00013 \\ \hline
-		512KB & 64.000 & 2.00758 & 2.00924 & 0.00023 \\ \hline
-		1MB & 128.000 & 8.03232 & 8.06599 & 0.00067 \\ \hline
-		2MB & 256.000 & 32.44567 & 34.43811 & 0.00076 \\ \hline
-		4MB & 512.000 & 144.41144 & 147.33765 & 0.00216 \\ \hline
-		8MB & 1024.000 & 502.87532 & 502.97723 & 0.00574 \\ \hline
+		Size of data & Loop rounds & \parbox[c]{3.5cm}{Descending \\ $O(n^2)$} & \parbox[c]{3.5cm}{Random \\$O(n^2)$} & \parbox[c]{3.5cm}{Ascending \\ $O(n)$} \\ \hline
+		64KB & 8.000 & 2.852 & 3.053 & 0,050 \\ \hline
+		128KB & 16.000 & 14.466 & 15.854 & 0,120 \\ \hline
+		256KB & 32.000& 50.444 & 51.895 & 0,139 \\ \hline
+		512KB & 64.000 & 200.758 & 200.924 & 0,231 \\ \hline
+		1MB & 128.000 & 803.232 & 806.599 & 0,671 \\ \hline
+		2MB & 256.000 & 32.44567 & 34.438.111 & 0,761 \\ \hline
+		4MB & 512.000 & 144.411.443 & 147.337.659 & 2.165 \\ \hline
+		8MB & 1024.000 & 502.874.532 & 502.977.231 & 5.713 \\ \hline
 	\end{tabular}
 	\label{default}
 \end{table}%
 
 \begin{table}[htdp]
-	\caption{Direct Insert Sort \textbf{without watcher} element - Results in $seconds$}
+	\caption{Direct Insert Sort \textbf{without watcher} element - Results in $milliseconds$}
 	\begin{tabular}{|c|c|r|r|r|} \hline
-		Size of data & Loop rounds & Descending ($O(n^2)$) & Random ($O(n^2)$) & Ascending ($O(n)$) \\ \hline
-		64KB & 8.000 & 0.03265 & 0.03766 & 0.00004 \\ \hline
-		128KB & 16.000 & 0.13647 & 0.13074 & 0.00005 \\ \hline
-		256KB & 32.000& 0.49180 & 0.50789 & 0.00009 \\ \hline
-		512KB & 64.000 & 1.99823 & 2.01932 & 0.00015 \\ \hline
-		1MB & 128.000 & 8.00159 & 8.01399 & 0.00043 \\ \hline
-		2MB & 256.000 & 34.26731 & 32.32018 & 0.00058 \\ \hline
-		4MB & 512.000 & 142.89432 & 131.39254 & 0.00104 \\ \hline
-		8MB & 1024.000 & 503.12823 & 504.12832 & 0.00424 \\ \hline
+		Size of data & Loop rounds & \parbox[c]{3.5cm}{Descending \\ $O(n^2)$} & \parbox[c]{3.5cm}{Random \\$O(n^2)$} & \parbox[c]{3.5cm}{Ascending \\ $O(n)$} \\ \hline
+		64KB & 8.000 & 3.265 & 3.766 & 0,041 \\ \hline
+		128KB & 16.000 & 13.647 & 13.074 & 0,051 \\ \hline
+		256KB & 32.000& 49.180 & 50.789 & 0,093 \\ \hline
+		512KB & 64.000 & 199.823 & 201.932 & 0,151 \\ \hline
+		1MB & 128.000 & 800.159 & 801.399 & 0,434 \\ \hline
+		2MB & 256.000 & 3.426.731 & 3.232.018 & 0,584 \\ \hline
+		4MB & 512.000 & 14.289.432 & 13.139.254 & 1.045 \\ \hline
+		8MB & 1024.000 & 50.312.823 & 50.412.832 & 4.245 \\ \hline
 	\end{tabular}
 	\label{default}
 \end{table}%

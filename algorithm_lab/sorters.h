@@ -7,9 +7,6 @@
 #include <cmath>
 #include <memory>
 #include "minsearch.h"
-#include "notSortedException.h"
-
-#include <iostream>
 
 #define QS_TO_INSERT_THRESHOLD 25
 #define FACTOR_WORST_QS 10

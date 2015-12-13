@@ -1,8 +1,6 @@
 #ifndef MINSEARCH
 #define MINSEARCH
 
-#include "dataEmptyException.h"
-#include "indexOutOfRangeException.h"
 #include <array>
 
 /**

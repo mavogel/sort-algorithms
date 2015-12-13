@@ -89,17 +89,6 @@ TEST_F(MinSearchTest, testWithCornerCases) {
     EXPECT_EQ(0ul,nonOptimalMinSearch(*list2,0));
 }
 
-TEST_F(MinSearchTest, testWithEmptyData) {
-    std::shared_ptr<std::array<int, 0>> list(new std::array<int, 0>);
-    ASSERT_THROW(optimalMinSearch(*list,0), DataEmptyException);
-
-    std::shared_ptr<std::array<double, 0>> dList(new std::array<double, 0>);
-    ASSERT_THROW(optimalMinSearch(*dList,0), DataEmptyException);
-
-    std::shared_ptr<std::array<std::string, 0>> sList(new std::array<std::string, 0>);
-    ASSERT_THROW(optimalMinSearch(*sList,0), DataEmptyException);
-}
-
 TEST_F(MinSearchTest, testWithOneElementData) {
     std::shared_ptr<std::array<int, 1>> list(new std::array<int, 1>{{5}});
     EXPECT_EQ(0ul,optimalMinSearch(*list,0));
@@ -112,20 +101,6 @@ TEST_F(MinSearchTest, testWithOneElementData) {
     std::shared_ptr<std::array<std::string, 1>> sList(new std::array<std::string, 1>{{"ab"}});
     EXPECT_EQ(0ul,optimalMinSearch(*sList,0));
     EXPECT_EQ(0ul,nonOptimalMinSearch(*sList,0));
-}
-
-TEST_F(MinSearchTest, testStartIndexOutOfRange) {
-    std::shared_ptr<std::array<int, 1>> list(new std::array<int, 1>{{5}});
-    ASSERT_THROW(optimalMinSearch(*list,-5), IndexOutOfRangeException);
-    ASSERT_THROW(optimalMinSearch(*list, 5), IndexOutOfRangeException);
-
-    std::shared_ptr<std::array<double,1>> dList(new std::array<double, 1>{{1.2}});
-    ASSERT_THROW(optimalMinSearch(*dList,-5), IndexOutOfRangeException);
-    ASSERT_THROW(optimalMinSearch(*dList, 5), IndexOutOfRangeException);
-
-    std::shared_ptr<std::array<std::string, 1>> sList(new std::array<std::string, 1>{{"ab"}});
-    ASSERT_THROW(optimalMinSearch(*sList,-5), IndexOutOfRangeException);
-    ASSERT_THROW(optimalMinSearch(*sList, 5), IndexOutOfRangeException);
 }
 
 TEST_F(MinSearchTest, testWithDoubledValues) {

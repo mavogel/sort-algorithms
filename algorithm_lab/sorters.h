@@ -25,6 +25,7 @@ using std::shared_ptr;
  */
 template <typename T, size_t SIZE>
 void sortViaOptimalDirectSelection(std::array<T, SIZE>& array) {
+    if(SIZE == 0 || SIZE == 1) return;
     size_t minIndex = 0;
     for(size_t i = 0; i < (SIZE - 1); i++) {
         minIndex = optimalMinSearch(array, i);
@@ -37,6 +38,7 @@ void sortViaOptimalDirectSelection(std::array<T, SIZE>& array) {
  */
 template <typename T, size_t SIZE>
 void sortViaNonOptimalDirectSelection(std::array<T, SIZE>& array) {
+    if(SIZE == 0 || SIZE == 1) return;
     size_t minIndex = 0;
     for(size_t i = 0; i < (SIZE - 1); i++) {
         minIndex = nonOptimalMinSearch(array, i);
@@ -50,6 +52,7 @@ void sortViaNonOptimalDirectSelection(std::array<T, SIZE>& array) {
  */
 template <typename T, size_t SIZE>
 void sortViaDirectInsertWithWatcherElement(std::array<T, SIZE>& array, const size_t startIndex, const size_t endIndex) {
+    if(SIZE == 0 || SIZE == 1) return;
     size_t minIndex = optimalMinSearch(array, startIndex, endIndex);
     std::swap(array[startIndex], array[minIndex]);
 
@@ -66,6 +69,7 @@ void sortViaDirectInsertWithWatcherElement(std::array<T, SIZE>& array, const siz
  */
 template <typename T, size_t SIZE>
 void sortViaDirectInsertWithWatcherElement(std::array<T, SIZE>& array) {
+    if(SIZE == 0 || SIZE == 1) return;
     size_t minIndex = optimalMinSearch(array, 0, SIZE);
     std::swap(array[0], array[minIndex]);
 

@@ -1,5 +1,11 @@
 include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
 
+add_executable(runMinSearchTests
+        testhelper.cpp
+        minSearchTest.cpp
+        )
+target_link_libraries(runMinSearchTests gtest gtest_main algorithms_lab)
+
 add_executable(runMergeTests
         testhelper.cpp
         mergeTest.cpp

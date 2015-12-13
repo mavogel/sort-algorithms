@@ -10,8 +10,6 @@
  */
 template <typename T, size_t SIZE>
 size_t optimalMinSearch(const std::array<T, SIZE>& array, const size_t startIndex = 0, const size_t endIndex = SIZE) {
-    if(SIZE == 0) throw DataEmptyException();
-    if (startIndex < 0 || endIndex > SIZE || startIndex > endIndex) throw IndexOutOfRangeException(startIndex, endIndex, 0, SIZE);
     if(SIZE == 1) return 0;
 
     size_t minPos = startIndex;
@@ -30,8 +28,6 @@ size_t optimalMinSearch(const std::array<T, SIZE>& array, const size_t startInde
  */
 template <typename T, size_t SIZE>
 size_t nonOptimalMinSearch(const std::array<T, SIZE>& array, const size_t startIndex = 0) {
-    if(SIZE == 0) throw DataEmptyException();
-    if (startIndex < 0 || startIndex >= SIZE) throw IndexOutOfRangeException(startIndex, startIndex, 0, SIZE-1);
     if(SIZE == 1) return 0;
 
     size_t minPos = (SIZE - 1);

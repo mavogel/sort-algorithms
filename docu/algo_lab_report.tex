@@ -761,7 +761,7 @@ The following preconditions were given by the professor:
 	\begin{itemize}
 		\item Before each test the cache has to be emptied by filling an array with 20MB of data.
 		\item Time measurement with data initialised with random, ascending and descending sorted values to point out the best, worst and average case.
-		\item The amount of data to be sorted shall increase from 8KB\footnote{kilo bytes = $10^3$ bytes} over 8MB\footnote{mega bytes = $10^6$ bytes} up to 8GB\footnote{giga bytes = $10^9$ bytes} in step of multiplying by 2. Hence the sizes of the data are: 8KB, 16KB, 32KB, 64KB, 128KB, 256KB, 512MB, 1MB, 2MB, 4MB, 8MB, 16MB, 32MB, 64MB, 128MB, 256MB, 512MB, 1GB, 2GB, 4GB and 8GB. Exceptions are the sorting by direct insert and direct select which have $O(n^2)$ in almost every case. The test cases are limited to 8MB.
+		\item The amount of data to be sorted shall increase from 8KB\footnote{kilo bytes = $10^3$ bytes} over 8MB\footnote{mega bytes = $10^6$ bytes} up to 8GB\footnote{giga bytes = $10^9$ bytes} in step of multiplying by 2. Hence the sizes of the data are: 8KB, 16KB, 32KB, 64KB, 128KB, 256KB, 512MB, 1MB, 2MB, 4MB, 8MB, 16MB, 32MB, 64MB, 128MB, 256MB, 512MB, 1GB, 2GB and 4GB. Exceptions are the sorting by direct insert and direct select which have $O(n^2)$ in almost every case. The test cases are limited to 8MB.
 	\end{itemize}
 \end{enumerate}
 
@@ -949,7 +949,7 @@ In this section the results of time measuring are printed as tables. For each al
 		1GB & 131.072.000 & 18.383,604 & 18.484,818 & 4.169,181 \\ \hline
 		2GB & 262.144.000 & 39.167,371 & 39.258,816 & 9.035,457 \\ \hline
 		4GB & 524.288.000 & 82.576,764 & 82.608,998 & 18.382,807 \\ \hline
-		8GB & 1.048.576.000 & 699.439,001 & 472.780,513 & 75.123,002 \\ \hline
+		%8GB & 1.048.576.000 & 699.439,001 & 472.780,513 & 75.123,002 \\ \hline
 	\end{tabular}
 	\label{default}
 \end{table}%

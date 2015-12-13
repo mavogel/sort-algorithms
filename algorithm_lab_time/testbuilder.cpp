@@ -21,7 +21,8 @@ std::string toString(const bool theBool) {
     return theBool ? "true " : "false";
 }
 
-void afterTestEvaluation(std::chrono::high_resolution_clock::time_point& start, std::chrono::high_resolution_clock::time_point& end, std::string& testCase, std::ostream& os, std::vector<double>& timings) {
+void afterTestEvaluation(std::chrono::high_resolution_clock::time_point& start, std::chrono::high_resolution_clock::time_point& end,
+                         std::string& testCase, std::ostream& os, std::vector<double>& timings) {
     using namespace std::chrono;
     const unsigned int width = 12;
 

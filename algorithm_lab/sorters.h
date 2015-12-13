@@ -18,7 +18,9 @@ using std::shared_ptr;
 #endif
 
 /**
- *  Sorts the given array via optimal 'direct selection'.
+ * Sorts the given array via optimal 'direct selection' usind cache prefechting.
+ *
+ * @param array the array to sort
  */
 template <typename T, size_t SIZE>
 void sortViaOptimalDirectSelection(std::array<T, SIZE>& array) {
@@ -31,7 +33,9 @@ void sortViaOptimalDirectSelection(std::array<T, SIZE>& array) {
 }
 
 /**
- *  Sorts the given array via non-optimal 'direct selection'.
+ *  Sorts the given array via non-optimal 'direct selection' starting from the last index.
+ *
+ * @param array the array to sort
  */
 template <typename T, size_t SIZE>
 void sortViaNonOptimalDirectSelection(std::array<T, SIZE>& array) {
@@ -44,8 +48,13 @@ void sortViaNonOptimalDirectSelection(std::array<T, SIZE>& array) {
 }
 
 /**
- *  Sorts the given array via 'direct insert' with a watcher element.
- *  Starting from startIndex (inclusive) until endIndex (exclusive)
+ *  Sorts the given array via 'direct insert' with a watcher element
+ *  starting from startIndex (INCLUSIVE) until endIndex (EXCLUSIVE).
+ *
+ * @brief Sorts via direct insert
+ * @param array the array to sort
+ * @param startIndex the index to start from (inclusive)
+ * @param endIndex the endIndex (exclusive)
  */
 template <typename T, size_t SIZE>
 void sortViaDirectInsertWithWatcherElement(std::array<T, SIZE>& array, const size_t startIndex, const size_t endIndex) {
@@ -61,7 +70,11 @@ void sortViaDirectInsertWithWatcherElement(std::array<T, SIZE>& array, const siz
 }
 
 /**
- *  Sorts the given array via 'direct insert' with a watcher element.
+ *  Sorts the given array via 'direct insert' with a watcher element, by swapping the minimum (using optimal minumum
+ *  search) to the beginning first.
+ *
+ * @brief Sorts via direct insert with a watcher/guard element
+ * @param array the array to sort
  */
 template <typename T, size_t SIZE>
 void sortViaDirectInsertWithWatcherElement(std::array<T, SIZE>& array) {
@@ -78,6 +91,9 @@ void sortViaDirectInsertWithWatcherElement(std::array<T, SIZE>& array) {
 
 /**
  *  Sorts the given array via normal 'direct insert' without a watcher.
+ *
+ * @brief Sorts via direct insert
+ * @param array the array to sort
  */
 template <typename T, size_t SIZE>
 void sortViaNormalDirectInsert(std::array<T, SIZE>& array) {
@@ -89,29 +105,16 @@ void sortViaNormalDirectInsert(std::array<T, SIZE>& array) {
 }
 
 /**
- * Retrieves the indexes of the presorted data in the given array.
+ * Finds the indexes of the bitonic runs.
  *
  * Examples:
- * 1) 7 4 6 3 1 2 8 5 => |7| |4 6| |3| |1 2 8| |5|  => Indexes: 0,1,3,4,7,8
- * 2) 1 2 3 4         => |1 2 3 4 5|                => Indexes: 0,4
- * 3) -1              => |-1|                       => Indexes: 0,0
- */
-template<typename T, size_t SIZE>
-std::vector<size_t> findIndexesOfPresortedData(std::array<T, SIZE>& array) {
-    std::vector<size_t> indexes;
-    indexes.push_back(0);
-    for(size_t i = 1; i < SIZE; i++) {
-        if(array[i - 1] > array[i]) {
-            indexes.push_back(i);
-        }
-    }
-    indexes.push_back(SIZE);
-
-    return indexes;
-}
-
-/**
- * Finds the indexes of the bitonic runs
+ * 1) 1,2,3,2,1,2,3     => 0,3,5,7
+ * 2) 7,6,5,4,3         => 0,2,5
+ * 3) 1,2,3,2,1,2,3,1   => 0,3,5,7,8
+ * 4) 1,2,3,4,5,6       => 0,6
+ *
+ * @param array the array to find the bitonic runs in
+ * @return the indexes of the bitonic runs
  */
 template<typename T, size_t SIZE>
 std::queue<size_t> findIndexesOfBitonicRuns(std::array<T, SIZE>& array) {
@@ -142,10 +145,17 @@ std::queue<size_t> findIndexesOfBitonicRuns(std::array<T, SIZE>& array) {
 }
 
 /**
- * Merges / sorts the given array ascending from low index (lo) via middle index (m) to the high index (hi)
- * => lo INCLUSIVE and m and hi EXCLUSIVE
+ * Merges the given array ascending from low index (lo (INCLUSIVE)) via middle index (m (EXCLUSIVE))
+ * to the high index (hi (EXCLUSIVE))
  *
- * Expects lo->m in ASCENDING ORDER and m->hi in DESCENDING ORDER
+ * @brief Generic merge function to merge from lo to hi index
+ * @param array the array to merge into between the lo and hi index
+ * @param tmp the temporal array used to perform the merge from
+ * @param lo the lower index
+ * @param m the middle index
+ * @param hi the high index
+ * @param isSecondDesc true if the data from m to hi is presorted descending, false otherwise (ascending)
+ * @param writeDesc true if the merged data should be written back descending to the array, false otherwise (ascending)
  */
 template <typename T, size_t SIZE>
 void merge(std::array<T, SIZE>& array, std::array<T, SIZE>& tmp, const size_t lo, const size_t m, const size_t hi,
@@ -181,7 +191,10 @@ void merge(std::array<T, SIZE>& array, std::array<T, SIZE>& tmp, const size_t lo
 }
 
 /**
- * Returns and removes/pops the head values of the queue
+ * Returns and removes/pops the head values of the queue.
+ *
+ * @param queue the queue to return and pop the head value
+ * @return the head value
  */
 template <typename T>
 T popFront(std::queue<T>& queue) {
@@ -191,12 +204,21 @@ T popFront(std::queue<T>& queue) {
 }
 
 /**
- * Append the new indexes to the queue and returns the new toggle for writing descending
+ * Appends the new indexes to the queue and returns the new toggle for writing descending or not.
+ *
+ * @param indexes the indexes to append the new indexes to
+ * @param writeDescendingToggle
+ * @param lo the current lo index
+ * @param hi the current hi index
+ * @param maxIndex the value of the maximal index (EXCLUSIVE)
+ * @return the new toggle for writing descending
  */
-bool appendNewIndexesAndSetToggle(std::queue<size_t>& indexes, size_t writeDescendingToggle, size_t lo, size_t hi, size_t SIZE);
+bool appendNewIndexesAndSetToggle(std::queue<size_t>& indexes, const bool writeDescendingToggle, const size_t lo, const size_t hi, const size_t maxIndex);
 
 /**
- * Sorts the given array via 'natural merge sort'
+ * Sorts the given array via 'natural merge sort'.
+ *
+ * @param array the array to sort
  */
 template <typename T, size_t SIZE>
 void sortViaNaturalMergesort(std::array<T, SIZE>& array) {
@@ -215,7 +237,9 @@ void sortViaNaturalMergesort(std::array<T, SIZE>& array) {
 }
 
 /**
- * Sorts the given array via 'bottom-up merge sort'
+ * Sorts the given array via 'bottom-up merge sort'.
+ *
+ * @param array the array to sort
  */
 template <typename T, size_t SIZE>
 void sortViaBottomUpMergesort(std::array<T, SIZE>& array) {
@@ -241,7 +265,12 @@ void sortViaBottomUpMergesort(std::array<T, SIZE>& array) {
 }
 
 /**
- * Internal implementation of '3-way-partitioning quicksort' with additional depth parameter for debug
+ * Internal implementation of '3-way-partitioning quicksort' with additional depth parameter.
+ *
+ * @param array the array to sort
+ * @param left the left index/boundary of the part to apply the algorithm (INCLUSIVE)
+ * @param right corresponding right index/boundary (EXCLUSIVE)
+ * @param depth the current recursion depth
  */
 template <typename T, size_t SIZE>
 void internal3WayPartitioningQuicksort(std::array<T, SIZE>& array, const size_t left, const size_t right, const unsigned int depth) {
@@ -283,9 +312,10 @@ void internal3WayPartitioningQuicksort(std::array<T, SIZE>& array, const size_t 
 
 
 /**
- * Sorts the given array via '3-way-partitioning quicksort'
+ * Sorts the given array via '3-way-partitioning quicksort'.
  *
  * @see 'Quicksort is optimal' - R. Sedgewick, J. Bentley
+ * @param array the array to sort
  */
 template <typename T, size_t SIZE>
 void sortVia3WayPartitioningQuicksort(std::array<T, SIZE>& array) {
@@ -293,16 +323,27 @@ void sortVia3WayPartitioningQuicksort(std::array<T, SIZE>& array) {
 }
 
 /**
- * Determines the worst case for the Quicksort, if one half is 10 times bigger than the other
+ * Determines the worst case for the Quicksort, if one half is 10 times bigger than the other.
  *
- * @brief isWorstQuickSortCase
- * @return true if the worst case is present, false otherwise
+ * |   <p  | =p      |      >p           |
+ * left    r         l                   right
+ *
+ * @param left the left boundary of the left part to sort
+ * @param r the right boundary of the left part to sort
+ * @param l the left boundary of the right part to sort
+ * @param right the right boundary of the right part to sort
+ * @return true if the worst case is found, false otherwise
  */
 bool isWorstQuickSortCase(const size_t left, const size_t r, const size_t l,const size_t right);
 
 /**
  * Performs an regular quicksort until a size of 25. Then the halfs will be sorted via direct insert. Furthermore it handles
  * the worst case for Quicksort, which is if one half contains more than 10 times the amount of values than the other half of the pivot element.
+ *
+ * @param array the array to sort
+ * @param left the left index/boundary of the part to apply the algorithm (INCLUSIVE)
+ * @param right corresponding right index/boundary (EXCLUSIVE)
+ * @param depth the current depth of the recursion
  */
 template <typename T, size_t SIZE>
 void internalHybridQuicksort(std::array<T, SIZE>& array, std::array<T, SIZE>& tmp, const size_t left, const size_t right, const unsigned int depth) {
@@ -356,10 +397,11 @@ void internalHybridQuicksort(std::array<T, SIZE>& array, std::array<T, SIZE>& tm
 }
 
 /**
- * Sorts the given array via 'hybrid quicksort'.
+ * Sorts the given array via a 'hybrid quicksort'.
+ * The algorithms of insert sort and merge sort will be used.
  *
- * The algorithms of insert sort and merge sort will be used and
- * the recursion terminated earlier.
+ * @brief Implementation of a hybrid quicksort, consisting of 3-way-partitioning quicksort, insert sort and mergesort
+ * @param array the array to sort
  */
 template <typename T, size_t SIZE>
 void sortViaHybridQuicksort(std::array<T, SIZE>& array) {

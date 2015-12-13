@@ -10,7 +10,7 @@
 #endif
 
 /**
- * Fills a array with 20mb data
+ * Fills a array with 20mb data to clear the cache of the CPU.
  *
  * @brief preTestFillArrayWith20mb
  */
@@ -28,6 +28,8 @@ double generateRandomDouble(const int lowerBound, const int upperBound);
 
 /**
  *  Initializes the given array with random double values in the range [INT_MIN,INT_MAX]
+ *
+ *  @param array the array to fill with random double value
  */
 template <size_t SIZE>
 void initRandomDoubles(std::array<double, SIZE>& array) {
@@ -42,6 +44,8 @@ void initRandomDoubles(std::array<double, SIZE>& array) {
 
 /**
  *  Initializes the given array with DESCENDING sorted double values
+ *
+ *  @param array the array to fill with descending sorted double value
  */
 template <size_t SIZE>
 void initDescendingSortedDoubles(std::array<double, SIZE>& array) {
@@ -56,6 +60,8 @@ void initDescendingSortedDoubles(std::array<double, SIZE>& array) {
 
 /**
  *  Initializes the given array with ASCENDING sorted double values
+ *
+ *  @param array the array to fill with ascending sorted double value
  */
 template <size_t SIZE>
 void initAscendingSortedDoubles(std::array<double, SIZE>& array) {

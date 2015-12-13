@@ -12,12 +12,6 @@ add_executable(runMergeTests
         )
 target_link_libraries(runMergeTests gtest gtest_main algorithms_lab)
 
-add_executable(runPresortedDataTests
-        testhelper.cpp
-        presortedDataTest.cpp
-        )
-target_link_libraries(runPresortedDataTests gtest gtest_main algorithms_lab)
-
 add_executable(runBitoniRunsTests
         testhelper.cpp
         bitonicRunsTest.cpp
@@ -64,7 +58,6 @@ add_executable(runAllTests
         testhelper.cpp
         mergeTest.cpp
         minSearchTest.cpp
-        presortedDataTest.cpp
         bitonicRunsTest.cpp
         sortViaDirectSelectionTest.cpp sortViaDirectSelectionTestLT.cpp
         sortViaDirectInsertTest.cpp sortViaDirectInsertTestLT.cpp

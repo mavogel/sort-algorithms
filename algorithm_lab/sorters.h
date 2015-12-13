@@ -57,8 +57,7 @@ void sortViaDirectInsertWithWatcherElement(std::array<T, SIZE>& array, const siz
     std::swap(array[startIndex], array[minIndex]);
 
     for(size_t i = startIndex+2; i < endIndex; i++) {
-        T curr = array[i];
-        for (size_t j = i; array[j - 1] > curr; j--) {
+        for (size_t j = i; array[j - 1] > array[j]; j--) {
             std::swap(array[j], array[j - 1]);
         }
     }
@@ -74,8 +73,7 @@ void sortViaDirectInsertWithWatcherElement(std::array<T, SIZE>& array) {
     std::swap(array[0], array[minIndex]);
 
     for(size_t i = 2; i < SIZE; i++) {
-        T curr = array[i];
-        for (size_t j = i; array[j - 1] > curr; j--) {
+        for (size_t j = i; array[j - 1] > array[j]; j--) {
             std::swap(array[j], array[j - 1]);
         }
     }
@@ -87,8 +85,7 @@ void sortViaDirectInsertWithWatcherElement(std::array<T, SIZE>& array) {
 template <typename T, size_t SIZE>
 void sortViaNormalDirectInsert(std::array<T, SIZE>& array) {
     for(size_t i = 0; i < SIZE; i++) {
-        T curr = array[i];
-        for (size_t j = i; j > 0 && array[j - 1] > curr; j--) {
+        for (size_t j = i; j > 0 && (array[j - 1] > array[j]); j--) {
             std::swap(array[j], array[j - 1]);
         }
     }
@@ -154,7 +151,7 @@ std::queue<size_t> findIndexesOfBitonicRuns(std::array<T, SIZE>& array) {
  * Expects lo->m in ASCENDING ORDER and m->hi in DESCENDING ORDER
  */
 template <typename T, size_t SIZE>
-void myMerge(std::array<T, SIZE>& array, std::array<T, SIZE>& tmp, const size_t lo, const size_t m, const size_t hi,
+void merge(std::array<T, SIZE>& array, std::array<T, SIZE>& tmp, const size_t lo, const size_t m, const size_t hi,
              const bool isSecondDesc, const bool writeDesc) {
     if (isSecondDesc) {
         // == step 1a: already bitonic, so insert into tmp array
@@ -199,7 +196,7 @@ T popFront(std::queue<T>& queue) {
 /**
  * Append the new indexes to the queue and returns the new toggle for writing descending
  */
-bool appendNewIndexesAndSetToogle(std::queue<size_t>& indexes, size_t writeDescendingToggle, size_t lo, size_t hi, size_t SIZE);
+bool appendNewIndexesAndSetToggle(std::queue<size_t>& indexes, size_t writeDescendingToggle, size_t lo, size_t hi, size_t SIZE);
 
 /**
  * Sorts the given array via 'natural merge sort'
@@ -215,8 +212,8 @@ void sortViaNaturalMergesort(std::array<T, SIZE>& array) {
         lo = popFront(indexes); mid = popFront(indexes);
         indexes.front() == SIZE ? hi = popFront(indexes) : hi = indexes.front();
 
-        myMerge(array, *tmp, lo, mid, hi, true, writeDescendingToggle);
-        writeDescendingToggle = appendNewIndexesAndSetToogle(indexes, writeDescendingToggle, lo, hi, SIZE);
+        merge(array, *tmp, lo, mid, hi, true, writeDescendingToggle);
+        writeDescendingToggle = appendNewIndexesAndSetToggle(indexes, writeDescendingToggle, lo, hi, SIZE);
     }
 }
 
@@ -241,7 +238,7 @@ void sortViaBottomUpMergesort(std::array<T, SIZE>& array) {
         for(size_t lo = 0; lo < SIZE; lo+=std::pow(2,round)) {
             mid = (lo+(std::pow(2,round-1))) > (SIZE) ? (SIZE) : lo+(std::pow(2,round-1));
             hi = (lo+(std::pow(2,round))) > (SIZE) ? (SIZE): lo+(std::pow(2,round));
-            myMerge(array, *tmp, lo, mid, hi, false, false);
+            merge(array, *tmp, lo, mid, hi, false, false);
         }
     }
 }
@@ -352,7 +349,7 @@ void internalHybridQuicksort(std::array<T, SIZE>& array, std::array<T, SIZE>& tm
             size_t mid = (left + right) / 2;
             internalHybridQuicksort(array, tmp, left, mid, depth+1);
             internalHybridQuicksort(array, tmp, mid+1, right, depth+1);
-            myMerge(array, tmp, left, mid+1, right+1, false, false);
+            merge(array, tmp, left, mid+1, right+1, false, false);
         } else {
             // == step 6b: next recursion
             internalHybridQuicksort(array, tmp, left, j, depth+1);

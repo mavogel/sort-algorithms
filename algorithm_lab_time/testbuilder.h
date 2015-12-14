@@ -1,33 +1,33 @@
 #ifndef TESTBUILDER
 #define TESTBUILDER
 
-#define ROUNDS_K1              125
-#define ROUNDS_K2              250
-#define ROUNDS_K4              500
-#define ROUNDS_K8            1'000
-#define ROUNDS_K16           2'000
-#define ROUNDS_K32           4'000
-#define ROUNDS_K64           8'000
-#define ROUNDS_K128         16'000
-#define ROUNDS_K256         32'000
-#define ROUNDS_K512         64'000
-#define ROUNDS_M1          128'000
-#define ROUNDS_M2          256'000
-#define ROUNDS_M4          512'000
-#define ROUNDS_M8        1'024'000
-#define ROUNDS_M16       2'048'000
-#define ROUNDS_M32       4'096'000
-#define ROUNDS_M64       8'192'000
-#define ROUNDS_M128     16'384'000
-#define ROUNDS_M256     32'768'000
-#define ROUNDS_M512     65'536'000
-#define ROUNDS_G1       131'072'000
-#define ROUNDS_G2       262'144'000
-#define ROUNDS_G4       524'288'000
+#define ROUNDS_K1              128
+#define ROUNDS_K2      ROUNDS_K1*2
+#define ROUNDS_K4      ROUNDS_K1*4
+#define ROUNDS_K8      ROUNDS_K1*8
+#define ROUNDS_K16     ROUNDS_K1*16
+#define ROUNDS_K32     ROUNDS_K1*32
+#define ROUNDS_K64     ROUNDS_K1*64
+#define ROUNDS_K128    ROUNDS_K1*128
+#define ROUNDS_K256    ROUNDS_K1*256
+#define ROUNDS_K512    ROUNDS_K1*512
+#define ROUNDS_M1      ROUNDS_K1*1024
+#define ROUNDS_M2      ROUNDS_K1*2048
+#define ROUNDS_M4      ROUNDS_K1*4096
+#define ROUNDS_M8      ROUNDS_K1*8192
+#define ROUNDS_M16     ROUNDS_M8*2
+#define ROUNDS_M32     ROUNDS_M8*4
+#define ROUNDS_M64     ROUNDS_M8*8
+#define ROUNDS_M128    ROUNDS_M8*16
+#define ROUNDS_M256    ROUNDS_M8*32
+#define ROUNDS_M512    ROUNDS_M8*64
+#define ROUNDS_G1      ROUNDS_M8*128
+#define ROUNDS_G2      ROUNDS_M8*256
+#define ROUNDS_G4      ROUNDS_M8*512
 
-#define GB_IN_BYTES 1024000000
-#define MB_IN_BYTES 1024000
-#define KB_IN_BYTES 1024
+#define KB_IN_BYTES                 1'024
+#define MB_IN_BYTES     KB_IN_BYTES*1'024
+#define GB_IN_BYTES     MB_IN_BYTES*1'024
 
 #include "generator.h"
 #include "sorters.h"

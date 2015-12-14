@@ -25,10 +25,8 @@ using std::shared_ptr;
 template <typename T, size_t SIZE>
 void sortViaOptimalDirectSelection(std::array<T, SIZE>& array) {
     if(SIZE == 0 || SIZE == 1) return;
-    size_t minIndex = 0;
     for(size_t i = 0; i < (SIZE - 1); i++) {
-        minIndex = optimalMinSearch(array, i);
-        std::swap(array[i], array[minIndex]);
+        std::swap(array[i], array[optimalMinSearch(array, i)]);
     }
 }
 
@@ -40,10 +38,8 @@ void sortViaOptimalDirectSelection(std::array<T, SIZE>& array) {
 template <typename T, size_t SIZE>
 void sortViaNonOptimalDirectSelection(std::array<T, SIZE>& array) {
     if(SIZE == 0 || SIZE == 1) return;
-    size_t minIndex = 0;
     for(size_t i = 0; i < (SIZE - 1); i++) {
-        minIndex = nonOptimalMinSearch(array, i);
-        std::swap(array[i], array[minIndex]);
+        std::swap(array[i], array[nonOptimalMinSearch(array, i)]);
     }
 }
 
@@ -59,9 +55,8 @@ void sortViaNonOptimalDirectSelection(std::array<T, SIZE>& array) {
 template <typename T, size_t SIZE>
 void sortViaDirectInsertWithWatcherElement(std::array<T, SIZE>& array, const size_t startIndex, const size_t endIndex) {
     if(SIZE == 0 || SIZE == 1) return;
-    size_t minIndex = optimalMinSearch(array, startIndex, endIndex);
-    std::swap(array[startIndex], array[minIndex]);
 
+    std::swap(array[startIndex], array[optimalMinSearch(array, startIndex, endIndex)]);
     for(size_t i = startIndex+2; i < endIndex; i++) {
         for (size_t j = i; array[j - 1] > array[j]; j--) {
             std::swap(array[j], array[j - 1]);
@@ -79,9 +74,8 @@ void sortViaDirectInsertWithWatcherElement(std::array<T, SIZE>& array, const siz
 template <typename T, size_t SIZE>
 void sortViaDirectInsertWithWatcherElement(std::array<T, SIZE>& array) {
     if(SIZE == 0 || SIZE == 1) return;
-    size_t minIndex = optimalMinSearch(array, 0, SIZE);
-    std::swap(array[0], array[minIndex]);
 
+    std::swap(array[0], array[optimalMinSearch(array, 0, SIZE)]);
     for(size_t i = 2; i < SIZE; i++) {
         for (size_t j = i; array[j - 1] > array[j]; j--) {
             std::swap(array[j], array[j - 1]);

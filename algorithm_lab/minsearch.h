@@ -5,6 +5,11 @@
 
 /**
  * Determines the index of the minimum in a given array in an optimal way.
+ *
+ * @param array the array to find the minimum in
+ * @param startIndex the start index (INCLUSIVE)
+ * @param endIndex the end index (EXCLUSIVE)
+ * @return the index of the minimum
  */
 template <typename T, size_t SIZE>
 size_t optimalMinSearch(const std::array<T, SIZE>& array, const size_t startIndex = 0, const size_t endIndex = SIZE) {
@@ -23,6 +28,10 @@ size_t optimalMinSearch(const std::array<T, SIZE>& array, const size_t startInde
 
 /**
  * Determines the index of the minimum in a given array in a NON-optimal way.
+ *
+ * @param array the array to find the minimum in
+ * @param startIndex the start index (INCLUSIVE)
+ * @return the index of the minimum
  */
 template <typename T, size_t SIZE>
 size_t nonOptimalMinSearch(const std::array<T, SIZE>& array, const size_t startIndex = 0) {
@@ -35,7 +44,7 @@ size_t nonOptimalMinSearch(const std::array<T, SIZE>& array, const size_t startI
            min = array[i];
            minPos = i;
        }
-       if(i == 0) break;
+       if(i == startIndex) break;
     }
     return minPos;
 }

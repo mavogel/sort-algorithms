@@ -811,7 +811,7 @@ In this section the results of time measuring are printed as tables. For each al
 %\subsection{Sorting via direct selection}
 \begin{table}[htdp]
 	\caption{Direct Select Sort with \textbf{optimal} minimum search - Results in $milliseconds$}
-	\begin{tabular}{|c|c|r|r|r|} \hline
+	\begin{tabular}{|r|c|r|r|r|} \hline
 		Size of data & Loop rounds & \parbox[c]{3.5cm}{Descending \\ $O(n^2)$} & \parbox[c]{3.5cm}{Random \\$O(n^2)$} & \parbox[c]{3.5cm}{Ascending \\ $O(n^2)$} \\ \hline
 		64KB & 8.000 & 6.880 & 6.908 & 6.813 \\ \hline
 		128KB & 16.000 & 28.182 & 27.292 & 29.510 \\ \hline
@@ -827,7 +827,7 @@ In this section the results of time measuring are printed as tables. For each al
 
 \begin{table}[htdp]
 	\caption{Direct Select Sort with \textbf{non-optimal} minimum search - Results in $milliseconds$}
-	\begin{tabular}{|c|c|r|r|r|} \hline
+	\begin{tabular}{|r|c|r|r|r|} \hline
 		Size of data & Loop rounds & \parbox[c]{3.5cm}{Descending \\ $O(n^2)$} & \parbox[c]{3.5cm}{Random \\$O(n^2)$} & \parbox[c]{3.5cm}{Ascending \\ $O(n^2)$} \\ \hline
 		64KB & 8.000 & 6.762 & 6.823 & 6.917 \\ \hline
 		128KB & 16.000 & 29.155 & 28.366 & 30.631 \\ \hline
@@ -844,7 +844,7 @@ In this section the results of time measuring are printed as tables. For each al
 %\subsection{Sorting via direct insert}
 \begin{table}[htdp]
 	\caption{Direct Insert Sort \textbf{with watcher} element - Results in $milliseconds$}
-	\begin{tabular}{|c|c|r|r|r|} \hline
+	\begin{tabular}{|r|c|r|r|r|} \hline
 		Size of data & Loop rounds & \parbox[c]{3.5cm}{Descending \\ $O(n^2)$} & \parbox[c]{3.5cm}{Random \\$O(n^2)$} & \parbox[c]{3.5cm}{Ascending \\ $O(n)$} \\ \hline
 		64KB & 8.000 & 2.852 & 3.053 & 0,050 \\ \hline
 		128KB & 16.000 & 14.466 & 15.854 & 0,120 \\ \hline
@@ -860,7 +860,7 @@ In this section the results of time measuring are printed as tables. For each al
 
 \begin{table}[htdp]
 	\caption{Direct Insert Sort \textbf{without watcher} element - Results in $milliseconds$}
-	\begin{tabular}{|c|c|r|r|r|} \hline
+	\begin{tabular}{|r|c|r|r|r|} \hline
 		Size of data & Loop rounds & \parbox[c]{3.5cm}{Descending \\ $O(n^2)$} & \parbox[c]{3.5cm}{Random \\$O(n^2)$} & \parbox[c]{3.5cm}{Ascending \\ $O(n)$} \\ \hline
 		64KB & 8.000 & 3.265 & 3.766 & 0,041 \\ \hline
 		128KB & 16.000 & 13.647 & 13.074 & 0,051 \\ \hline
@@ -876,26 +876,31 @@ In this section the results of time measuring are printed as tables. For each al
 
 \begin{table}[htdp]
 	\caption{\textbf{Natural} Mergesort - Results in $milliseconds$}
-	\begin{tabular}{|c|c|r|r|r|} \hline
+	\begin{tabular}{|r|c|r|r|r|} \hline
 		Size of data & Loop rounds & \parbox[c]{3.5cm}{Descending \\ $O(n*log_2~n)$} & \parbox[c]{3.5cm}{Random \\$O(n*log_2~n)$} & \parbox[c]{3.5cm}{Ascending \\ $O(n*log_2~n)$} \\ \hline
-		64KB & 8.000 & 1,091 & 1,095 & 0,022 \\ \hline
-		128KB & 16.000 & 2,069 & 2,060 & 0,041 \\ \hline
-		256KB & 32.000& 5,428 & 4,305 & 0,072 \\ \hline
-		512KB & 64.000 & 9,537 & 11,520 & 0,137 \\ \hline
-		1MB & 128.000 & 19,458 & 199,914 & 0,319 \\ \hline
-		2MB & 256.000 & 43,344 & 46,762 & 0,951 \\ \hline
-		4MB & 512.000 & 102,000 & 91,000 & 1,766 \\ \hline
-		8MB & 1024.000 & 191,000 & 199,000 & 3,468 \\ \hline
-		16MB & 2048.000 & 418,000 & 410,000 & 7,048 \\ \hline
-		32MB & 4096.000 & 864,000 & 846,000 & 13,965 \\ \hline
-		64MB & 8192.000 & 1.861,000 & 1.847,000 & 27,211 \\ \hline
-		128MB & 16.386.000 & 3.712,697 & 3.642,668 & 48,644 \\ \hline
-		256MB & 32.768.000 & 7.799,726 & 7.791,702 & 168,263 \\ \hline
-		512MB & 65.536.000 & 16.741,109 & 16.899,239 & 295,932 \\ \hline
-		1GB & 131.072.000 & 34.086,131 & 34.125,291 & 607,632 \\ \hline
-		2GB & 262.144.000 & 85.843,567 & 76.078,378 & 1.330,653 \\ \hline
-		4GB & 524.288.000 & 2.954.109,768 & 2.946.364,554 & 5.099,874 \\ \hline
-		8GB & 1.048.576.000 & $\infty$ & $\infty$ & $\infty$ \\ \hline
+		1KB & 125 & 0,052 & 0,018 & 0,006 \\ \hline
+		2KB & 250 & 0,072 & 0,026 & 0,006 \\ \hline
+		4KB & 500 & 0,062 & 0,179 & 0,009 \\ \hline
+		8KB & 1.000 & 0,104 & 0,104 & 0,012 \\ \hline
+		16KB & 2.000 & 0,241 & 0,197 & 0,013 \\ \hline
+		32KB & 4.000 & 0,399 & 0,442 & 0,038 \\ \hline
+		64KB & 8.000 & 0,998 & 0,814 & 0,029 \\ \hline
+		128KB & 16.000 & 1,611 & 1,683 & 0,043 \\ \hline
+		256KB & 32.000 & 3,716 & 3,386 & 0,094 \\ \hline
+		512KB & 64.000 & 7,699 & 7,285 & 0,148 \\ \hline
+		1MB & 128.000 & 19,881 & 18,131 & 0,275 \\ \hline
+		2MB & 256.000 & 36,052 & 36,961 & 0,529 \\ \hline
+		4MB & 512.000 & 86,411 & 84,735 & 1,035 \\ \hline
+		8MB & 1024.000 & 168,453 & 166,228 & 3,788 \\ \hline
+		16MB & 2048.000 & 337,754 & 323,207 & 8,285 \\ \hline
+		32MB & 4096.000 & 711,816 & 708,413 & 14,636 \\ \hline
+		64MB & 8192.000 & 1.452,511 & 1.432,902 & 30,129 \\ \hline
+		128MB & 16.386.000 & 3.039,709 & 3.014,209 & 67,624 \\ \hline
+		256MB & 32.768.000 & 6.321,147 & 6.350,046 & 154,709 \\ \hline
+		512MB & 65.536.000 & 13.039,986 & 13.009,507 & 320,525 \\ \hline
+		1GB & 131.072.000 & 26.866,826 & 26.755,499 & 679,786 \\ \hline
+		2GB & 262.144.000 & 104.662,634 & 59.174,127 & 1.436,505 \\ \hline
+		4GB & 524.288.000 & 9.785.859,935 & 6.271.623,593 & 3.926,895 \\ \hline
 	\end{tabular}
 	\label{default}
 \end{table}%
@@ -903,8 +908,14 @@ In this section the results of time measuring are printed as tables. For each al
 %\subsection{Mergesort}
 \begin{table}[htdp]
 	\caption{\textbf{Bottom-up} Mergesort - Results in $milliseconds$}
-	\begin{tabular}{|c|c|r|r|r|} \hline
+	\begin{tabular}{|r|c|r|r|r|} \hline
 		Size of data & Loop rounds & \parbox[c]{3.5cm}{Descending \\ $O(n*log_2~n)$} & \parbox[c]{3.5cm}{Random \\$O(n*log_2~n)$} & \parbox[c]{3.5cm}{Ascending \\ $O(n*log_2~n)$} \\ \hline	
+		1KB & 125 & 0,044 & 0,047 & 0,02 \\ \hline
+		2KB & 250 & 0,051 & 0,035 & 0,038 \\ \hline
+		4KB & 500 & 0,089 & 0,077 & 0,141 \\ \hline
+		8KB & 1.000 & 0,197 & 0,138 & 0,171 \\ \hline
+		16KB & 2,000 & 0,338 & 0,303 & 0,308 \\ \hline
+		32KB & 4.000 & 0,629 & 0,612 & 0,672 \\ \hline
 		64KB & 8.000 & 0,861 & 0,924 & 0,446 \\ \hline
 		128KB & 16.000 & 1,955 & 1,827 & 0,929 \\ \hline
 		256KB & 32.000& 3,971 & 3,997 & 1,952 \\ \hline
@@ -922,7 +933,6 @@ In this section the results of time measuring are printed as tables. For each al
 		1GB & 131.072.000 & 30.463,418 & 30.378,241 & 15.083,457 \\ \hline
 		2GB & 262.144.000 & 64.691,651 & 64.807,992 & 31.273,719 \\ \hline
 		4GB & 524.288.000 & 2.929.851,036 & 2.735.258,633 & 544.107,184 \\ \hline
-		8GB & 1.048.576.000 & $\infty$ & $\infty$ & $\infty$ \\ \hline
 	\end{tabular}
 	\label{default}
 \end{table}%
@@ -930,8 +940,14 @@ In this section the results of time measuring are printed as tables. For each al
 %\subsection{Quicksort}
 \begin{table}[htdp]
 	\caption{Quicksort with \textbf{three-way-partitioning} - Results in $milliseconds$}
-	\begin{tabular}{|c|c|r|r|r|} \hline
+	\begin{tabular}{|r|c|r|r|r|} \hline
 		Size of data & Loop rounds & \parbox[c]{3.5cm}{Descending \\ $O(n*log_2~n)$} & \parbox[c]{3.5cm}{Random \\$O(n*log_2~n)$} & \parbox[c]{3.5cm}{Ascending \\ $O(n*log_2~n)$} \\ \hline
+		1KB & 125 & 0,008 & 0,007 & 0,003 \\ \hline
+		2KB & 250 & 0,031 & 0,015 & 0,005 \\ \hline
+		4KB & 500 & 0,033 & 0,033 & 0,009 \\ \hline
+		8KB & 1.000 & 0,071 & 0,099 & 0,017 \\ \hline
+		16KB & 2.000 & 0,145 & 0,313 & 0,034 \\ \hline
+		32KB & 4.000 & 0,285 & 0,308 & 0,125 \\ \hline
 		64KB & 8.000 & 0,557 & 0,601 & 0,144 \\ \hline
 		128KB & 16.000 & 1,207 & 1,261 & 0,270 \\ \hline
 		256KB & 32.000& 2,718 & 2,643 & 0,691 \\ \hline
@@ -956,26 +972,31 @@ In this section the results of time measuring are printed as tables. For each al
 
 \begin{table}[htdp]
 	\caption{Quicksort with \textbf{three-way-partitioning} and \textbf{hybridisation} - Results in $milliseconds$}
-	\begin{tabular}{|c|c|r|r|r|} \hline
-		Size of data & Loop rounds & \parbox[c]{3.5cm}{Descending \\ $O(n^2)$} & \parbox[c]{3.5cm}{Random \\$O(n^2)$} & \parbox[c]{3.5cm}{Ascending \\ $O(n)$} \\ \hline
-		64KB & 8.000 & 0,953 & 0,911 & 0,126 \\ \hline
-		128KB & 16.000 & 2,449 & 2,126 & 0,365 \\ \hline
-		256KB & 32.000 & 7,142 & 5,843 & 0,643 \\ \hline
-		512KB & 64.000 & 24,361 & 22,316 & 1,176 \\ \hline
-		1MB & 128.000 & 236,851 & 232,276 & 2,796 \\ \hline
-		2MB & 256.000 & 1283,422 & 1332,522 & 5,186 \\ \hline
-		4MB & 512.000 & 6164,017 & 6145,188 & 10,625 \\ \hline
-		8MB & 1024.000 & 24.440,955 & 24.319,446 & 21,819 \\ \hline
-		16MB & 2048.000 & 94.198,943 & 94.342,912 & 57,796 \\ \hline
-		32MB & 4096.000 & 387.037,993 & 386.141,674 & 98,372 \\ \hline
-		64MB & 8192000 & 1.564.161,808 & 1.548.931,306 & 217,539 \\ \hline
-		128MB & 16.386.000 &  6.166.597,097 & 6.189.492,175 & 439,491 \\ \hline
-		256MB & 32.768.000 & TODO & TODO & TODO \\ \hline
-		512MB & 65.536.000 & TODO & TODO & TODO \\ \hline
-		1GB & 131.072.000 & TODO & TODO & TODO \\ \hline
-		2GB & 262.144.000 & TODO & TODO & TODO \\ \hline
-		4GB & 524.288.000 & TODO & TODO & TODO \\ \hline
-		8GB & 1.048.576.000 & TODO & TODO & TODO \\ \hline
+	\begin{tabular}{|r|c|r|r|r|} \hline
+		Size of data & Loop rounds & \parbox[c]{3.5cm}{Descending \\ $O(n*log_2n~)$} & \parbox[c]{3.5cm}{Random \\$O(n*log_2~n)$} & \parbox[c]{3.5cm}{Ascending \\ $O(n*log_2~n)$} \\ \hline
+		1KB & 125 & 0,011 & 0,009 & 0,007 \\ \hline
+		2KB & 250 & 0,021 & 0,017 & 0,015 \\ \hline
+		4KB & 500 & 0,038 & 0,038 & 0,025 \\ \hline
+		8KB & 1.000 & 0,097 & 0,081 & 0,056 \\ \hline
+		16KB & 2.000 & 0,181 & 0,185 & 0,118 \\ \hline
+		32KB & 4.000 & 0,389 & 0,399 & 0,231 \\ \hline
+		64KB & 8.000 & 1,054 & 0,771 & 0,681 \\ \hline
+		128KB & 16.000 & 1,695 & 2,464 & 1,263 \\ \hline
+		256KB & 32.000 & 4,532 & 4,251 & 2,584 \\ \hline
+		512KB & 64.000 & 13,871 & 7,758 & 6,621 \\ \hline
+		1MB & 128.000 & 23,513 & 27,788 & 11,465 \\ \hline
+		2MB & 256.000 & 42,318 & 37,374 & 24,622 \\ \hline
+		4MB & 512.000 & 83,036 & 90,031 & 55,382 \\ \hline
+		8MB & 1.024.000 & 181,075 & 171,421 & 119,021 \\ \hline
+		16MB & 2.048.000 & 364,449 & 351,072 & 263,007 \\ \hline
+		32MB & 4.096,000 & 772,836 & 761,957 & 576,457 \\ \hline
+		64MB & 8.192.000 & 1.594,031 & 1.594,732 & 1.147,487 \\ \hline
+		128MB & 16.386.000 & 3.393,994 & 3.266,566 & 2.450,899 \\ \hline
+		256MB & 32.768.000 & 7.137,769 & 7.206,703 & 5.268,502 \\ \hline
+		512MB & 65.536.000 & 14.712,446 & 14.980,232 & 10.920,068 \\ \hline
+		1GB & 131.072.000 & 30.422,156 & 30.405,184 & 22.491,865 \\ \hline
+		2GB & 262.144.000 & 63.929,184 & 63.738,425 & 47.088,279 \\ \hline
+		4GB & 524.288.000 & 175.348,961 & 177.230,619 & 138.253,538 \\ \hline
 	\end{tabular}
 	\label{default}
 \end{table}%

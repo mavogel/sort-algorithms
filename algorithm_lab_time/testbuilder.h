@@ -179,28 +179,28 @@ void runSortingAlgorithms(std::array<double, SIZE> &array) {
     std::vector<std::tuple<void (*) (std::array<double, SIZE>&), std::string, size_t, size_t, bool>> sortFunctions;
 
     sortFunctions.push_back(std::make_tuple<void (*) (std::array<double, SIZE>&), std::string, size_t, size_t, bool>(
-            sortViaOptimalDirectSelection, "sortViaOptimalDirectSelection", ROUNDS_K1, ROUNDS_M8, false));
+            sortViaOptimalDirectSelection, "sortViaOptimalDirectSelection", ROUNDS_K1, ROUNDS_K32, true));
 
     sortFunctions.push_back(std::make_tuple<void (*) (std::array<double, SIZE>&), std::string, size_t, size_t, bool>(
-            sortViaNonOptimalDirectSelection, "sortViaNonOptimalDirectSelection", ROUNDS_K1, ROUNDS_M8, false));
+            sortViaNonOptimalDirectSelection, "sortViaNonOptimalDirectSelection", ROUNDS_K1, ROUNDS_K32, true));
 
     sortFunctions.push_back(std::make_tuple<void (*) (std::array<double, SIZE>&), std::string, size_t, size_t, bool>(
-            sortViaDirectInsertWithWatcherElement, "sortViaDirectInsertWithWatcherElement", ROUNDS_K1, ROUNDS_M8, false));
+            sortViaDirectInsertWithWatcherElement, "sortViaDirectInsertWithWatcherElement", ROUNDS_K1, ROUNDS_K32, true));
 
     sortFunctions.push_back(std::make_tuple<void (*) (std::array<double, SIZE>&), std::string, size_t, size_t, bool>(
-            sortViaNormalDirectInsert, "sortViaNormalDirectInsert", ROUNDS_K1, ROUNDS_M8, false));
+            sortViaNormalDirectInsert, "sortViaNormalDirectInsert", ROUNDS_K1, ROUNDS_K32, true));
 
     sortFunctions.push_back(std::make_tuple<void (*) (std::array<double, SIZE>&), std::string, size_t, size_t, bool>(
-            sortViaNaturalMergesort, "sortViaNaturalMergesort", ROUNDS_K1, ROUNDS_M8, true));
+            sortViaNaturalMergesort, "sortViaNaturalMergesort", ROUNDS_K1, ROUNDS_G4, false));
 
     sortFunctions.push_back(std::make_tuple<void (*) (std::array<double, SIZE>&), std::string, size_t, size_t, bool>(
-            sortViaBottomUpMergesort, "sortViaBottomUpMergesort", ROUNDS_K1, ROUNDS_M1, false));
+            sortViaBottomUpMergesort, "sortViaBottomUpMergesort", ROUNDS_K1, ROUNDS_G4, false));
 
     sortFunctions.push_back(std::make_tuple<void (*) (std::array<double, SIZE>&), std::string, size_t, size_t, bool>(
             sortVia3WayPartitioningQuicksort, "sortVia3WayPartitioningQuicksort", ROUNDS_K1, ROUNDS_G4, false));
 
     sortFunctions.push_back(std::make_tuple<void (*) (std::array<double, SIZE>&), std::string, size_t, size_t, bool>(
-            sortViaHybridQuicksort, "sortViaHybridQuicksort", ROUNDS_K1, ROUNDS_M1, true));
+            sortViaHybridQuicksort, "sortViaHybridQuicksort", ROUNDS_K1, ROUNDS_G4, false));
 
     std::string name;
     void (*functionPointer) (std::array<double, SIZE>&);

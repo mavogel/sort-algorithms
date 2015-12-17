@@ -337,10 +337,9 @@ bool isWorstQuickSortCase(const size_t left, const size_t r, const size_t l,cons
  * @param array the array to sort
  * @param left the left index/boundary of the part to apply the algorithm (INCLUSIVE)
  * @param right corresponding right index/boundary (EXCLUSIVE)
- * @param depth the current depth of the recursion
  */
 template <typename T, size_t SIZE>
-void internalHybridQuicksort(std::array<T, SIZE>& array, std::array<T, SIZE>& tmp, const size_t left, const size_t right, const unsigned int depth) {
+void internalHybridQuicksort(std::array<T, SIZE>& array, std::array<T, SIZE>& tmp, const size_t left, const size_t right) {
     if((right - left) <= QS_TO_INSERT_THRESHOLD) {
         sortViaDirectInsertWithWatcherElement(array, left, right+1);
     } else {
@@ -379,13 +378,13 @@ void internalHybridQuicksort(std::array<T, SIZE>& array, std::array<T, SIZE>& tm
         if(isWorstQuickSortCase(left,j,i,right)) {
             // == step 6a: split recursion and merge
             size_t mid = (left + right) / 2;
-            internalHybridQuicksort(array, tmp, left, mid, depth+1);
-            internalHybridQuicksort(array, tmp, mid+1, right, depth+1);
+            internalHybridQuicksort(array, tmp, left, mid);
+            internalHybridQuicksort(array, tmp, mid+1, right);
             merge(array, tmp, left, mid+1, right+1, false, false);
         } else {
             // == step 6b: next recursion
-            internalHybridQuicksort(array, tmp, left, j, depth+1);
-            internalHybridQuicksort(array, tmp, i, right, depth+1);
+            internalHybridQuicksort(array, tmp, left, j);
+            internalHybridQuicksort(array, tmp, i, right);
         }
     }
 }
@@ -400,7 +399,7 @@ void internalHybridQuicksort(std::array<T, SIZE>& array, std::array<T, SIZE>& tm
 template <typename T, size_t SIZE>
 void sortViaHybridQuicksort(std::array<T, SIZE>& array) {
     shared_ptr<std::array<T, SIZE>> tmp(new std::array<T, SIZE>());
-    internalHybridQuicksort(array, *tmp, 0, SIZE-1, 0);
+    internalHybridQuicksort(array, *tmp, 0, SIZE-1);
 }
 
 

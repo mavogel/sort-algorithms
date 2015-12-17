@@ -57,14 +57,15 @@
 %% TODOs
 %% - tests with empty array √ 
 %% - test with doubled values √
-%% - time in ns with 6 floating numbers x
+%% - time in ms with 3 floating numbers √
 %% - algo with examples (turing machine...) √
 %% - start with less than 64KB √
 %% - bool template param √
 %% - remove code snippets from docu √
 %% - size_t for index √
-%% - test with empty strings
-%% - find bottleneck >128mb (parallelize unsorted)
+%% - test with empty strings √
+%% - find bottleneck >128mb (parallelize unsorted) √
+%% - better pseudocode (see listings package)
 
 %%%%%%%%
 % Draw functions
@@ -296,7 +297,7 @@ The purpose of this laboratory exercise is to show the performance of the four a
 			\item 3-way-partitioning with hybridisation.
 		\end{itemize}
 \end{enumerate}
-The goal is to point of the improvement of the performance of the algorithms in corner cases like an ascending sorted (best case), descending sorted (worst case) and randomly ordered floating point numbers. The implementation should also be able to deal with whole number and character strings. The fixed programming language is C++.
+The goal is to point of the improvement of the performance of the algorithms in corner cases like an ascending sorted (best case), descending sorted (worst case) and randomly ordered floating point numbers. The implementation should also be able to deal with integers and strings. The programming language is C++.
 
 First the algorithms will be described in detail with an added pseudocode, sketches and runtime behaviour in the $O$-Notation. In the third section the setup of test environment - compiler with flags, IDE, language and test framework - will be described, containing the fixed preconditions of the tests and the execution with some code examples. The fourth section deals with the data of the time measuring and how it was realised. The fifth section shows the results of the measured performance of each algorithm. Everything will be summed up in the last and sixth chapter. 
 
@@ -313,7 +314,7 @@ First the algorithms will be described in detail with an added pseudocode, sketc
 		\item at the beginning of data
 		\item at the end of the data.
 	\end{enumerate}
-	The first option is faster because the CPU can load the next chunk of the data in cache by prefetching. On the other hand the second option will cause a lot of cache-misses, because the expected data will not be in the cache. Hence the second option is slowlier. 
+	The first option is faster because the CPU can load the next chunk of the data in cache by prefetching. On the other hand the second option will cause a lot of cache-misses, because the expected data will not be in the cache. Hence the second option is slower. 
 	\item[Pseudocode]: Optimal option 1):
 		\begin{lstlisting}
 		 data[];
@@ -796,7 +797,7 @@ Several helpers for generating test values and verifies the data structures afte
 \subsection{Time measuring with chronos}
 As already pointed out in the introduction of parent section, a separate project for time measuring is implemented with the desired compiler flags \texttt{-g0 -03 -Wall}. 
 
-For each size all possible combinations will be executed and results printed on the command line. Shared pointers were used all along, so it was not necessary to worry about memory management.
+For each size all possible combinations will be executed and results printed on the command line. Smart pointers were used all along, so it was not necessary to worry about memory management.
 
 %%%%%%%%%%%%%%%%%%%%%%%%
 \newpage
@@ -1021,7 +1022,7 @@ In this section the results of time measuring are printed as tables. For each al
 %
 \textbf{SelectSort} behaved as expected with $O(n^2)$ in all three cases. This means that for the double amount of data the amount of time needed raised by the factor 4. The non-optimal version with searching the minimum from the end to the beginning of the data structure took about 50\% more time than the optimal version.
 
-\textbf{InserSort} behaved as expected with $O(n^2)$ for descending and random order, but only $O(n)$ linear time in the ascending case. The version with a watcher/guard element was about 10\% faster than the version without it. In both implementations the search for the minimum was optimal.
+\textbf{InsertSort} behaved as expected with $O(n^2)$ for descending and random order, but only $O(n)$ linear time in the ascending case. The version with a watcher/guard element was about 10\% faster than the version without it. In both implementations the search for the minimum was optimal.
 
 \textbf{Bottom-Up-MergeSort} and \textbf{Natural-MergeSort}  behaved with $O(n*log_2~n)$ in every case, but Natural-MergeSort is about 10\% faster than the Bottom-Up version. Due to the need of additional space both sort algorithms grow exponentially when reaching the limit of memory available. Here its 4GB, when a certain amount of data has to be swapped to hard disc.
 

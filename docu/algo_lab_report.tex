@@ -14,6 +14,16 @@
 \usetikzlibrary{chains,fit,shapes}
 \usepackage{hyperref}
 
+\usepackage{algorithm}
+%\usepackage{algorithmicx}
+\usepackage{algpseudocode}
+
+\algnewcommand\algorithmicto{\textbf{to}}
+\algnewcommand\algorithmicFalse{\textbf{true}}
+\algnewcommand\algorithmicTrue{\textbf{true}}
+%\algrenewtext{For}[3]%
+%{\algorithmicfor\ #1 \gets #2 \algorithmicto\ #3 \algorithmicdo}
+
 
 \usepackage{color}
 \definecolor{mygreen}{rgb}{0,0.6,0}
@@ -315,19 +325,22 @@ First the algorithms will be described in detail with an added pseudocode, sketc
 		\item at the end of the data.
 	\end{enumerate}
 	The first option is faster because the CPU can load the next chunk of the data in cache by prefetching. On the other hand the second option will cause a lot of cache-misses, because the expected data will not be in the cache. Hence the second option is slower. 
-	\item[Pseudocode]: Optimal option 1):
-		\begin{lstlisting}
-		 data[];
-		 min := data.head();
-		 minIndex := 0;
-		 for index := data.head() + 1 to data.tail() do
-		 begin {
-			if (data[index] < min) {
-				min = data[index];
-				mindex = index;
-			} fi
-		 } end;
-		\end{lstlisting}
+	\item[Pseudocode]: Optimal option 1) for $I := input~data$, $s := lower~bound$ and $e := upper~bound$:
+	\begin{algorithm}
+	\caption{Optimal minimum search}\label{opminsearch}
+		\begin{algorithmic}[1]
+		\Require $|I| \ge 1$
+		\Statex
+		\Procedure{OptimalMinSearch}{$I, s, e$}
+			\If{$|I| = 1$} \State \Return $0$ \EndIf
+			\State \State $mIdx \gets s$
+			\For{$i \gets (s+1)~\algorithmicto~e$}
+				\If{$I[i] < I[mIdx]$} \State $m \gets i$ \EndIf
+			\EndFor
+			\State \Return $mIdx$
+			\EndProcedure
+		\end{algorithmic}
+	\end{algorithm}	
 	\item[Example] for optimal \\[0.5cm]
 		\begin{center}
 			\minsearchExample{Start}{second}{first}{7}
@@ -340,19 +353,22 @@ First the algorithms will be described in detail with an added pseudocode, sketc
 			\minsearchExample{5th step}{ninth}{seventh}{-2}	
 			\minsearchExample{last step}{tenth}{seventh}{-2}			
 		\end{center}
-	\item[Pseudocode]: Non-optimal option 2):
-		\begin{lstlisting}
-		 data[];
-		 min := data.tail();
-		 minIndex := 0;
-		 for index := data.tail() - 1 to data.head() do
-		 begin {
-			if (data[index] < min) {
-				min = data[index];
-				mindex = index;
-			} fi
-		 } end;
-		\end{lstlisting}
+	\item[Pseudocode]: Non-optimal option 2) for $I := input~data$, $s := lower~bound$ and $e := upper~bound$:
+	\begin{algorithm}
+	\caption{Non-optimal minimum search}
+		\begin{algorithmic}[1]
+		\Require $|I| \ge 1$
+		\Statex
+		\Procedure{NonOptimalMinSearch}{$I, s, e$}
+			\If{$|I| = 1$} \State \Return $0$ \EndIf
+			\State \State $mIdx \gets (e-1)$
+			\For{$i \gets (e-1)~\algorithmicto~s$}
+				\If{$I[i] < I[mIdx]$} \State $m \gets i$ \EndIf
+			\EndFor
+			\State \Return $mIdx$
+			\EndProcedure
+		\end{algorithmic}
+	\end{algorithm}
 	\item[Example] for non-optimal \\[0.5cm]
 		\begin{center}
 			\minsearchExample{Start}{ninth}{tenth}{6}
@@ -377,15 +393,29 @@ First the algorithms will be described in detail with an added pseudocode, sketc
 		\item Increase the pointer of the last element of the sorted data by one and search for the minimum of the remaining unsorted data.
 		\item Swap the found minimum with the first element of the unsorted data. Continue with step 2).
 	\end{enumerate}
-	\item[Pseudocode]:
-		\begin{lstlisting}
-		 unsorted[];
-		 for index:= unsorted.head() to unsorted.tail() do
-		 begin {
-		 	minIndex = findMinimum(unsorted, index);
-			swap(unsorted[index], unsorted[minIndex])
-		 } end;
-		\end{lstlisting}	
+	\item[Pseudocode] for $U := unsorted~data$:
+	\begin{algorithm}
+	\caption{Optimal Direct Selection Sort}
+		\begin{algorithmic}[1]
+		\Procedure{sortViaOptimalDirectSelection}{$U$}
+			\If{$|U| = 0 \lor |U| = 1$} \State \Return \EndIf \State
+			\For{$i \gets 0~\algorithmicto~|U|$}
+				\State $swap(U[i], U[OptimalMinSearch(U,i,|U|)]$
+			\EndFor
+			\EndProcedure
+		\end{algorithmic}
+	\end{algorithm}
+	\begin{algorithm}
+	\caption{Non-optimal Direct Selection Sort}
+		\begin{algorithmic}[1]
+		\Procedure{sortViaNonOptimalDirectSelection}{$U$}
+			\If{$|U| = 0 \lor |U| = 1$} \State \Return \EndIf \State
+			\For{$i \gets |U|~\algorithmicto~0$}
+				\State $swap(U[i], U[NonOptimalMinSearch(U,i,|U|)]$
+			\EndFor
+			\EndProcedure
+		\end{algorithmic}
+	\end{algorithm}
 	\item[Example] The {\color{green}green} numbers are already sorted and the {\color{red}red} numbers will be swapped if necessary. \\[.5cm]
 	\selectSortExample{Start:}{\color{red}4}{6}{3}{2}{\color{red}-1}{8}{fifth}{-1} \\
 	\selectSortExample{1st step:}{\color{green}-1}{\color{red}6}{3}{\color{red}2}{4}{8}{fourth}{2} \\
@@ -414,18 +444,19 @@ First the algorithms will be described in detail with an added pseudocode, sketc
 		\item Increase the pointer to the first element of the unsorted data by one and swap this element through until the right spot in the sorted data. 
 		\item Do this until the pointer reaches the end of the data. Then the data is sorted.
 	\end{enumerate}
-	\item[Pseudocode]: Without a watcher-element:
-		\begin{lstlisting}
-		 unsorted[];
-		 for index:= unsorted.head() to unsorted.tail() do
-		   	currentElement = unsorted.[index];
-		 begin {	
-		         for index2 := index to index2 > 0 with unsorted[index - 1] < currentElement do
-		         begin {
-		                 swap(unsorted[index2], unsorted[index2 - 1]);				
-		         } end;
-		 } end;		 
-		\end{lstlisting}	
+	\item[Pseudocode] for $U := unsorted~data$:
+	\begin{algorithm}
+	\caption{Insert Sort}
+		\begin{algorithmic}[1]
+		\Procedure{sortViaDirectInsert}{$U$}
+			\For{$i \gets 0~\algorithmicto~|U|$}
+				\For{$j \gets i~\algorithmicto~j > 0 \land U[j-1] > U[j]$}
+					\State $swap(U[j], U[j-1])$
+				\EndFor
+			\EndFor
+			\EndProcedure
+		\end{algorithmic}
+	\end{algorithm}
 	\item[Example] The {\color{green}green} numbers are already sorted and the {\color{red}red} numbers will be swapped to the right place. \\[.5cm]
 		\insertSortExample{Start}{\color{green}4}{\color{red}6}{3}{2}{-1}{8}{second}{nElem=6} \\
 		\insertSortExample{1st step (1)}{\color{green}4}{\color{green}6}{3}{2}{-1}{8}{third}{nElem=3} \\
@@ -451,20 +482,21 @@ First the algorithms will be described in detail with an added pseudocode, sketc
 		\item Swap the found minimum with the first element of the data to avoid the worst case of swapping through.
 		\item Increase the pointer to the first element of the unsorted data by one and swap this element through until the right spot in the sorted data. Do this until the pointer reaches the end of the data. Then the data is sorted.
 	\end{enumerate}
-	\item[Pseudocode]: With a watcher-element:
-		\begin{lstlisting}
-		 unsorted[];
-		 minIndex = findMinimum(unsorted, index);
-		 swap(unsorted[0], unsorted[minIndex]);
-		 		 
-		 for index:= unsorted.head() + 2 to unsorted.tail() do currentElement = unsorted.[index];
-		 begin {	
-		 	for index2 := index with unsorted[index - 1] < currentElement to unsorted.head() do
-		         begin {
-				swap(unsorted[index2], unsorted[index2 - 1]);				
-			} end;
-		 } end;		 
-		\end{lstlisting}	
+	\item[Pseudocode] for $U := unsorted~data$, $s := lower~bound$ and $e := upper~bound$:
+	\begin{algorithm}
+	\caption{Insert Sort with watcher / guard element}
+		\begin{algorithmic}[1]
+		\Procedure{sortViaDirectInsertWithWatcher}{$U,s,e$}
+			\If{$|U| = 0 \lor |U| = 1$} \State \Return \EndIf \State \State
+			$swap(U[s], U[OptimalMinSearch(U,s,e)]$
+			\For{$i \gets (s+2)~\algorithmicto~e$}
+				\For{$j \gets i~\algorithmicto~U[j-1] > U[j]$}
+					\State $swap(U[j], U[j-1])$
+				\EndFor
+			\EndFor
+			\EndProcedure
+		\end{algorithmic}
+	\end{algorithm}
 	\item[Example] The {\color{green}green} numbers are already sorted and the {\color{red}red} numbers will be swapped to the right place. \\[.5cm]
 		\insertSortExample{Start}{\color{red}4}{6}{3}{2}{\color{red}-1}{8}{fifth}{min=-1} \\
 		\insertSortExample{1st step (1)}{\color{green}-1}{\color{red}6}{3}{2}{4}{8}{second}{nElem=6} \\
@@ -497,30 +529,50 @@ First the algorithms will be described in detail with an added pseudocode, sketc
 			\item Check if the indexes are in range
 			\item Return if the array has a size $\leq 1$
 			\item Check if the array is sorted from \texttt{lo} to \texttt{m-1} and from \texttt{m} to \texttt{hi}, otherwise abort
-			\item Order the array into a tmp-array in bitonic format. This means \textit{ASC} from \texttt{lo} to \texttt{m-1} and \textit{DESC} from \texttt{m} to \texttt{hi} %TODO picture?
+			\item Order the array into a tmp-array in bitonic format. This means \textit{ASC} from \texttt{lo} to \texttt{m-1} and \textit{DESC} from \texttt{m} to \texttt{hi}
 			\item Merge the tmp-array into the array starting with two pointers, one from the head and the other one from the tail. The array is merge when the pointers cross.
 		\end{enumerate}
-	\item[Pseudocode]: Merge-Function
-		\begin{lstlisting}
-		 unmerge[SIZE];
-		 if indexes out of bounds => abort fi
-		 if SIZE <= 1 return fi
-		 tmpStorage[SIZE];
-		 
-		 pointers pos, lo, mid, hi
-		 while(lo < mid) tmpStorage[pos++] = unmerged[lo++];
-		 while(mid <= hi) tmpStorage[pos++] = unmerged[hi--]; 
-		 
-		 i = lo, j = lo, k = hi
-		 while(j <= k)
-		 begin {
-		 	if(tmpStorage[j] < tmpStorage[k]) {
-				unmerged[i++] = tmpStorage[j++];
-			} else {
-				unmerged[i++] = tmp[k--];
-			} fi
-		 } end;
-		\end{lstlisting}
+	\item[Pseudocode] for $U := unsorted~data$, $T := |U|$, $lo := lower~bound$, $m := middle$, $hi :=upper~bound$, $iSd := is~second~part~descending~sorted$, $wD := write~descending~back$:
+	\begin{algorithm}
+	\caption{Merge Part 1 - Write into $T$}
+		\begin{algorithmic}[1]
+		\Require $(U[lo]~\algorithmicto~U[m] \to ASC \land U[m]~\algorithmicto~U[hi] \to DESC) \lor (U[lo]~\algorithmicto~U[hi] \to ASC)$
+		\Procedure{merge}{$U,T,lo,m,hi, iSd, wD$}
+			\If{isSecondSubsequenceDescending}\Comment{already bitonic presorted}
+				\For{$i \gets lo~\algorithmicto~hi$} \State T[i] = U[i] \EndFor
+			\Else\Comment{both subsequences are ascedending sorted}
+				\For{$i \gets lo~\algorithmicto~m$} \State T[i] = U[i] \EndFor
+				\For{$i \gets m \land k \gets hi~\algorithmicto~hi$} \State T[i] = U[k] \EndFor
+			\EndIf
+		\algstore{mergebreak}	
+		\end{algorithmic}
+	\end{algorithm}	
+	The second part for writing back into the array:
+	\begin{algorithm}
+	\caption{Merge Part 2 - Write back to $U$}
+		\begin{algorithmic}[1]	
+		\algrestore{mergebreak}
+			\State $rdIdxLo \gets lo \land rdIdxHi \gets hi$
+			\If{writeBackDesceding}
+				\State $wIdx \gets (hi-1)$
+			\Else
+				\State $wIdx \gets lo$
+			\EndIf
+			\While{$rdIdxLo<rdIdxHi$} 
+				\If{$T[readIdxLo] < T[rdIdxHi]$}
+					\State $U[writeIdx] = T[readIdxLo] \land readIdxLo \gets readIdxLo+1$
+				\Else
+					\State $U[writeIdx] = T[readIdxHi] \land readIdxHi \gets readIdxHi-1$
+				\EndIf
+				\If{writeBackDesceding}
+					\State $writeIdx \gets writeIdx-1$
+				\Else
+					\State $writeIdx \gets wIdx+1$
+				\EndIf
+			\EndWhile
+		\EndProcedure
+		\end{algorithmic}
+	\end{algorithm}
 	\item[Example] The {\color{blue}blue} number is the middle, the {\color{red}red} numbers will be selected and the {\color{green}green} numbers are sorted \\[.5cm]
 		\mergeExampleSorted{unmerged}{-1}{3}{6}{\color{blue}1}{2}{8}{first} \\
 		\mergeExampleTmp{tmp}{-1}{3}{6}{8}{2}{1}{first}{sixth} \\
@@ -540,20 +592,23 @@ First the algorithms will be described in detail with an added pseudocode, sketc
 			\item Merge pair of sequences by writing the second sequences back in descending order.
 			\item Reduce the boundaries until there are only two left, then the data is sorted.
 		\end{enumerate}
-	\item[Pseudocode]: Natural Mergesort
-		\begin{lstlisting}
-		 unsorted[SIZE];
-		 tmpStorage[SIZE];
-		 boundaries[] := findBitonicRunds(unsorted[SIZE]);
-		 while(boundaries.size() >= 3) 		
-		 begin {
-			lo    := boudaries.at(index);
-			mid := boudaries.at(index+1);
-			hi    := boudaries.at(index+2);
-			merge(unsorted, tmpStorage, lo, mid, hi);
-			reduceBoundaries(boundaries);
-		} end;		 
-		\end{lstlisting}
+	\item[Pseudocode] for $U := unsorted~data$:
+	\begin{algorithm}
+	\caption{Natural Mergesort}
+		\begin{algorithmic}[1]
+		\Procedure{sortViaNaturalMergeSort}{$U$}
+			\State $I := idxOfBitonicRuns(U)$
+			\State $writeDesc := false$
+			\State $T := |I|$
+			\While{$|I| > 2$}
+				\State $lo \gets pop(I) \land m \gets pop(I) \land hi \gets pop(I)$ 
+				\State $merge(U, T, lo, m, hi, \algorithmicTrue, writeDesc)$
+				\State $I := reduceIdxOfBitonicRuns(U)$
+				\State $writeDesc \gets \neg writeDesc$
+			\EndWhile	
+		\EndProcedure
+		\end{algorithmic}
+	\end{algorithm}	
 	\item[Example] The {\color{blue}blue} and {\color{red}red} coloured numbers represent the pre-sorted parts of the data and in the following step the blue part will be merged with its following red part. The {\color{green}green} numbers are sorted \\[.5cm] 
 		\mergeSortsExample{unsorted}{-1}{1}{2}{1}{3}{2}{10}{5} \\
 		\mergeSortsExample{1st step: boundaries}{\color{blue}-1}{\color{blue}1}{\color{blue}2}{\color{red}1}{\color{red}3}{\color{blue}2}{\color{blue}10}{\color{red}5} \\
@@ -585,22 +640,23 @@ As shown in the example it is implemented in the following steps:
 			\item Merge all pairs, starting from index 0
 			\item Merge all doubles pairs, starting from index 0 and so on until the last index equals SIZE-1
 		\end{enumerate}
-	\item[Pseudocode]: Bottom-Up Mergesort
-		\begin{lstlisting}
-		 unsorted[SIZE];
-		 tmpStorage[SIZE];
-		 rounds := determineRounds(unsorted[SIZE]);
-		 for(currRound := 1 to currRounds <= rounds do rounds++)
-		 begin {
-		 	for index:= 0 to SIZE-1 do step := pow(2,currRound)
-		 	begin {	
-				lo := index;
-				mid := lo + pow(2, currRound-1)
-				hi := index + pow(2, currRound) - 1
-				merge(unsorted, tmpStorage, lo, mid, hi);
-	 		} end;	
-		} end;		 
-		\end{lstlisting}
+	\item[Pseudocode] for $U := unsorted~data$:
+	\begin{algorithm}
+	\caption{Bottom-Up Mergesort}
+		\begin{algorithmic}[1]
+		\Procedure{sortViaBottomUpMergeSort}{$U$}
+			\State $r := |U| / 2$
+			\If{$|U|~mod~2 \neq 0$}\Comment{increase rounds}
+				\State $r \gets r + 1$ 
+			\EndIf
+			\State $T := |I|$
+			\For{$lo \gets 0~\algorithmicto~r$}\Comment{merge from the bottom}
+				\State $m \gets lo+2^{r-1} \land hi \gets lo+2^{r}$
+				\State $merge(U, T, lo, m, hi, \algorithmicFalse, \algorithmicFalse)$
+			\EndFor
+		\EndProcedure
+		\end{algorithmic}
+	\end{algorithm}	
 	\item[Example] The {\color{blue}blue} and {\color{red}red} coloured numbers represent the pre-sorted parts of the data and in the following step the blue part will be merged with its following red part. The {\color{green}green} numbers are sorted \\[.5cm]
 		\mergeSortsExample{unsorted}{-1}{1}{2}{1}{3}{2}{10}{5} \\
 		\mergeSortsExample{1st step: merge}{\color{blue}-1}{\color{blue}10}{\color{red}1}{\color{red}7}{\color{blue}2}{\color{blue}8}{\color{red}5}{\color{red}10} \\
@@ -978,7 +1034,6 @@ In this section the results of time measuring are printed as tables. For each al
 		1GB & 131.072.000 & 18.383,604 & 18.484,818 & 4.169,181 \\ \hline
 		2GB & 262.144.000 & 39.167,371 & 39.258,816 & 9.035,457 \\ \hline
 		4GB & 524.288.000 & 82.576,764 & 82.608,998 & 18.382,807 \\ \hline
-		%8GB & 1.048.576.000 & 699.439,001 & 472.780,513 & 75.123,002 \\ \hline
 	\end{tabular}
 	\label{default}
 \end{table}%
@@ -1024,7 +1079,7 @@ In this section the results of time measuring are printed as tables. For each al
 
 \textbf{InsertSort} behaved as expected with $O(n^2)$ for descending and random order, but only $O(n)$ linear time in the ascending case. The version with a watcher/guard element was about 10\% faster than the version without it. In both implementations the search for the minimum was optimal.
 
-\textbf{Bottom-Up-MergeSort} and \textbf{Natural-MergeSort}  behaved with $O(n*log_2~n)$ in every case, but Natural-MergeSort is about 10\% faster than the Bottom-Up version. Due to the need of additional space both sort algorithms grow exponentially when reaching the limit of memory available. Here its 4GB, when a certain amount of data has to be swapped to hard disc.
+\textbf{Bottom-Up-MergeSort} and \textbf{Natural-MergeSort}  behaved with $O(n*log_2~n)$ in every case, but Natural-MergeSort is about 10\% faster than the Bottom-Up version. Natural-MergeSort should be as equally fast in the ascending and descending case, but the ascending case needs no copying into a temporal storage before the function for the determination of the indexes of the bitonic runs avoids it and hence its faster. Due to the need of additional space both sort algorithms grow exponentially when reaching the limit of memory available. Here its 4GB, when a certain amount of data has to be swapped to hard disc.
 
 \textbf{3-way-partitioning QuickSort} and \textbf{3-way-partitioning QuickSort with hybridisation} behaved with $O(n*log_2~n)$ in every case, but the version with hybridisation is about 30\% slower than the version without it. Because there is no need of additional space both sort algorithms perform very well when reaching the limit of memory available.
 

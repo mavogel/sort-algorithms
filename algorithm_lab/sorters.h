@@ -26,7 +26,7 @@ template <typename T, size_t SIZE>
 void sortViaOptimalDirectSelection(std::array<T, SIZE>& array) {
     if(SIZE == 0 || SIZE == 1) return;
     for(size_t i = 0; i < (SIZE - 1); i++) {
-        std::swap(array[i], array[optimalMinSearch(array, i)]);
+        std::swap(array[i], array[optimalMinSearch(array, i, SIZE)]);
     }
 }
 
@@ -39,7 +39,7 @@ template <typename T, size_t SIZE>
 void sortViaNonOptimalDirectSelection(std::array<T, SIZE>& array) {
     if(SIZE == 0 || SIZE == 1) return;
     for(size_t i = 0; i < (SIZE - 1); i++) {
-        std::swap(array[i], array[nonOptimalMinSearch(array, i)]);
+        std::swap(array[i], array[nonOptimalMinSearch(array, i, SIZE)]);
     }
 }
 
@@ -49,8 +49,8 @@ void sortViaNonOptimalDirectSelection(std::array<T, SIZE>& array) {
  *
  * @brief Sorts via direct insert
  * @param array the array to sort
- * @param startIndex the index to start from (inclusive)
- * @param endIndex the endIndex (exclusive)
+ * @param startIndex the index to start from (INCLUSIVE)
+ * @param endIndex the endIndex (EXCLUSIVE)
  */
 template <typename T, size_t SIZE>
 void sortViaDirectInsertWithWatcherElement(std::array<T, SIZE>& array, const size_t startIndex, const size_t endIndex) {
@@ -73,14 +73,7 @@ void sortViaDirectInsertWithWatcherElement(std::array<T, SIZE>& array, const siz
  */
 template <typename T, size_t SIZE>
 void sortViaDirectInsertWithWatcherElement(std::array<T, SIZE>& array) {
-    if(SIZE == 0 || SIZE == 1) return;
-
-    std::swap(array[0], array[optimalMinSearch(array, 0, SIZE)]);
-    for(size_t i = 2; i < SIZE; i++) {
-        for (size_t j = i; array[j - 1] > array[j]; j--) {
-            std::swap(array[j], array[j - 1]);
-        }
-    }
+    sortViaDirectInsertWithWatcherElement(array, 0, SIZE);
 }
 
 /**
@@ -216,6 +209,28 @@ bool appendNewIndexesAndSetToggle(std::queue<size_t>& indexes, const bool writeD
  */
 template <typename T, size_t SIZE>
 void sortViaNaturalMergesort(std::array<T, SIZE>& array) {
+    std::queue<size_t> indexes = findIndexesOfBitonicRuns(array);
+
+    size_t lo, mid, hi;
+    bool writeDescendingToggle = false;
+    shared_ptr<std::array<T, SIZE>> tmp(new std::array<T, SIZE>());
+    while(indexes.size() > 2) {
+        lo = popFront(indexes); mid = popFront(indexes);
+        indexes.front() == SIZE ? hi = popFront(indexes) : hi = indexes.front();
+
+        merge(array, *tmp, lo, mid, hi, true, writeDescendingToggle);
+        writeDescendingToggle = appendNewIndexesAndSetToggle(indexes, writeDescendingToggle, lo, hi, SIZE);
+    }
+}
+
+/**
+ * Sorts the given array via 'natural merge sort'.
+ * Uses 2 loops and no queue... as second version
+ *
+ * @param array the array to sort
+ */
+template <typename T, size_t SIZE>
+void sortViaNaturalMergesort2(std::array<T, SIZE>& array) {
     std::queue<size_t> indexes = findIndexesOfBitonicRuns(array);
 
     size_t lo, mid, hi;

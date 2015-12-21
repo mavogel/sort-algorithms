@@ -39,29 +39,28 @@ TEST_F(MinSearchTest, basicTest) {
 TEST_F(MinSearchTest, testWithHighStartIndex) {
     std::shared_ptr<std::array<int, 9>> list (new std::array<int, 9>{{5,2,7,8,-4,3,1,9,10}});
     EXPECT_EQ(6ul,optimalMinSearch(*list,5));
-    EXPECT_EQ(8ul,nonOptimalMinSearch(*list,8));
-    EXPECT_EQ(7ul,nonOptimalMinSearch(*list,7));
-    EXPECT_EQ(6ul,nonOptimalMinSearch(*list,6));
-    EXPECT_EQ(6ul,nonOptimalMinSearch(*list,5));
-    EXPECT_EQ(4ul,nonOptimalMinSearch(*list,4));
-    EXPECT_EQ(4ul,nonOptimalMinSearch(*list,3));
-    EXPECT_EQ(4ul,nonOptimalMinSearch(*list,2));
-    EXPECT_EQ(4ul,nonOptimalMinSearch(*list,1));
-    EXPECT_EQ(4ul,nonOptimalMinSearch(*list,0));
+    EXPECT_EQ(4ul,nonOptimalMinSearch(*list,0,8));
+    EXPECT_EQ(4ul,nonOptimalMinSearch(*list,0,7));
+    EXPECT_EQ(4ul,nonOptimalMinSearch(*list,0,6));
+    EXPECT_EQ(4ul,nonOptimalMinSearch(*list,0,5));
+    EXPECT_EQ(1ul,nonOptimalMinSearch(*list,0,4));
+    EXPECT_EQ(1ul,nonOptimalMinSearch(*list,0,3));
+    EXPECT_EQ(1ul,nonOptimalMinSearch(*list,0,2));
+    EXPECT_EQ(0ul,nonOptimalMinSearch(*list,0,1));
 
     std::shared_ptr<std::array<int, 10>> list3(new std::array<int, 10>{{5,2,7,8,-4,-66,3,1,9,10}});
     EXPECT_EQ(5ul,optimalMinSearch(*list3,5));
-    EXPECT_EQ(7ul,nonOptimalMinSearch(*list3,6));
-    EXPECT_EQ(5ul,nonOptimalMinSearch(*list3,2));
+    EXPECT_EQ(5ul,nonOptimalMinSearch(*list3,0,6));
+    EXPECT_EQ(5ul,nonOptimalMinSearch(*list3,2,10));
 
     std::shared_ptr<std::array<double,8>> dList(new std::array<double,8>{{5.2, 2.3, 9.9, 10.8, 1.1, -0.5, 13.8, 3.1}});
     EXPECT_EQ(7ul,optimalMinSearch(*dList, 6));
-    EXPECT_EQ(7ul,nonOptimalMinSearch(*dList, 6));
-    EXPECT_EQ(5ul,nonOptimalMinSearch(*dList, 2));
+    EXPECT_EQ(7ul,nonOptimalMinSearch(*dList, 6,8));
+    EXPECT_EQ(5ul,nonOptimalMinSearch(*dList, 2,8));
 
     std::shared_ptr<std::array<std::string, 6>> sList(new std::array<std::string, 6>{{"afbf", "Aslsdl", "ab", "cdffg", "oeodod33", "ab2323"}});
     EXPECT_EQ(5ul, optimalMinSearch(*sList, 3));
-    EXPECT_EQ(1ul, nonOptimalMinSearch(*sList, 1));
+    EXPECT_EQ(1ul, nonOptimalMinSearch(*sList, 1,6));
 }
 
 TEST_F(MinSearchTest, testWithCornerCases) {
@@ -78,43 +77,43 @@ TEST_F(MinSearchTest, testWithCornerCases) {
 
     std::shared_ptr<std::array<int, 9>> list2(new std::array<int, 9>{{-9,2,7,8,-4,3,1,9,10}});
     EXPECT_EQ(6ul,optimalMinSearch(*list2,5));
-    EXPECT_EQ(8ul,nonOptimalMinSearch(*list2,8));
-    EXPECT_EQ(7ul,nonOptimalMinSearch(*list2,7));
-    EXPECT_EQ(6ul,nonOptimalMinSearch(*list2,6));
-    EXPECT_EQ(6ul,nonOptimalMinSearch(*list2,5));
-    EXPECT_EQ(4ul,nonOptimalMinSearch(*list2,4));
-    EXPECT_EQ(4ul,nonOptimalMinSearch(*list2,3));
-    EXPECT_EQ(4ul,nonOptimalMinSearch(*list2,2));
-    EXPECT_EQ(4ul,nonOptimalMinSearch(*list2,1));
-    EXPECT_EQ(0ul,nonOptimalMinSearch(*list2,0));
+    EXPECT_EQ(8ul,nonOptimalMinSearch(*list2,8,9));
+    EXPECT_EQ(7ul,nonOptimalMinSearch(*list2,7,9));
+    EXPECT_EQ(6ul,nonOptimalMinSearch(*list2,6,9));
+    EXPECT_EQ(6ul,nonOptimalMinSearch(*list2,5,9));
+    EXPECT_EQ(4ul,nonOptimalMinSearch(*list2,4,9));
+    EXPECT_EQ(4ul,nonOptimalMinSearch(*list2,3,9));
+    EXPECT_EQ(4ul,nonOptimalMinSearch(*list2,2,9));
+    EXPECT_EQ(4ul,nonOptimalMinSearch(*list2,1,9));
+    EXPECT_EQ(0ul,nonOptimalMinSearch(*list2,0,9));
 }
 
 TEST_F(MinSearchTest, testWithOneElementData) {
     std::shared_ptr<std::array<int, 1>> list(new std::array<int, 1>{{5}});
     EXPECT_EQ(0ul,optimalMinSearch(*list,0));
-    EXPECT_EQ(0ul,nonOptimalMinSearch(*list,0));
+    EXPECT_EQ(0ul,nonOptimalMinSearch(*list,0,1));
 
     std::shared_ptr<std::array<double,1>> dList(new std::array<double, 1>{{1.2}});
     EXPECT_EQ(0ul,optimalMinSearch(*dList,0));
-    EXPECT_EQ(0ul,nonOptimalMinSearch(*list,0));
+    EXPECT_EQ(0ul,nonOptimalMinSearch(*list,0,1));
 
     std::shared_ptr<std::array<std::string, 1>> sList(new std::array<std::string, 1>{{"ab"}});
     EXPECT_EQ(0ul,optimalMinSearch(*sList,0));
-    EXPECT_EQ(0ul,nonOptimalMinSearch(*sList,0));
+    EXPECT_EQ(0ul,nonOptimalMinSearch(*sList,0,1));
 }
 
 TEST_F(MinSearchTest, testWithDoubledValues) {
     std::shared_ptr<std::array<int, 6>> list(new std::array<int, 6>{{5, 4, -1, 3, 4, -1}});
     EXPECT_EQ(2ul,optimalMinSearch(*list,0));
-    EXPECT_EQ(5ul,nonOptimalMinSearch(*list,0));
+    EXPECT_EQ(5ul,nonOptimalMinSearch(*list,0,6));
 
     std::shared_ptr<std::array<double,7>> dList(new std::array<double, 7>{{1.2, 5.5, 6.4, -1.3, -4.3, 5.5, -4.3}});
     EXPECT_EQ(4ul,optimalMinSearch(*dList,0));
-    EXPECT_EQ(6ul,nonOptimalMinSearch(*dList,0));
+    EXPECT_EQ(6ul,nonOptimalMinSearch(*dList,0,7));
 
     std::shared_ptr<std::array<std::string, 6>> sList(new std::array<std::string, 6>{{"afbf", "aslsdl", "ab", "cdffg", "oeodod33", "ab"}});
     EXPECT_EQ(2ul,optimalMinSearch(*sList,0));
-    EXPECT_EQ(5ul,nonOptimalMinSearch(*sList,0));
+    EXPECT_EQ(5ul,nonOptimalMinSearch(*sList,0,6));
 }
 
 TEST_F(MinSearchTest, testWithStartAndEndIndex) {

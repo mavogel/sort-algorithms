@@ -147,33 +147,22 @@ std::queue<size_t> findIndexesOfBitonicRuns(std::array<T, SIZE>& array) {
 template <typename T, size_t SIZE>
 void merge(std::array<T, SIZE>& array, std::array<T, SIZE>& tmp, const size_t lo, const size_t m, const size_t hi,
              const bool isSecondDesc, const bool writeDesc) {
-    if (isSecondDesc) {
-        // == step 1a: already bitonic, so insert into tmp array
+    if (isSecondDesc) { // already bitonic, so insert into tmp array
         for (size_t i = lo; i < hi; i++) { tmp[i] = array[i]; }
-    } else {
-        // == step 1b: insert into tmp array: lo->mid: ASC; mid+1->hi: DESC => bitonic
+    } else { // lo->mid: ASC; mid+1->hi: DESC => bitonic
         for (size_t i = lo; i < m; i++) { tmp[i] = array[i]; }
         for (size_t i = m, k = hi; m < k; i++) { tmp[i] = array[--k]; }
     }
 
-    if(writeDesc) {
-        // == step 2a: sort and write back DESC until pointers cross
-        for (size_t writeIdx = hi-1, readIdxLo = lo, readIdxHi = hi; readIdxLo < readIdxHi; writeIdx--) {
-            if (tmp[readIdxLo] < tmp[--readIdxHi]) {
-                array[writeIdx] = tmp[readIdxLo++]; readIdxHi++;
-            } else {
-                array[writeIdx] = tmp[readIdxHi];
-            }
+    size_t readIdxLo = lo, readIdxHi = hi, writeIdx;
+    writeDesc ? writeIdx = hi-1 : writeIdx = lo;
+    while(readIdxLo < readIdxHi) {
+        if (tmp[readIdxLo] < tmp[--readIdxHi]) {
+            array[writeIdx] = tmp[readIdxLo++]; readIdxHi++;
+        } else {
+            array[writeIdx] = tmp[readIdxHi];
         }
-    } else {
-        // == step 2b: sort and write back ASC until pointers cross
-        for (size_t writeIdx = lo, readIdxLo = lo, readIdxHi = hi; readIdxLo < readIdxHi; writeIdx++) {
-            if (tmp[readIdxLo] < tmp[--readIdxHi]) {
-                array[writeIdx] = tmp[readIdxLo++]; readIdxHi++;
-            } else {
-                array[writeIdx] = tmp[readIdxHi];
-            }
-        }
+        writeDesc ? writeIdx-- : writeIdx++;
     }
 }
 

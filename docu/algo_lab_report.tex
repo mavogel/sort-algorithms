@@ -1,8 +1,7 @@
 \documentclass[11pt]{amsart}
-\usepackage{geometry}                % See geometry.pdf to learn the layout options. There are lots.
-\geometry{letterpaper}                   % ... or a4paper or a5paper or ... 
-%\geometry{landscape}                % Activate for for rotated page geometry
-\usepackage[parfill]{parskip}    % Activate to begin paragraphs with an empty line rather than an indent
+\usepackage{geometry}                
+\geometry{letterpaper}                  
+\usepackage[parfill]{parskip}
 \usepackage{graphicx}
 \usepackage{amssymb}
 \usepackage{amsmath}
@@ -15,67 +14,15 @@
 \usepackage{hyperref}
 
 \usepackage{algorithm}
-%\usepackage{algorithmicx}
 \usepackage{algpseudocode}
-
 \algnewcommand\algorithmicto{\textbf{to}}
 \algnewcommand\algorithmicFalse{\textbf{true}}
 \algnewcommand\algorithmicTrue{\textbf{true}}
-%\algrenewtext{For}[3]%
-%{\algorithmicfor\ #1 \gets #2 \algorithmicto\ #3 \algorithmicdo}
-
 
 \usepackage{color}
 \definecolor{mygreen}{rgb}{0,0.6,0}
 \definecolor{mygray}{rgb}{0.5,0.5,0.5}
 \definecolor{mymauve}{rgb}{0.58,0,0.82}
-
-\usepackage{listings} % for special listings (https://en.wikibooks.org/wiki/LaTeX/Source_Code_Listings)
-\lstset{ %
-  backgroundcolor=\color{white},   % choose the background color; you must add \usepackage{color} or \usepackage{xcolor}
-  basicstyle=\footnotesize,        % the size of the fonts that are used for the code
-  breakatwhitespace=false,         % sets if automatic breaks should only happen at whitespace
-  breaklines=true,                 % sets automatic line breaking
-  captionpos=b,                    % sets the caption-position to bottom
-  commentstyle=\color{mygreen},    % comment style
-  deletekeywords={...},            % if you want to delete keywords from the given language
-  escapeinside={\%*}{*)},          % if you want to add LaTeX within your code
-  extendedchars=true,              % lets you use non-ASCII characters; for 8-bits encodings only, does not work with UTF-8
-  frame=single,	                   % adds a frame around the code
-  keepspaces=true,                 % keeps spaces in text, useful for keeping indentation of code (possibly needs columns=flexible)
-  keywordstyle=\color{blue},       % keyword style
-  language=C++,                 % the language of the code
-  otherkeywords={*,...},            % if you want to add more keywords to the set
-  numbers=left,                    % where to put the line-numbers; possible values are (none, left, right)
-  numbersep=5pt,                   % how far the line-numbers are from the code
-  numberstyle=\tiny\color{mygray}, % the style that is used for the line-numbers
-  rulecolor=\color{black},         % if not set, the frame-color may be changed on line-breaks within not-black text (e.g. comments (green here))
-  showspaces=false,                % show spaces everywhere adding particular underscores; it overrides 'showstringspaces'
-  showstringspaces=false,          % underline spaces within strings only
-  showtabs=false,                  % show tabs within strings adding particular underscores
-  stepnumber=1,                    % the step between two line-numbers. If it's 1, each line will be numbered
-  stringstyle=\color{mymauve},     % string literal style
-  tabsize=2,	                   % sets default tabsize to 2 spaces
-  title=\lstname                   % show the filename of files included with \lstinputlisting; also try caption instead of title
-}
-
-%%
-%% TODO questions:
-%% - doubling start from n = 64000 as long as the main memory is enough? until 8GB? => only MS and QS √
-%% - non optimal and watcher no improvement. why? √
-%%
-%% TODOs
-%% - tests with empty array √ 
-%% - test with doubled values √
-%% - time in ms with 3 floating numbers √
-%% - algo with examples (turing machine...) √
-%% - start with less than 64KB √
-%% - bool template param √
-%% - remove code snippets from docu √
-%% - size_t for index √
-%% - test with empty strings √
-%% - find bottleneck >128mb (parallelize unsorted) √
-%% - better pseudocode (see listings package)
 
 %%%%%%%%
 % Draw functions
@@ -275,13 +222,23 @@ arrows={north:.3cm}]
 }
 
 %%%%%%%%
-
-\title{Report~-~Algorithm Lab}
-\author{Manuel Vogel}
-\date{\today} % Activate to display a given date or no date
-
 \begin{document}
-\maketitle
+\begin{titlepage}
+	\centering
+	\includegraphics[width=0.5\textwidth]{hska-logo}\par\vspace{1cm}
+	{\scshape\LARGE University of Applied Sciences - Karlsruhe \par}
+	\vspace{1cm}
+	{\scshape\Large Report~-Algorithm~Laboratory\par}
+	\vspace{1.5cm}
+	{\huge\bfseries Comparison and optimization of Sorting Algorithms\par}
+	\vspace{2cm}
+	{\Large\itshape Manuel Vogel\par}
+	\vfill
+	supervised by\par
+	Prof~Dr.~Christian \textsc{Pape}
+	\vfill
+	{\large \today\par}
+\end{titlepage}
 \section{Introduction}
 Search algorithms are important in preprocessing of many other algorithms like image processing or displaying results in a determined order - ascending or descending.
 The purpose of this laboratory exercise is to show the performance of the four algorithms 
@@ -304,12 +261,12 @@ The purpose of this laboratory exercise is to show the performance of the four a
 	\item Quicksort
 		\begin{itemize}
 			\item 3-way-partitioning\footnote{\url{http://www.sorting-algorithms.com/static/QuicksortIsOptimal.pdf}}
-			\item 3-way-partitioning with hybridisation.
+			\item 3-way-partitioning with hybridization.
 		\end{itemize}
 \end{enumerate}
 The goal is to point of the improvement of the performance of the algorithms in corner cases like an ascending sorted (best case), descending sorted (worst case) and randomly ordered floating point numbers. The implementation should also be able to deal with integers and strings. The programming language is C++.
 
-First the algorithms will be described in detail with an added pseudocode, sketches and runtime behaviour in the $O$-Notation. In the third section the setup of test environment - compiler with flags, IDE, language and test framework - will be described, containing the fixed preconditions of the tests and the execution with some code examples. The fourth section deals with the data of the time measuring and how it was realised. The fifth section shows the results of the measured performance of each algorithm. Everything will be summed up in the last and sixth chapter. 
+First the algorithms will be described in detail with an added pseudocode, sketches and runtime behavior in the $O$-Notation. In the third section the setup of test environment - compiler with flags, IDE, language and test framework - will be described, containing the fixed preconditions of the tests and the execution with some code examples. The fourth section deals with the data of the time measuring and how it was realized. The fifth section shows the results of the measured performance of each algorithm. Everything will be summed up in the last and sixth chapter. 
 
 %%%%%%%%%%%%%%%%%%%%%%%%
 \newpage
@@ -319,7 +276,7 @@ First the algorithms will be described in detail with an added pseudocode, sketc
 %
 \subsection{Minimumsearch}
 \begin{description}
-	\item[Short Descripton] Searching for the minimum in data can be done by starting at two different points:
+	\item[Short Description] Searching for the minimum in data can be done by starting at two different points:
 	\begin{enumerate}
 		\item at the beginning of data
 		\item at the end of the data.
@@ -333,14 +290,15 @@ First the algorithms will be described in detail with an added pseudocode, sketc
 		\Statex
 		\Procedure{OptimalMinSearch}{$I, s, e$}
 			\If{$|I| = 1$} \State \Return $0$ \EndIf
-			\State \State $mIdx \gets s$
+			\State \State $minIdx \gets s$
 			\For{$i \gets (s+1)~\algorithmicto~e$}
-				\If{$I[i] < I[mIdx]$} \State $m \gets i$ \EndIf
+				\If{$I[i] < I[minIdx]$} \State $m \gets i$ \EndIf
 			\EndFor
-			\State \Return $mIdx$
+			\State \Return $minIdx$
 			\EndProcedure
 		\end{algorithmic}
 	\end{algorithm}	
+	\vspace{4cm}
 	\item[Example] for optimal \\[0.5cm]
 		\begin{center}
 			\minsearchExample{Start}{second}{first}{7}
@@ -361,14 +319,15 @@ First the algorithms will be described in detail with an added pseudocode, sketc
 		\Statex
 		\Procedure{NonOptimalMinSearch}{$I, s, e$}
 			\If{$|I| = 1$} \State \Return $0$ \EndIf
-			\State \State $mIdx \gets (e-1)$
+			\State \State $minIdx \gets (e-1)$
 			\For{$i \gets (e-1)~\algorithmicto~s$}
-				\If{$I[i] < I[mIdx]$} \State $m \gets i$ \EndIf
+				\If{$I[i] < I[minIdx]$} \State $m \gets i$ \EndIf
 			\EndFor
-			\State \Return $mIdx$
+			\State \Return $minIdx$
 			\EndProcedure
 		\end{algorithmic}
 	\end{algorithm}
+	\vspace{2cm}
 	\item[Example] for non-optimal \\[0.5cm]
 		\begin{center}
 			\minsearchExample{Start}{ninth}{tenth}{6}
@@ -424,6 +383,7 @@ First the algorithms will be described in detail with an added pseudocode, sketc
 	\selectSortExample{4th step:}{\color{green}-1}{\color{green}2}{\color{green}3}{\color{green}4}{6}{8}{fifth}{6} \\
 	\selectSortExample{5th step:}{\color{green}-1}{\color{green}2}{\color{green}3}{\color{green}4}{\color{green}6}{8}{sixth}{8} \\
 	\selectSortExample{6th step:}{\color{green}-1}{\color{green}2}{\color{green}3}{\color{green}4}{\color{green}6}{\color{green}8}{sixth}{-} \\
+	\vspace{3cm}
 	\item[$O$-Notation]:
 		\begin{table}[htdp]
 		\caption{Direct Selection Complexity}
@@ -482,6 +442,7 @@ First the algorithms will be described in detail with an added pseudocode, sketc
 		\item Swap the found minimum with the first element of the data to avoid the worst case of swapping through.
 		\item Increase the pointer to the first element of the unsorted data by one and swap this element through until the right spot in the sorted data. Do this until the pointer reaches the end of the data. Then the data is sorted.
 	\end{enumerate}
+	\vspace{5cm}
 	\item[Pseudocode] for $U := unsorted~data$, $s := lower~bound$ and $e := upper~bound$:
 	\begin{algorithm}
 	\caption{Insert Sort with watcher / guard element}
@@ -521,6 +482,7 @@ First the algorithms will be described in detail with an added pseudocode, sketc
 		\end{table}%
 \end{description}
 
+\newpage
 \subsection{Mergesort}
 \subsubsection{The \texttt{Merge}-Function}
 \begin{description}
@@ -532,7 +494,8 @@ First the algorithms will be described in detail with an added pseudocode, sketc
 			\item Order the array into a tmp-array in bitonic format. This means \textit{ASC} from \texttt{lo} to \texttt{m-1} and \textit{DESC} from \texttt{m} to \texttt{hi}
 			\item Merge the tmp-array into the array starting with two pointers, one from the head and the other one from the tail. The array is merge when the pointers cross.
 		\end{enumerate}
-	\item[Pseudocode] for $U := unsorted~data$, $T := |U|$, $lo := lower~bound$, $m := middle$, $hi :=upper~bound$, $iSd := is~second~part~descending~sorted$, $wD := write~descending~back$:
+	\newpage
+	\item[Pseudocode] for $U := unsorted~data$, $T := tmp~storage$, $lo := lower~bound$, $m := middle$, $hi :=upper~bound$, $iSd := is~second~part~descending~sorted$, $wD := write~descending~back$:
 	\begin{algorithm}
 	\caption{Merge Part 1 - Write into $T$}
 		\begin{algorithmic}[1]
@@ -547,7 +510,6 @@ First the algorithms will be described in detail with an added pseudocode, sketc
 		\algstore{mergebreak}	
 		\end{algorithmic}
 	\end{algorithm}	
-	The second part for writing back into the array:
 	\begin{algorithm}
 	\caption{Merge Part 2 - Write back to $U$}
 		\begin{algorithmic}[1]	
@@ -584,14 +546,15 @@ First the algorithms will be described in detail with an added pseudocode, sketc
 		\mergeExampleTmp{6th step (tmp)}{-1}{3}{6}{\color{red}8}{2}{1}{fourth}{fourth} \mergeExampleSorted{merged}{-1}{1}{2}{3}{6}{8}{sixth} \\
 \end{description}
 
-\subsubsection{Natural Mergersort}
+\subsubsection{Natural Mergesort}
 \begin{description}
 	\item[Short Description] The natural Mergesort is an iterative alternative of the Mergesort-procedure. The fundamental idea is taking advantage of already existing sorted parts in the data. By using these naturally pre-sorted parts, merge-steps can be spared. Those pre-sorted parts are called \enquote{bitonic runs}. Those bitonic runs is first ordered ascending and the descending. It can also be sorted only ascending or descending but not first descending and then ascending. It is implemented in the following steps:
 		\begin{enumerate}
-			\item Find pre-sorted bitonic sequences in data and store boundaries of the sequences. If the dat a is already sorted acsending only two boundaries are found, otherwise always 3 or more.
+			\item Find pre-sorted bitonic sequences in data and store boundaries of the sequences. If the dat a is already sorted ascending only two boundaries are found, otherwise always 3 or more.
 			\item Merge pair of sequences by writing the second sequences back in descending order.
 			\item Reduce the boundaries until there are only two left, then the data is sorted.
 		\end{enumerate}
+	\newpage
 	\item[Pseudocode] for $U := unsorted~data$:
 	\begin{algorithm}
 	\caption{Natural Mergesort}
@@ -599,7 +562,7 @@ First the algorithms will be described in detail with an added pseudocode, sketc
 		\Procedure{sortViaNaturalMergeSort}{$U$}
 			\State $I := idxOfBitonicRuns(U)$
 			\State $writeDesc := false$
-			\State $T := |I|$
+			\State $T := tmp~storage$
 			\While{$|I| > 2$}
 				\State $lo \gets pop(I) \land m \gets pop(I) \land hi \gets pop(I)$ 
 				\State $merge(U, T, lo, m, hi, \algorithmicTrue, writeDesc)$
@@ -609,7 +572,7 @@ First the algorithms will be described in detail with an added pseudocode, sketc
 		\EndProcedure
 		\end{algorithmic}
 	\end{algorithm}	
-	\item[Example] The {\color{blue}blue} and {\color{red}red} coloured numbers represent the pre-sorted parts of the data and in the following step the blue part will be merged with its following red part. The {\color{green}green} numbers are sorted \\[.5cm] 
+	\item[Example] The {\color{blue}blue} and {\color{red}red} colored numbers represent the pre-sorted parts of the data and in the following step the blue part will be merged with its following red part. The {\color{green}green} numbers are sorted \\[.5cm] 
 		\mergeSortsExample{unsorted}{-1}{1}{2}{1}{3}{2}{10}{5} \\
 		\mergeSortsExample{1st step: boundaries}{\color{blue}-1}{\color{blue}1}{\color{blue}2}{\color{red}1}{\color{red}3}{\color{blue}2}{\color{blue}10}{\color{red}5} \\
 		\mergeSortsExample{2nd step: merge}{\color{blue}-1}{\color{blue}1}{\color{blue}1}{\color{blue}2}{\color{blue}3}{\color{red}2}{\color{red}5}{\color{red}10} \\
@@ -625,6 +588,7 @@ First the algorithms will be described in detail with an added pseudocode, sketc
 		\end{table}%
 \end{description}
 
+\newpage
 \subsubsection{Bottom-Up Mergesort}
 \begin{description}
 	\item[Short Description] The Bottom-Up Mergesort is an iterative alternative of the Mergesort-procedure. The fundamental idea is to start from the bottom by merging all pairs, then in the next rounds the double size, so 4 and so on. So in each rounds the doubled amount of items is merged. Example:
@@ -646,10 +610,10 @@ As shown in the example it is implemented in the following steps:
 		\begin{algorithmic}[1]
 		\Procedure{sortViaBottomUpMergeSort}{$U$}
 			\State $r := |U| / 2$
-			\If{$|U|~mod~2 \neq 0$}\Comment{increase rounds}
+			\If{$|U| \bmod 2 \neq 0$}\Comment{increase rounds}
 				\State $r \gets r + 1$ 
 			\EndIf
-			\State $T := |I|$
+			\State $T := tmp~storage$
 			\For{$lo \gets 0~\algorithmicto~r$}\Comment{merge from the bottom}
 				\State $m \gets lo+2^{r-1} \land hi \gets lo+2^{r}$
 				\State $merge(U, T, lo, m, hi, \algorithmicFalse, \algorithmicFalse)$
@@ -657,7 +621,8 @@ As shown in the example it is implemented in the following steps:
 		\EndProcedure
 		\end{algorithmic}
 	\end{algorithm}	
-	\item[Example] The {\color{blue}blue} and {\color{red}red} coloured numbers represent the pre-sorted parts of the data and in the following step the blue part will be merged with its following red part. The {\color{green}green} numbers are sorted \\[.5cm]
+	\newpage
+	\item[Example] The {\color{blue}blue} and {\color{red}red} colored numbers represent the pre-sorted parts of the data and in the following step the blue part will be merged with its following red part. The {\color{green}green} numbers are sorted \\[.5cm]
 		\mergeSortsExample{unsorted}{-1}{1}{2}{1}{3}{2}{10}{5} \\
 		\mergeSortsExample{1st step: merge}{\color{blue}-1}{\color{blue}10}{\color{red}1}{\color{red}7}{\color{blue}2}{\color{blue}8}{\color{red}5}{\color{red}10} \\
 		\mergeSortsExample{2nd step: merge}{\color{blue}-1}{\color{blue}1}{\color{blue}7}{\color{blue}12}{\color{red}2}{\color{red}5}{\color{red}8}{\color{red}10} \\
@@ -673,6 +638,7 @@ As shown in the example it is implemented in the following steps:
 		\end{table}%
 \end{description}
 
+\newpage
 \subsection{3-way-partitioning Quicksort}
 \begin{description}
 	\item[Short Description] The 3-way-partitioning Quicksort also orders the elements which are equal to the Pivot-element in the middle of the to-sorting data.
@@ -685,28 +651,31 @@ It is implemented in the following steps:
 			\item Bring the pivots from the left and right end to the middle.
 			\item Perform two recursive Quicksorts: one from the left end until the beginning of the pivot brought into the middle before and the other one from the right end of the pivot in the middle until the right outer end.
 		\end{enumerate}
-	\item[Pseudocode]:
-		\begin{lstlisting}		
-		unsorted[];
-		swap(unsorted[mid], unsorted[right]);
-		pivot := unsorted[right];
-			
-		if(left <= right) return;
-		while(true) 
-		begin {
-			find element < pivot from starting from left
-			find element > pivot from starting from right (break if left end is reached)
-			stop if pointers cross
-			if (elements are not smaller or greater but equal) {
-				Bring them to the left or right side
-			} fi
-		}
-		bring pivot from right to the middle
-		swap elements equal to pivot to the center
-			
-		quicksort from left to start of elements equal to pivot
-		quicksort from end of elements equal to pivot to the right
-		\end{lstlisting}	
+	\newpage
+	\item[Pseudocode] for $U := unsorted~data$, $left := U[head]$, $right := U[tail]$
+	\begin{algorithm}
+	\caption{3-way-partitioning QuickSort}
+		\begin{algorithmic}[1]
+		\Procedure{sortVia3WayPartitioningQuicksort}{$U, left, right$}
+			\State swap middle element to the right and make it the $Pivot$
+			\If{$left \leq right$} \State \Return \EndIf
+			\Repeat
+				\State find element $< Pivot$ starting from $left$
+				\State find element $> Pivot$ starting from $right$
+				\If{element = $Pivot$}
+					\State swap $\to$ left or right end respectively
+				\EndIf
+			\Until{pointers cross $\lor$ $left$ end is reached}
+			\State bring $Pivot$ from right end to the middle
+			\State swap elements = $Pivot$ to the middle
+			\Statex
+			\State $lEnd \gets$ left end $\land~rEnd \gets$ right end of elements = $Pivot$ 
+			\Statex
+			\State sortVia3WayPartitioningQuicksort($U, left, lEnd$)
+			\State sortVia3WayPartitioningQuicksort($U, right, rEnd$)
+		\EndProcedure
+		\end{algorithmic}
+	\end{algorithm}	
 	\item[Example] The {\color{red}red} numbers will be swapped,  {\color{blue}blue} numbers are the one for the next recursion. The {\color{green}green} numbers are sorted \\[.5cm]
 		\quicksortsExample{pivot to right end}{1}{5}{7}{\color{red}4}{3}{4}{9}{\color{red}2} \\
 		\quicksortsExample{1st step (1)}{1}{\color{red}5}{7}{2}{3}{\color{red}4}{9}{4} \\
@@ -733,7 +702,8 @@ It is implemented in the following steps:
 		\end{table}%
 \end{description}
 
-\subsection{3-way-partitioning Quicksort with hybridisation}
+\newpage
+\subsection{3-way-partitioning Quicksort with hybridization}
 \begin{description}
 	\item[Short Description] The hybrid Quicksort is a variation of the Quicksort avoiding special cases. These are
 	\begin{enumerate}
@@ -745,23 +715,31 @@ Otherwise the previously mentioned 3-way-partitioning Quicksort is performed. Ad
 			\item If the amount of elements to sort is smaller or equal than 25, an InsertSort is used
 			\item If the case occurs that before the next recursion of the Quicksort starts one half contains 10 times the amount of the other half the next recursion step is performed by diving the remaining data in the middle. To adjust this change a \texttt{merge}-step is performed after the recursion.
 		\end{enumerate}
-	\item[Pseudocode]:
-		\begin{lstlisting}
-		if(left - right <= 25) {
-			perform insertSort and return
-		else {
-			perform 3-way-part. quicksort as above
-			
-			if(one recursive quicksort is 10-times bigger than the other) {
-				quicksort from left to middle
-				quicksort from middle+1 to right
-				merge(left, mid, right)
-			} else {
-				normal 3-way-part. quicksort recursion
-			} fi
-		} fi;			 
-		\end{lstlisting}
-	\item[Example] The example is for showing how the worst case in quicksort is handled. As a matter of space the worst case in this example is if the size of elements in one recursion is 6-times bigger than the other one. \\ The {\color{red}red} numbers will be swapped,  {\color{blue}blue} numbers are the one for the next recursion. The {\color{green}green} numbers are sorted \\[.5cm]
+	\item[Pseudocode] for $U := unsorted~data$, $left := U[head]$, $right := U[tail]$
+	\begin{algorithm}
+	\caption{Hybrid 3-way-partitioning QuickSort}
+		\begin{algorithmic}[1]
+		\Procedure{sortViaHybrid3WayPartitioningQuicksort}{$U, left, right$}
+			\If{$right - left < 25$}
+				\State sortViaDirectInsertWithWatcher($U,left,right$)
+			\Else
+				\State \ldots
+				\State sortVia3WayPartitioningQuicksort as above
+				\State \ldots
+				\If{the subsequence of one recursive call is $10\times$ bigger than the other}
+					\State sortVia3WayPartitioningQuicksort($U, left, mid$)
+					\State sortVia3WayPartitioningQuicksort($U, mid, right$)
+					\State merge($U, T, left, mid, right, \algorithmicFalse, \algorithmicFalse$)
+				\Else
+					\State sortVia3WayPartitioningQuicksort($U, left, lEnd$)
+					\State sortVia3WayPartitioningQuicksort($U, right, rEnd$)			
+				\EndIf
+			\EndIf
+		\EndProcedure
+		\end{algorithmic}
+	\end{algorithm}	
+	\newpage
+	\item[Example] The example is for showing how the worst case in Quicksort is handled. As a matter of space the worst case in this example is if the size of elements in one recursion is 6-times bigger than the other one. \\ The {\color{red}red} numbers will be swapped,  {\color{blue}blue} numbers are the one for the next recursion. The {\color{green}green} numbers are sorted \\[.5cm]
 	\quicksortsExample{pivot to right end}{1}{4}{5}{\color{red}7}{6}{9}{3}{\color{red}3} \\
 	\quicksortsExample{1st step (1)}{1}{4}{5}{3}{6}{\color{red}9}{\color{red}3}{7} \\
 	\quicksortsExample{1st step (2)}{1}{4}{5}{3}{6}{3}{\color{red}9}{\color{red}7} \\
@@ -778,9 +756,8 @@ Otherwise the previously mentioned 3-way-partitioning Quicksort is performed. Ad
 	\quicksortsExample{4th step (2)}{1}{3}{4}{5}{3}{\color{red}9}{\color{red}6}{7} \\
 	\quicksortsExample{next recursion}{1}{3}{4}{5}{3}{6}{\color{blue}9}{\color{blue}7} \\
 	\quicksortsExample{5th step (1)}{1}{3}{4}{5}{3}{6}{\color{red}9}{\color{red}7} \\
-	\quicksortsExample{merge halfs}{\color{blue}1}{\color{blue}3}{\color{blue}4}{\color{blue}5}{3}{6}{7}{9} \\
+	\quicksortsExample{merge halves}{\color{blue}1}{\color{blue}3}{\color{blue}4}{\color{blue}5}{3}{6}{7}{9} \\
 	\quicksortsExample{done}{\color{green}1}{\color{green}3}{\color{green}3}{\color{green}4}{\color{green}5}{\color{green}6}{\color{green}7}{\color{green}9} \\
-	%TODO other example
 	\item[$O$-Notation]:
 		\begin{table}[htdp]
 		\caption{Hybrid Quicksort Complexity}
@@ -814,13 +791,13 @@ The following preconditions were given by the professor:
 	\item A separate project for time measuring has to be set up with the compiler flags mentioned above. The condition are:
 	\begin{itemize}
 		\item Before each test the cache has to be emptied by filling an array with 20MB of data.
-		\item Time measurement with data initialised with random, ascending and descending sorted values to point out the best, worst and average case.
+		\item Time measurement with data initialized with random, ascending and descending sorted values to point out the best, worst and average case.
 		\item The amount of data to be sorted shall increase from 8KB\footnote{kilo bytes = $10^3$ bytes} over 8MB\footnote{mega bytes = $10^6$ bytes} up to 8GB\footnote{giga bytes = $10^9$ bytes} in step of multiplying by 2. Hence the sizes of the data are: 8KB, 16KB, 32KB, 64KB, 128KB, 256KB, 512MB, 1MB, 2MB, 4MB, 8MB, 16MB, 32MB, 64MB, 128MB, 256MB, 512MB, 1GB, 2GB and 4GB. Exceptions are the sorting by direct insert and direct select which have $O(n^2)$ in almost every case. These test cases are limited to 8MB.
 	\end{itemize}
 \end{enumerate}
 
-\subsection{Realisation}
-With the given preconditions the exercise was realised with
+\subsection{Realization}
+With the given preconditions the exercise was realized with
 \begin{itemize}
 	\item The cLion IDE\footnote{\url{https://www.jetbrains.com/clion/}}, for platform independent compilation with \texttt{cmake}
 	\item On a Macbook Pro 13-inch, Early 2011, OS Version 10.11) with 1 processor and 2 cores
@@ -836,17 +813,17 @@ With the given preconditions the exercise was realised with
 \section{Execution}
 This section describes how the execution was implemented. 
 
-First the algorithm were implemented in a generic manner with template methods to make certain parts reusable. This can also be seen in the code snippets in the previous section. For each function separate tests were written to ensure their correct behaviour. In total 32 tests were written and the project was continuously refactored. In general the project was implemented in a test-driven approach and documented in detail in the source files. This will be explained in detain in the first subsection.
+First the algorithm were implemented in a generic manner with template methods to make certain parts reusable. This can also be seen in the code snippets in the previous section. For each function separate tests were written to ensure their correct behavior. In total 32 tests were written and the project was continuously refactored. In general the project was implemented in a test-driven approach and documented in detail in the source files. This will be explained in detain in the first subsection.
 
-As the time measuring should be implemented with no debug information, a separate project was set up with an appropriate time measuring environment. The flags for optimisation were used as well to gain the maximum performance. This will be explained in detain in the second subsection.
+As the time measuring should be implemented with no debug information, a separate project was set up with an appropriate time measuring environment. The flags for optimization were used as well to gain the maximum performance. This will be explained in detain in the second subsection.
 
 %
 % show tests, random generators, helpers
 %
 \subsection{Test project with gTest}
-The test project to verify the correctness of the implemented sort algorithms was realised with the gTest library from Google. Self-written tests were demanded. 
+The test project to verify the correctness of the implemented sort algorithms was realized with the gTest library from Google. Self-written tests were demanded. 
 
-Several helpers for generating test values and verifies the data structures after sorting were implemented a better structure of the tests. For the generation of the random \texttt{double} values, the algorithm of Mersenne-Twister\footnote{\url{https://en.wikipedia.org/wiki/Mersenne_Twister}} between \texttt{INT\_MIN and INT\_MAX} is used.
+Several helpers for generating test values and verifies the data structures after sorting were implemented a better structure of the tests. For the generation of the random \texttt{double} values, the algorithm of Mersenne-Twister\footnote{\url{http://www.math.sci.hiroshima-u.ac.jp/~m-mat/MT/ARTICLES/mt.pdf}} between \texttt{INT\_MIN and INT\_MAX} is used.
 %
 % time measuring, data types, amount of data, empty cache before each run
 %
@@ -884,6 +861,7 @@ In this section the results of time measuring are printed as tables. For each al
 	\end{tabular}
 	\label{default}
 \end{table}%
+\clearpage
 \begin{table}[htdp]
 	\caption{Direct Select Sort with \textbf{non-optimal} minimum search - Results in $milliseconds$}
 	\begin{tabular}{|r|c|r|r|r|} \hline
@@ -905,6 +883,7 @@ In this section the results of time measuring are printed as tables. For each al
 	\end{tabular}
 	\label{default}
 \end{table}%
+\clearpage
 \begin{table}[htdp]
 	\caption{Direct Insert Sort \textbf{with watcher} element - Results in $milliseconds$}
 	\begin{tabular}{|r|c|r|r|r|} \hline
@@ -947,6 +926,7 @@ In this section the results of time measuring are printed as tables. For each al
 	\end{tabular}
 	\label{default}
 \end{table}%
+\clearpage
 \begin{table}[htdp]
 	\caption{\textbf{Natural} Mergesort - Results in $milliseconds$}
 	\begin{tabular}{|r|c|r|r|r|} \hline
@@ -977,6 +957,7 @@ In this section the results of time measuring are printed as tables. For each al
 	\end{tabular}
 	\label{default}
 \end{table}%
+\clearpage
 \begin{table}[htdp]
 	\caption{\textbf{Bottom-up} Mergesort - Results in $milliseconds$}
 	\begin{tabular}{|r|c|r|r|r|} \hline
@@ -1007,6 +988,7 @@ In this section the results of time measuring are printed as tables. For each al
 	\end{tabular}
 	\label{default}
 \end{table}%
+\clearpage
 \begin{table}[htdp]
 	\caption{Quicksort with \textbf{three-way-partitioning} - Results in $milliseconds$}
 	\begin{tabular}{|r|c|r|r|r|} \hline
@@ -1037,8 +1019,9 @@ In this section the results of time measuring are printed as tables. For each al
 	\end{tabular}
 	\label{default}
 \end{table}%
+\clearpage
 \begin{table}[htdp]
-	\caption{Quicksort with \textbf{three-way-partitioning} with \textbf{hybridisation} - Results in $milliseconds$}
+	\caption{Quicksort with \textbf{three-way-partitioning} with \textbf{hybridization} - Results in $milliseconds$}
 	\begin{tabular}{|r|c|r|r|r|} \hline
 		Size of data & Loop rounds & \parbox[c]{3.5cm}{Descending \\ $O(n*log_2n~)$} & \parbox[c]{3.5cm}{Random \\$O(n*log_2~n)$} & \parbox[c]{3.5cm}{Ascending \\ $O(n*log_2~n)$} \\ \hline
 		1KB & 125 & 0,011 & 0,009 & 0,007 \\ \hline
@@ -1067,10 +1050,10 @@ In this section the results of time measuring are printed as tables. For each al
 	\end{tabular}
 	\label{default}
 \end{table}%
+\clearpage
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%
-\newpage
 \section{Summary}
 %
 % sum up the results for O(n) algorithm in comparison with the n^2 ones ... maybe
@@ -1081,6 +1064,6 @@ In this section the results of time measuring are printed as tables. For each al
 
 \textbf{Bottom-Up-MergeSort} and \textbf{Natural-MergeSort}  behaved with $O(n*log_2~n)$ in every case, but Natural-MergeSort is about 10\% faster than the Bottom-Up version. Natural-MergeSort should be as equally fast in the ascending and descending case, but the ascending case needs no copying into a temporal storage before the function for the determination of the indexes of the bitonic runs avoids it and hence its faster. Due to the need of additional space both sort algorithms grow exponentially when reaching the limit of memory available. Here its 4GB, when a certain amount of data has to be swapped to hard disc.
 
-\textbf{3-way-partitioning QuickSort} and \textbf{3-way-partitioning QuickSort with hybridisation} behaved with $O(n*log_2~n)$ in every case, but the version with hybridisation is about 30\% slower than the version without it. Because there is no need of additional space both sort algorithms perform very well when reaching the limit of memory available.
+\textbf{3-way-partitioning QuickSort} and \textbf{3-way-partitioning QuickSort with hybridization} behaved with $O(n*log_2~n)$ in every case, but the version with hybridization is about 30\% slower than the version without it. Because there is no need of additional space both sort algorithms perform very well when reaching the limit of memory available.
 
 \end{document}  

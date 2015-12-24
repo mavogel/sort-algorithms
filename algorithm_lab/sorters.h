@@ -213,28 +213,6 @@ void sortViaNaturalMergesort(std::array<T, SIZE>& array) {
 }
 
 /**
- * Sorts the given array via 'natural merge sort'.
- * Uses 2 loops and no queue... as second version
- *
- * @param array the array to sort
- */
-template <typename T, size_t SIZE>
-void sortViaNaturalMergesort2(std::array<T, SIZE>& array) {
-    std::queue<size_t> indexes = findIndexesOfBitonicRuns(array);
-
-    size_t lo, mid, hi;
-    bool writeDescendingToggle = false;
-    shared_ptr<std::array<T, SIZE>> tmp(new std::array<T, SIZE>());
-    while(indexes.size() > 2) {
-        lo = popFront(indexes); mid = popFront(indexes);
-        indexes.front() == SIZE ? hi = popFront(indexes) : hi = indexes.front();
-
-        merge(array, *tmp, lo, mid, hi, true, writeDescendingToggle);
-        writeDescendingToggle = appendNewIndexesAndSetToggle(indexes, writeDescendingToggle, lo, hi, SIZE);
-    }
-}
-
-/**
  * Sorts the given array via 'bottom-up merge sort'.
  *
  * @param array the array to sort

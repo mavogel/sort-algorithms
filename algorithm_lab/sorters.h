@@ -246,10 +246,9 @@ void sortViaBottomUpMergesort(std::array<T, SIZE>& array) {
  * @param array the array to sort
  * @param left the left index/boundary of the part to apply the algorithm (INCLUSIVE)
  * @param right corresponding right index/boundary (EXCLUSIVE)
- * @param depth the current recursion depth
  */
 template <typename T, size_t SIZE>
-void internal3WayPartitioningQuicksort(std::array<T, SIZE>& array, const size_t left, const size_t right, const unsigned int depth) {
+void internal3WayPartitioningQuicksort(std::array<T, SIZE>& array, const size_t left, const size_t right) {
     size_t i = left-1, j = right;
     size_t p = left, q = right-1;
 
@@ -282,8 +281,8 @@ void internal3WayPartitioningQuicksort(std::array<T, SIZE>& array, const size_t 
     while(k > q){ std::swap(array[i], array[k]); i++; if(k>0) k--; }
 
     // == step 6: next recursion
-    internal3WayPartitioningQuicksort(array, left, j, depth+1);
-    internal3WayPartitioningQuicksort(array, i, right, depth+1);
+    internal3WayPartitioningQuicksort(array, left, j);
+    internal3WayPartitioningQuicksort(array, i, right);
 }
 
 
@@ -295,7 +294,7 @@ void internal3WayPartitioningQuicksort(std::array<T, SIZE>& array, const size_t 
  */
 template <typename T, size_t SIZE>
 void sortVia3WayPartitioningQuicksort(std::array<T, SIZE>& array) {
-    internal3WayPartitioningQuicksort(array, 0, SIZE-1, 0);
+    internal3WayPartitioningQuicksort(array, 0, SIZE-1);
 }
 
 /**

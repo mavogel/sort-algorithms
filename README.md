@@ -15,7 +15,7 @@ This application and report is just for demonstration purposes. It shows the rea
 * Optional Dependencies: openMP
 * Summary of set up:
 ```
-#!bash
+```bash
 mkdir build && cd build
 cmake ..
 make -j2
@@ -23,8 +23,9 @@ make -j2
 ```
 * or with an OpenMP capable Compiler
 
-```
-#!bash
-...
+```bash
+mkdir build && cd build
 cmake -D CMAKE_CXX_COMPILER=g++-5 -D CMAKE_C_COMPILER=gcc-5 ..
+make -j2
+./algorithm_lab_time/timeMeasuring
 ```
